@@ -48,7 +48,7 @@ use yii\helpers\ArrayHelper;
                                             <td><?= $form->field($he, '['.$count.']HE_ID')->widget(Select2::classname(), [
                                                     'data' => ArrayHelper::map(Herramientas::find()->where(['TH_ID'=>$tipo_he->TH_ID])->all(),'HE_ID','HE_NOMBRE'),
                                                     'language' => 'es',
-                                                    'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count],
+                                                    'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count,],
                                                     'pluginOptions' => [
                                                         'allowClear' => true
                                                     ],
