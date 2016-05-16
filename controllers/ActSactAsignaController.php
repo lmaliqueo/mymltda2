@@ -12,6 +12,7 @@ use app\models\SactHeOcupan;
 use app\models\SactObRequiere;
 use app\models\MaterialAsignado;
 use app\models\HerramientaAsignado;
+use app\models\HerramientaTiene;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -230,14 +231,15 @@ class ActSactAsignaController extends Controller
                 if ($herramienta->HE_ID!=NULL) {
                     $reserva_herramienta= HerramientaTiene::find()->where(['HE_ID'=>$herramienta->HE_ID])->andWhere(['EH_ID'=>5])->one();
                     if($reserva_herramienta!=NULL){
-                        $reserva_herramienta= $reserva_herramienta->HT_CANTHEESTADO + $herramienta->HAS_CANTIDAD;
+                        $reserva_herramienta->HT_CANTHEESTADO= $reserva_herramienta->HT_CANTHEESTADO + $herramienta->HAS_CANTIDAD;
+                        $reserva_herramienta->save();
                     }else{
-                        $reserva_herramienta= new HerramientaTiene();
-                        $reserva_herramienta->HE_ID= $herramienta->HE_ID;
-                        $reserva_herramienta->EH_ID= 5;
-                        $reserva_herramienta= $herramienta->HAS_CANTIDAD;
+                        $reserva_he= new HerramientaTiene();
+                        $reserva_he->HE_ID= $herramienta->HE_ID;
+                        $reserva_he->EH_ID= 5;
+                        $reserva_he->HT_CANTHEESTADO= $herramienta->HAS_CANTIDAD;
+                        $reserva_he->save();
                     }
-                    $reserva_herramienta->save();
                     $herramienta->AS_ID=$model->AS_ID;
                     $herramienta->save();
                     $model->AS_COSTOTOTAL=$model->AS_COSTOTOTAL+($herramienta->HAS_CANTIDAD*$herramienta->hE->HE_COSTOUNIDAD);

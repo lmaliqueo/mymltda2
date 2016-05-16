@@ -34,8 +34,6 @@ use yii\bootstrap\Modal;
                             <?= Html::a('<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Listo', ['actividades/calendario', 'id' => $model->aC->OT_ID], ['class' => 'btn btn-primary']) ?>
                         </div>
 
-    <br>
-
 <div class="row">
     <div class="col-md-6">
         <div class="box box-solid">
