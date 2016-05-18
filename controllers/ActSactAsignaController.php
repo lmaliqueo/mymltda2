@@ -174,7 +174,6 @@ class ActSactAsignaController extends Controller
     {
         $model= ActSactAsigna::findOne($id);
         $materiales= SactMatConsume::find()->where(['SACT_ID'=>$model->SACT_ID])->all();
-        $herramientas=SactHeOcupan::find()->where(['SACT_ID'=>$model->SACT_ID])->all();
         $obreros=SactObRequiere::find()->where(['SACT_ID'=>$model->SACT_ID])->all();
 
 
@@ -219,7 +218,7 @@ class ActSactAsignaController extends Controller
         if ($herramientas!=NULL) {
             foreach ($herramientas as $he) {
                 for ($i=0; $i < ($he->OC_CANTIDAD * $model->AS_CANTIDAD); $i++) {
-                    if ($asignados!=NULL) {
+                    /*if ($asignados!=NULL) {
                         foreach ($asignados as $exist) {
                             if($exist->hE->TH_ID == $he->TH_ID){
                                 $asignar_he = $exist;
@@ -227,11 +226,11 @@ class ActSactAsignaController extends Controller
                                 $i++;
                             }
                         }
-                    }else{
+                    }else{*/
                         $asignar_he = new HerramientaAsignado();
                         //$asignar_he->HAS_CANTIDAD = $model->AS_CANTIDAD * $he->OC_CANTIDAD;
                         $arreglo_he[]=$asignar_he;
-                    }
+                    //}
                 }
             }
         }
@@ -257,12 +256,13 @@ class ActSactAsignaController extends Controller
                 }
             }
             $model->save();
-            return $this->redirect(['create', 'id' => $id]);
+            return $this->redirect(['create', 'id' => $model->AC_ID]);
         }
 
 
         return $this->renderAjax('asignar_herramientas', [
             'herramientas' => $herramientas,
+            'asignados' => $asignados,
             'arreglo_he' => $arreglo_he,
             'model' => $model,
         ]);

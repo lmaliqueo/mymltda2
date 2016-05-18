@@ -31,36 +31,71 @@ use yii\helpers\ArrayHelper;
                             <th>Cantidad</th>
                             <th>Herramientas</th>
                         </tr>
-                        <tbody class="table table-bordered">
                             <?php $count=0;
-                                foreach ($herramientas as $contador => $tipo_he) { ?>
+                                foreach ($herramientas as $contador => $tipo_he) { 
+                                    $flag=0; ?>
+                        <tbody class="table table-bordered">
                                 <?php foreach ($arreglo_he as $he){ ?>
                                     <tr>
-                                        <td rowspan="<?php echo ($tipo_he->OC_CANTIDAD * $model->AS_CANTIDAD);?>"><?php echo ($tipo_he->OC_CANTIDAD * $model->AS_CANTIDAD);?></td>
-                                        <td rowspan="<?php echo ($tipo_he->OC_CANTIDAD * $model->AS_CANTIDAD);?>"><?= $tipo_he->tH->TH_NOMBRE ?></td>
+                                        <td rowspan="<?php echo ($tipo_he->OC_CANTIDAD * $model->AS_CANTIDAD);?>" class='active'><?php echo ($tipo_he->OC_CANTIDAD * $model->AS_CANTIDAD);?></td>
+                                        <td rowspan="<?php echo ($tipo_he->OC_CANTIDAD * $model->AS_CANTIDAD);?>" class='active'><?= $tipo_he->tH->TH_NOMBRE ?></td>
                                         <?php for ($i=0; $i < ($tipo_he->OC_CANTIDAD * $model->AS_CANTIDAD); $i++) {  ?>
-                                            <?php if ($i>0) { ?>
+                                            <?php /*if ($i>0) { ?>
                                                 <tr>
-                                            <?php } 
+                                            <?php } */
                                             $count++;?>
-                                            <td><?= $form->field($he, '['.$count.']HAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_he', 'id'=>$count, 'disabled'=>true])->label(false) ?>
-                                            </td>
-                                            <td><?= $form->field($he, '['.$count.']HE_ID')->widget(Select2::classname(), [
-                                                    'data' => ArrayHelper::map(Herramientas::find()->where(['TH_ID'=>$tipo_he->TH_ID])->all(),'HE_ID','HE_NOMBRE'),
-                                                    'language' => 'es',
-                                                    'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count,],
-                                                    'pluginOptions' => [
-                                                        'allowClear' => true
-                                                    ],
-                                                ])->label(false);
-                                                ?>
-                                            </td>
-                                    </tr>
+
+                                            <?php if ($asignados!=NULL && $flag == 0) { ?>
+
+                                                <?php foreach ($asignados as $exist) { 
+                                                    if ($exist->hE->TH_ID== $tipo_he->TH_ID) {?>
+                                                        <?php if ($i>0) { ?>
+                                                            <tr>
+                                                        <?php } ?>
+                                                        <td><?= $form->field($exist, '['.$count.']HAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_he', 'id'=>$count])->label(false) ?>
+                                                        </td>
+                                                        <td><?= $form->field($exist, '['.$count.']HE_ID')->widget(Select2::classname(), [
+                                                                'data' => ArrayHelper::map(Herramientas::find()->where(['TH_ID'=>$tipo_he->TH_ID])->all(),'HE_ID','HE_NOMBRE'),
+                                                                'language' => 'es',
+                                                                'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count],
+                                                                'pluginOptions' => [
+                                                                    'allowClear' => true
+                                                                ],
+                                                            ])->label(false);
+                                                            ?>
+                                                        </td>
+                                                <?php   $i++;
+                                                        $count++;
+                                                    }?>
+
+                                                <?php }
+                                                $flag=1; ?>
+
+                                            <?php }
+                                                if($flag==1){ ?>
+                                                    <?php if ($i>0) { ?>
+                                                        <tr>
+                                                    <?php } ?>
+                                                    <td><?= $form->field($he, '['.$count.']HAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_he', 'id'=>$count, 'disabled'=>true])->label(false) ?>
+                                                    </td>
+                                                    <td><?= $form->field($he, '['.$count.']HE_ID')->widget(Select2::classname(), [
+                                                            'data' => ArrayHelper::map(Herramientas::find()->where(['TH_ID'=>$tipo_he->TH_ID])->all(),'HE_ID','HE_NOMBRE'),
+                                                            'language' => 'es',
+                                                            'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count],
+                                                            'pluginOptions' => [
+                                                                'allowClear' => true
+                                                            ],
+                                                        ])->label(false);
+                                                        ?>
+                                                    </td>
+                                            <?php } ?>
+
                                         <?php } ?>
                                 <?php break;
                                     } ?>
-                            <?php } ?>
+                                    </tr>
                         </tbody>
+                            <?php } ?>
                     </table>
                 </div>
                 <?php /*
