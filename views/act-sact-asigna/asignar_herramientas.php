@@ -22,14 +22,13 @@ use yii\helpers\ArrayHelper;
 
 
 
-            <div class="row">
-                <div class="col-md-6">
                     <table class="table">
                         <tr class="bg-green">
                             <th>Total</th>
                             <th>Tipo</th>
                             <th>Cantidad</th>
                             <th>Herramientas</th>
+                            <th>Costo Asociasdo</th>
                         </tr>
                             <?php $count=0;
                                 foreach ($herramientas as $contador => $tipo_he) { 
@@ -52,18 +51,19 @@ use yii\helpers\ArrayHelper;
                                                         <?php if ($i>0) { ?>
                                                             <tr>
                                                         <?php } ?>
-                                                        <td><?= $form->field($exist, '['.$count.']HAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_he', 'id'=>$count])->label(false) ?>
+                                                        <td><?= $form->field($exist, '['.$count.']HAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_he', 'id'=>$count, 'disabled'=>true])->label(false) ?>
                                                         </td>
                                                         <td><?= $form->field($exist, '['.$count.']HE_ID')->widget(Select2::classname(), [
                                                                 'data' => ArrayHelper::map(Herramientas::find()->where(['TH_ID'=>$tipo_he->TH_ID])->all(),'HE_ID','HE_NOMBRE'),
                                                                 'language' => 'es',
-                                                                'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count],
+                                                                'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count, 'disabled'=>true],
                                                                 'pluginOptions' => [
                                                                     'allowClear' => true
                                                                 ],
                                                             ])->label(false);
                                                             ?>
                                                         </td>
+                                            <td><?php echo ($exist->hE->HE_COSTOUNIDAD * $exist->HAS_CANTIDAD) ?></td>
                                                 <?php   $i++;
                                                         $count++;
                                                     }?>
@@ -71,7 +71,9 @@ use yii\helpers\ArrayHelper;
                                                 <?php }
                                                 $flag=1; ?>
 
-                                            <?php }
+                                            <?php }else{
+                                                    $flag=1;
+                                                }
                                                 if($flag==1){ ?>
                                                     <?php if ($i>0) { ?>
                                                         <tr>
@@ -89,6 +91,7 @@ use yii\helpers\ArrayHelper;
                                                         ?>
                                                     </td>
                                             <?php } ?>
+                                            <td>0</td>
 
                                         <?php } ?>
                                 <?php break;
@@ -97,7 +100,6 @@ use yii\helpers\ArrayHelper;
                         </tbody>
                             <?php } ?>
                     </table>
-                </div>
                 <?php /*
                 <div class="col-md-4">
                     <table class="table">
@@ -133,7 +135,6 @@ use yii\helpers\ArrayHelper;
                     </table>
                 </div>
                 */ ?>
-            </div>
 
 
 
@@ -160,7 +161,17 @@ $(function(){
             $(numeric).attr('value',null);
             $(numeric).attr('disabled',true);
         }
-            
+
+        var costo_actual = $(this).parent().parent().parent().children()[2];
+        if(flag!=''){
+            $.get('index.php?r=act-sact-asigna/get-costo-he',{ id : flag }, function(data){
+                var data = $.parseJSON(data);
+
+                $(costo_actual).text(data.HE_COSTOUNIDAD);
+            })
+        }else{
+                $(costo_actual).text(0);
+        }
     });
 
 });

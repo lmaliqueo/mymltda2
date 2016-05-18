@@ -148,9 +148,9 @@ class ActSactAsignaController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-    public function actionGetCosto($id){
-        $subact= Subactividades::findOne($id);
-        echo Json::encode($subact);
+    public function actionGetCostoHe($id){
+        $costo_he= Herramientas::findOne($id);
+        echo Json::encode($costo_he);
     }
     public function actionGetCostoTotal($cantidad, $id){
         $subact= Subactividades::findOne($id);
