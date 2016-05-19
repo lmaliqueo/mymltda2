@@ -23,12 +23,13 @@ use yii\helpers\ArrayHelper;
 
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-8">
                     <table class="table">
                         <tr class="bg-orange">
-                            <th>Tipo</th>
                             <th>Cantidad</th>
+                            <th>Tipo</th>
                             <th>Materiales</th>
+                            <th>Costo</th>
                         </tr>
                         <tbody class="table table-bordered">
                             <?php foreach ($materiales as $count => $tipo_mat) { ?>
@@ -36,20 +37,21 @@ use yii\helpers\ArrayHelper;
                                     <tr>
                                         
                                         <?php /*<td><?php echo ($model->AS_CANTIDAD * $tipo_mat->CONS_CANTIDAD); ?></td>*/ ?>
-                                        <td><?= $tipo_mat->tMA->TMA_NOMBRE ?></td>
-                                        <td><?= $form->field($mat, '['.$count.']MAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_ep', 'value'=>($model->AS_CANTIDAD * $tipo_mat->CONS_CANTIDAD)])->label(false) ?>
+                                        <td><?php echo ($model->AS_CANTIDAD * $tipo_mat->CONS_CANTIDAD); /*<?= $form->field($mat, '['.$count.']MAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_ep', 'value'=>($model->AS_CANTIDAD * $tipo_mat->CONS_CANTIDAD)])->label(false) ?> */ ?>
                                         </td>
+                                        <td><?= $tipo_mat->tMA->TMA_NOMBRE ?></td>
                                         <td><?= $form->field($mat, '['.$count.']MA_ID')->widget(Select2::classname(), [
                                                 'data' => ArrayHelper::map(Materiales::find()->where(['TMA_ID'=>$tipo_mat->TMA_ID])->all(),'MA_ID','MA_NOMBRE'),
                                                 'language' => 'es',
                                                 'size' => Select2::SMALL,
-                                                'options' => ['placeholder' => 'Selecionar material'],
+                                                'options' => ['placeholder' => 'Selecionar material', 'class'=>'idma', 'cant'=>($model->AS_CANTIDAD * $tipo_mat->CONS_CANTIDAD)],
                                                 'pluginOptions' => [
                                                     'allowClear' => true
                                                 ],
                                             ])->label(false);
                                             ?>
                                         </td>
+                                        <td>0</td>
                                     </tr>
                                 <?php break;
                                     } ?>
@@ -143,4 +145,32 @@ use yii\helpers\ArrayHelper;
 
     <?php ActiveForm::end(); ?>
 
+
+<?php 
+$script = <<< JS
+
+$(function(){
+
+    $(document).on('change', '.idma', function(e) {
+        var idmat=$(this).val();
+        var cantidad= $(this).attr('cant');
+        var costo_actual = $(this).parent().parent().parent().children()[3];
+        if(idmat!=''){
+            $.get('index.php?r=act-sact-asigna/get-costo-ma',{ id : idmat }, function(data){
+                var data = $.parseJSON(data);
+
+                $(costo_actual).text(data.MA_COSTOUNIDAD * cantidad);
+            })
+        }else{
+                $(costo_actual).text(0);
+        }
+    });
+
+});
+
+
+    
+JS;
+$this->registerJs($script);
+?>
 

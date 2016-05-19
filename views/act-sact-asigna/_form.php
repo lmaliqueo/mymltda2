@@ -85,7 +85,7 @@ use yii\bootstrap\Modal;
                             <td>$ <?= $key->AS_COSTOTOTAL ?></td>
                             <td>
                                 <div class="form-group no-margin">
-                                    <?= Html::button('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['value'=>Url::to(['act-sact-asigna/asignar-recursos','id'=>$key->AS_ID]), 'class'=> 'btn btn-xs btn-primary modalButton','id'=>'modalButton', 'title'=>'Asignar Recursos']) ?>
+                                    <?= Html::button('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['value'=>Url::to(['act-sact-asigna/asignar-recursos','id'=>$key->AS_ID]), 'class'=> 'btn btn-xs btn-warning modalButton','id'=>'modalButton', 'title'=>'Asignar Recursos']) ?>
                                     <?= Html::button('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['value'=>Url::to(['act-sact-asigna/asignar-herramientas','id'=>$key->AS_ID]), 'class'=> 'btn btn-xs btn-success modalHe','id'=>'modalHe', 'title'=>'Asignar Herramienta']) ?>
                                 </div>
                             </td>

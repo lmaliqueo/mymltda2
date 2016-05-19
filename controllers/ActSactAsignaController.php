@@ -14,6 +14,7 @@ use app\models\MaterialAsignado;
 use app\models\HerramientaAsignado;
 use app\models\HerramientaTiene;
 use app\models\Herramientas;
+use app\models\Materiales;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -152,6 +153,10 @@ class ActSactAsignaController extends Controller
         $costo_he= Herramientas::findOne($id);
         echo Json::encode($costo_he);
     }
+    public function actionGetCostoMa($id){
+        $costo_ma= Materiales::findOne($id);
+        echo Json::encode($costo_ma);
+    }
     public function actionGetCostoTotal($cantidad, $id){
         $subact= Subactividades::findOne($id);
 
@@ -213,6 +218,7 @@ class ActSactAsignaController extends Controller
         $herramientas=SactHeOcupan::find()->where(['SACT_ID'=>$model->SACT_ID])->all();
 
         $asignados= HerramientaAsignado::find()->where(['AS_ID'=>$model->AS_ID])->all();
+        $array_asignados= HerramientaAsignado::find()->select('HE_ID')->where(['AS_ID'=>$model->AS_ID])->asArray()->all();
 
         $arreglo_he=[new HerramientaAsignado()];
         if ($herramientas!=NULL) {
@@ -263,8 +269,22 @@ class ActSactAsignaController extends Controller
         return $this->renderAjax('asignar_herramientas', [
             'herramientas' => $herramientas,
             'asignados' => $asignados,
+            'array_asignados' => $array_asignados,
             'arreglo_he' => $arreglo_he,
             'model' => $model,
         ]);
     }
+
+    public function actionListaHerramienta($id){
+        if ($id!=NULL) {
+            $herramienta= Herramientas::findOne($id);
+            $lista_he= Herramientas::find()->where(['not in', 'HE_ID', $id])->andWhere(['not in', 'TH_ID', $herramienta->TH_ID])->all();
+            foreach ($lista_he as $lista) {
+                echo "<option value='".$lista->HE_ID."'>".$lista->HE_NOMBRE."</option>";
+            }
+        }else{
+            echo "<option>-</option>";
+        }
+    }
+
 }

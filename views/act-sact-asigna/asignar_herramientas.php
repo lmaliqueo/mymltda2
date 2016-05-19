@@ -29,6 +29,7 @@ use yii\helpers\ArrayHelper;
                             <th>Cantidad</th>
                             <th>Herramientas</th>
                             <th>Costo Asociasdo</th>
+                            <th></th>
                         </tr>
                             <?php $count=0;
                                 foreach ($herramientas as $contador => $tipo_he) { 
@@ -42,7 +43,9 @@ use yii\helpers\ArrayHelper;
                                             <?php /*if ($i>0) { ?>
                                                 <tr>
                                             <?php } */
-                                            $count++;?>
+                                            $count++;
+                                            $cantidad=0;
+                                            $disabled='false';?>
 
                                             <?php if ($asignados!=NULL && $flag == 0) { ?>
 
@@ -51,22 +54,28 @@ use yii\helpers\ArrayHelper;
                                                         <?php if ($i>0) { ?>
                                                             <tr>
                                                         <?php } ?>
-                                                        <td><?= $form->field($exist, '['.$count.']HAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_he', 'id'=>$count, 'disabled'=>true])->label(false) ?>
+                                                        <td><?= $form->field($exist, '['.$count.']HAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_he', 'id'=>$count, 'disabled'=>true, 'min'=>'0', 'max'=>$exist->hE->HE_CANT])->label(false) ?>
                                                         </td>
                                                         <td><?= $form->field($exist, '['.$count.']HE_ID')->widget(Select2::classname(), [
                                                                 'data' => ArrayHelper::map(Herramientas::find()->where(['TH_ID'=>$tipo_he->TH_ID])->all(),'HE_ID','HE_NOMBRE'),
                                                                 'language' => 'es',
-                                                                'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count, 'disabled'=>true],
+                                                                'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count, 'disabled'=>true,
+                                                                /*'onchange'=>'$.post("index.php?r=act-sact-asigna/lista-herramienta&id='.'"+$(this).val(),function(data){
+                                                                    $("select#herramientas").html(data);
+                                                                } );',*/],
                                                                 'pluginOptions' => [
                                                                     'allowClear' => true
                                                                 ],
                                                             ])->label(false);
                                                             ?>
                                                         </td>
-                                            <td><?php echo ($exist->hE->HE_COSTOUNIDAD * $exist->HAS_CANTIDAD) ?></td>
-                                                <?php   $i++;
-                                                        $count++;
-                                                    }?>
+                                                        <td><?php echo ($exist->hE->HE_COSTOUNIDAD * $exist->HAS_CANTIDAD) ?></td>
+                                                        <td><?= Html::button('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['value'=>$exist->HE_ID, 'cantidad'=>$exist->HAS_CANTIDAD, 'class'=> 'btn btn-xs btn-primary ','id'=>'update_he', 'title'=>'Modificar']) ?>
+                                                            </td>
+                                                    <?php   $i++;
+                                                            $count++;
+                                                            $cantidad= $cantidad + $exist->HAS_CANTIDAD;
+                                                        }?>
 
                                                 <?php }
                                                 $flag=1; ?>
@@ -74,16 +83,22 @@ use yii\helpers\ArrayHelper;
                                             <?php }else{
                                                     $flag=1;
                                                 }
+                                                if ($cantidad==$tipo_he->OC_CANTIDAD) {
+                                                    $disabled='true';
+                                                }
                                                 if($flag==1){ ?>
                                                     <?php if ($i>0) { ?>
                                                         <tr>
                                                     <?php } ?>
-                                                    <td><?= $form->field($he, '['.$count.']HAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_he', 'id'=>$count, 'disabled'=>true])->label(false) ?>
+                                                    <td><?= $form->field($he, '['.$count.']HAS_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_he', 'id'=>$count, 'disabled'=>true, 'min'=>'1', 'max'=>'2'])->label(false) ?>
                                                     </td>
                                                     <td><?= $form->field($he, '['.$count.']HE_ID')->widget(Select2::classname(), [
-                                                            'data' => ArrayHelper::map(Herramientas::find()->where(['TH_ID'=>$tipo_he->TH_ID])->all(),'HE_ID','HE_NOMBRE'),
+                                                            'data' => ArrayHelper::map(Herramientas::find()->where(['TH_ID'=>$tipo_he->TH_ID])->andWhere(['not in','HE_ID', $array_asignados])->all(),'HE_ID','HE_NOMBRE'),
                                                             'language' => 'es',
-                                                            'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count],
+                                                            'options' => ['placeholder' => 'Selecionar '.$tipo_he->tH->TH_NOMBRE, 'class'=>'idhe', 'contador'=>$count,'disabled'=>$disabled,
+                                                                'onchange'=>'$.post("index.php?r=act-sact-asigna/lista-herramienta&id='.'"+$(this).val(),function(data){
+                                                                    $("select#herramientas").html(data);
+                                                                } )',],
                                                             'pluginOptions' => [
                                                                 'allowClear' => true
                                                             ],
@@ -92,6 +107,7 @@ use yii\helpers\ArrayHelper;
                                                     </td>
                                             <?php } ?>
                                             <td>0</td>
+                                            <td></td>
 
                                         <?php } ?>
                                 <?php break;
@@ -152,6 +168,36 @@ $(function(){
     $(document).on('change', '.idhe', function(e) {
         e.preventDefault()  
         var flag=$(this).val();
+        var count= $(this).attr('contador');
+        var numeric= document.getElementById(count);
+        if(flag!=''){
+            $(numeric).attr('value',1);
+            $(numeric).attr('disabled',false);
+        }else{
+            $(numeric).attr('value',null);
+            $(numeric).attr('disabled',true);
+        }
+
+        var costo_actual = $(this).parent().parent().parent().children()[2];
+        if(flag!=''){
+            $.get('index.php?r=act-sact-asigna/get-costo-he',{ id : flag }, function(data){
+                var data = $.parseJSON(data);
+
+                $(costo_actual).text(data.HE_COSTOUNIDAD);
+            })
+        }else{
+                $(costo_actual).text(0);
+        }
+    });
+
+
+    $(document).on('change', '.cantidad_he', function(e) {
+        e.preventDefault()  
+        var flag=$(this).val();
+        var cantidad=$(this).val();
+
+
+
         var count= $(this).attr('contador');
         var numeric= document.getElementById(count);
         if(flag!=''){
