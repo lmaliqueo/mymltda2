@@ -45,7 +45,7 @@ use yii\helpers\ArrayHelper;
                                             <?php } */
                                             $count++;
                                             $cantidad=0;
-                                            $disabled='false';?>
+                                            $disabled=NULL;?>
 
                                             <?php if ($asignados!=NULL && $flag == 0) { ?>
 
@@ -83,7 +83,7 @@ use yii\helpers\ArrayHelper;
                                             <?php }else{
                                                     $flag=1;
                                                 }
-                                                if ($cantidad==$tipo_he->OC_CANTIDAD) {
+                                                if ($tipo_he->OC_CANTIDAD==$cantidad) {
                                                     $disabled='true';
                                                 }
                                                 if($flag==1){ ?>
@@ -116,42 +116,6 @@ use yii\helpers\ArrayHelper;
                         </tbody>
                             <?php } ?>
                     </table>
-                <?php /*
-                <div class="col-md-4">
-                    <table class="table">
-                        <tr class="bg-orange">
-                            <th>N°</th>
-                            <th>Herramientas</th>
-                        </tr>
-                        <tbody class="table table-bordered">
-                            <?php foreach ($herramientas as $he){ ?>
-                                <tr>
-                                    <td><?= $he->OC_CANTIDAD ?></td>
-                                    <td><?= $he->tH->TH_NOMBRE ?></td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="col-md-4">
-                    <table class="table">
-                        <tr class="bg-orange">
-                                <th>N°</th>
-                                <th>Obreros</th>
-                        </tr>
-                        <tbody class="table table-bordered">
-                            <?php foreach ($obreros as $ob){ ?>
-                                <tr>
-                                    <td><?= $ob->RE_CANTIDAD ?></td>
-                                    <td><?= $ob->tOB->TOB_NOMBRE ?></td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-                */ ?>
-
 
 
     <div class="form-group">

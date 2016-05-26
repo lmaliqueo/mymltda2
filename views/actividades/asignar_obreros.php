@@ -4,12 +4,15 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use app\models\ContratoObrero;
+use app\models\TipoObrero;
+use app\models\Persona;
 use kartik\select2\Select2;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Actividades */
 /* @var $form yii\widgets\ActiveForm */
+$this->title = 'Asignar Obrero';
 ?>
 
 <div class="actividades-form">
@@ -21,24 +24,45 @@ use kartik\select2\Select2;
     <div class="col-md-6">
         <div class="box box-solid">
             <div class="box-header with-border">
-                <h4 class="box-title">Asignar Obrero</h4>
-                <div class="box-tools">
-                                <?= $form->field($obrero_asignado, 'PE_RUT')->widget(Select2::classname(), [
-                                    'data' => ArrayHelper::map($obreros,'PE_RUT','pERUT.PE_NOMBRES','pERUT.PE_APELLIDOPAT'),
-                                    'language' => 'es',
-                                    'options' => ['placeholder' => 'Selecionar obrero', 'id'=>'obreroID'],
-                                    'pluginOptions' => [
-                                        'allowClear' => true
-                                    ],
-                                ])->label(false);
-                                ?>
-                </div>
+                <h4 class="box-title">Obrero</h4>
             </div>
             <div class="box-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <?=  Select2::widget([
+                            'name' => 'date_from',
+                            'data' => ArrayHelper::map(TipoObrero::find()->all(),'TOB_ID','TOB_NOMBRE'),
+                            'language' => 'es',
+                            'options' => ['placeholder' => 'Selecionar tipo de obrero',
+                                'onchange'=>'$.post("index.php?r=actividades/lista-obreros&id='.'"+$(this).val(),function(data){
+                                    $("select#manodeobratrabajan-pe_rut").html(data);
+                                } )',],
+                            'pluginOptions' => [
+                                'allowClear' => true
+                            ],
+                        ]);
+                        ?>
+                    </div>
+
+                    <div class="col-md-6">
+                        <?= $form->field($obrero_asignado, 'PE_RUT')->widget(Select2::classname(), [
+                            'data' => ArrayHelper::map(Persona::find()->all(),'PE_RUT','PE_NOMBRES'),
+                            'language' => 'es',
+                            'options' => ['placeholder' => 'Selecionar obrero',],
+                            'pluginOptions' => [
+                                'allowClear' => true
+                            ],
+                        ])->label(false);
+                        ?>
+                    </div>
+                </div>
                 <div id="obrero"></div>
+            </div>
+            <div class="box-footer">
             </div>
         </div>
     </div>
+
     <div class="col-md-6">
         <div class="box box-primary">
             <div class="box-header">

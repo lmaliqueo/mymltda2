@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $actividades= Actividades::find()->where(['AC_ID'=>$trabaja, 'AC_ESTADO'=>'En Proceso'])->all();
                     $contrato= ContratoObrero::find()->where(['PE_RUT'=>$model->PE_RUT])->orderBy(['COO_ID' => SORT_DESC,])->one();
                     if($contrato!=NULL){
-                        $sueldo= SueldoObrero::find()->where(['COO_ID'=>$contrato->COO_ID])->orderBy(['COO_ID' => SORT_DESC,])->one();
+                        $sueldo= SueldoObrero::find()->where(['COO_ID'=>$contrato->COO_ID])->orderBy(['SU_ID' => SORT_DESC,])->one();
                         return Yii::$app->controller->renderPartial('expandobrero', [
                                 'actividades' => $actividades,
                                 'model' => $model,
@@ -95,11 +95,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             'PE_RUT',
-            'cA.CA_NOMBRECARGO',
+            //'cA.CA_NOMBRECARGO',
             'PE_NOMBRES',
             'PE_APELLIDOPAT',
             'PE_APELLIDOMAT',
-            // 'PE_TELEFONO',
+            'PE_TELEFONO',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

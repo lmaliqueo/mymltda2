@@ -52,6 +52,7 @@ $this->params['breadcrumbs'][] = 'Actividades';
 </div>
 </div>
 */ ?>
+                            <?= Html::a('Crear Actividades', ['actividades/crear-calendario', 'id' => $ordentrabajo->OT_ID], ['class' => 'btn btn-primary btn-flat margin-bottom']) ?>
 
                     <?= GridView::widget([
     'summary'=>'',

@@ -161,7 +161,7 @@ class PersonaController extends Controller
         }
         $ordenes= OrdenTrabajo::find()->where(['PRO_ID'=>$proyecto])->all();
         $orden= new OrdenTrabajo();
-        $sueldo = SueldoObrero::find()->where(['COO_ID'=>$contrato->COO_ID])->orderBy(['SU_FECHA'=>SORT_DESC])->one();
+        $sueldo = SueldoObrero::find()->where(['COO_ID'=>$contrato->COO_ID])->orderBy(['SU_ID'=>SORT_DESC])->one();
         /*if ($model->load(Yii::$app->request->post())) {
             $model->PE_RUT=$id;
             $model->save();
@@ -282,5 +282,23 @@ class PersonaController extends Controller
             'ordentrabajo' => $orden,
         ]);
 
+    }
+    public function actionModificarSueldo($id){
+        $contrato= ContratoObrero::findOne($id);
+        $ult_sueldo= SueldoObrero::find()->where(['COO_ID'=>$id])->orderBy(['SU_ID'=>SORT_DESC,])->one();
+        $model= new SueldoObrero();
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->COO_ID= $contrato->COO_ID;
+            $model->SU_FECHA= date('Y-m-d');
+            $model->save();
+            return $this->redirect(['index-obrero', 'id' => $contrato->PE_RUT]);
+        } else {
+            return $this->renderAjax('_sueldo', [
+                'model' => $model,
+                'contrato' => $contrato,
+                'ult_sueldo' => $ult_sueldo,
+            ]);
+        }
     }
 }

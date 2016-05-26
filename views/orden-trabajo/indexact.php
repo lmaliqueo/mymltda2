@@ -56,13 +56,14 @@ $this->params['breadcrumbs'][] = 'Actividades';
 
             <dic class="nav-tabs-custom">
                 <ul class="nav nav-tabs pull-right">
-                    <li><a href="" data-toggle="tab" aria-expanded="false" id="obreros">Obreros</a></li>
+                    <li><a href="" data-toggle="tab" aria-expanded="false" id="obreros">Info. General</a></li>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="recursos">Recursos</a></li>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="calendario">Calendario</a></li>
                     <li class="active"><a href="" data-toggle="tab" aria-expanded="true" id="index">Actividades</a></li>
-                    <li id="otid" class="pull-left header idorden" idot="<?php echo $ordentrabajo->OT_ID; ?>"><strong>OT:</strong> <?= $ordentrabajo->OT_NOMBRE ?></li>
+                    <li id="otid" class="pull-left header idorden" idot="<?php echo $ordentrabajo->OT_ID; ?>">  <i class="fa fa-arrow-circle-left text-blue"></i><strong>OT:</strong> <?= $ordentrabajo->OT_NOMBRE ?></li>
                 </ul>
                 <div class="tab-content" id="contenido">
+                            <?= Html::a('Crear Actividades', ['actividades/crear-calendario', 'id' => $ordentrabajo->OT_ID], ['class' => 'btn btn-primary btn-flat margin-bottom']) ?>
 
                     <?= GridView::widget([
                         'dataProvider' => $dataProvider,

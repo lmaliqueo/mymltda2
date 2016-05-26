@@ -1,11 +1,23 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\DetailView;
+use yii\bootstrap\Modal;
 
 
 /* @var $this yii\web\View */
 ?>
+
+<?php 
+        Modal::begin([
+                'header'=>'<h4>Sueldo</h4>',
+                'id'=>'Sueldo',
+                'size'=>'modal-tn',
+            ]);
+        echo "<div class='modalContent'></div>";
+        Modal::end();
+ ?>
 
 <div class="col-md-5">
 
@@ -35,7 +47,11 @@ use yii\widgets\DetailView;
                 </tr>
                 <tr>
                     <th>Sueldo</th>
-                    <td><?= $sueldo->SU_CANTIDAD ?></td>
+                    <?php if ($sueldo!=NULL) { ?>
+                        <td>$<?= $sueldo->SU_CANTIDAD ?></td>
+                    <?php }else{ ?>
+                        <td><span class="not-set">sin sueldo</span></td>
+                    <?php } ?>
                 </tr>
             </table>
         </div>
@@ -104,7 +120,7 @@ use yii\widgets\DetailView;
     <div class="btn-group-vertical">
         <?php if($contrato->COO_ESTADO!='Finalizado'){ ?>
             <?= Html::a('Asignar actividad', ['asignar-act', 'id' => $model->PE_RUT,'proyecto'=> $contrato->PRO_ID], ['class' => 'btn btn-success']) ?>
-            <?= Html::a('Modificar sueldo', ['asignar-act', 'id' => $model->PE_RUT,'proyecto'=> $contrato->PRO_ID], ['class' => 'btn btn-primary']) ?>
+            <?= Html::button('Modificar sueldo', ['value'=>Url::to(['persona/modificar-sueldo', 'id'=>$contrato->COO_ID]),'class'=> 'btn btn-primary','id'=>'modalSueldo']) ?>
             <?= Html::a('Finalizar contrato', ['asignar-act', 'id' => $model->PE_RUT,'proyecto'=> $contrato->PRO_ID], ['class' => 'btn btn-danger']) ?>
         <?php } elseif($contrato->COO_ESTADO=='Finalizado' or $contrato==NULL){ ?>
             <?= Html::a('Crear nuevo contrato', ['asignar-act', 'id' => $model->PE_RUT,'proyecto'=> $contrato->PRO_ID], ['class' => 'btn btn-primary']) ?>
@@ -127,6 +143,14 @@ $script = <<< JS
             })
 
     });
+$(function() {
+
+       $('#modalSueldo').click(function() {
+         $('#Sueldo').modal('show')
+         .find('.modalContent')
+         .load($(this).attr('value'));
+       });
+});
 
 JS;
 $this->registerJs($script);

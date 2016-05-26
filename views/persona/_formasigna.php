@@ -119,7 +119,7 @@ echo Select2::widget([
 
 
 
-        <div class="box box-primary">
+        <div class="box box-solid">
             <div class="box-header with-border">
                 <h4 class="box-title" id="proid" pro="<?php echo $contrato->PRO_ID; ?>"><strong>Proyecto:</strong> <?= $contrato->pRO->PRO_NOMBRE ?>    </h4>
             </div>

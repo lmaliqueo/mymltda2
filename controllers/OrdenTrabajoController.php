@@ -14,6 +14,7 @@ use app\models\Actividades;
 use app\models\ActividadesSearch;
 use app\models\MatProvAdquirido;
 use app\models\Materiales;
+use app\models\ActSactAsigna;
 use app\models\CantidadUtilizada;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -238,5 +239,28 @@ class OrdenTrabajoController extends Controller
         $mpdf->cssFile='@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css';
         $mpdf->Output(); // call the mpdf api output as needed
         exit;
+    }
+    public function actionButtonAct($id){
+        $model=OrdenTrabajo::findOne($id);
+        return $this->renderAjax('button_act', [
+            'model' => $model,
+        ]);
+    }
+    public function actionInfoGeneral($id)
+    {
+        $model= OrdenTrabajo::findOne($id);
+        $actividades= Actividades::find()->where(['OT_ID'=>$id])->all();
+        $array_act= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$id])->asArray()->all();
+
+        $subactividades= ActSactAsigna::find()->where(['AC_ID'=>$array_act])->all();
+
+
+        return $this->renderAjax('general', [
+            'model' => $model,
+            'actividades' => $actividades,
+            'subactividades' => $subactividades,
+        ]);
+       
+
     }
 }

@@ -35,7 +35,9 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
 
 <div class="row">
     <div class="col-md-3">
-            <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Crear Orden de Trabajo', ['value'=>Url::to(['orden-trabajo/create','pro'=>$proyecto->PRO_ID]),'class'=> 'btn btn-success btn-block margin-bottom','id'=>'modalButton']) ?>
+        <div class="otbutton">
+            <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Crear Orden de Trabajo', ['value'=>Url::to(['orden-trabajo/create','pro'=>$proyecto->PRO_ID]),'class'=> 'btn btn-success btn-block margin-bottom botonmodal','id'=>'modalButton']) ?>
+        </div>
 
         <div class="box box-solid">
             <div class="box-header with-border">
@@ -186,6 +188,7 @@ $script = <<< JS
         $.get('index.php?r=orden-trabajo/index-act',{ id : id }, function(data){
             $('#otcontenido').empty();
             $('#otcontenido').append(data);
+            $('#modalButton').attr('disabled',true);
         })
     });
 JS;
