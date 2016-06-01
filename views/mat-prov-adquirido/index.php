@@ -49,11 +49,26 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
-                    'pROV.PROV_NOMBRE',
-                    'mA.MA_NOMBRE',
-                    'tM.TM_FECHACOMPRA',
-                    'tM.TM_CANTIDAD',
-                    'tM.TM_PRECIO',
+                    [
+                        'attribute'=>'PROV_ID',
+                        'value'=>'pROV.PROV_NOMBRE',
+                    ],
+                    [
+                        'attribute'=>'MA_ID',
+                        'value'=>'mA.MA_NOMBRE',
+                    ],
+                    [
+                        'attribute'=>'TM_ID',
+                        'value'=>'tM.TM_FECHACOMPRA',
+                    ],
+                    [
+                        'attribute'=>'TM_ID',
+                        'value'=>'tM.TM_CANTIDAD',
+                    ],
+                    [
+                        'attribute'=>'TM_ID',
+                        'value'=>'tM.TM_PRECIO',
+                    ],
 
                     ['class' => 'yii\grid\ActionColumn'],
                 ],

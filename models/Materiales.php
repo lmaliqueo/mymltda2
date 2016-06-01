@@ -52,7 +52,7 @@ class Materiales extends \yii\db\ActiveRecord
         return [
             'MA_ID' => 'ID',
             'TMA_ID' => 'Tipo de Material',
-            'MA_NOMBRE' => 'Material',
+            'MA_NOMBRE' => 'Descripción',
             'MA_CANTIDADTOTAL' => 'Cantidad Total',
             'MA_UNIDAD' => 'Unidad',
             'MA_MEDIDA' => 'Medida',

@@ -20,8 +20,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php 
     Modal::begin([
-            'header'=>'<h4>Orden de Trabajo</h4>',
+            'header'=>'<h4>Ingresar Herramienta</h4>',
             'id'=>'modal',
+            'size'=>'modal-lg',
+        ]);
+    echo "<div class='modalContent'></div>";
+    Modal::end();
+ ?>
+<?php 
+    Modal::begin([
+            'header'=>'<h4>Herramienta</h4>',
+            'id'=>'modal-view',
             'size'=>'modal-lg',
         ]);
     echo "<div class='modalContent'></div>";
@@ -48,34 +57,56 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="col-md-9">
         <div class="box box-primary">
+            <div class="box-body no-padding">
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+        'summary'=>'',
+                    //'summary' => "asd {begin} - {end} of {totalCount} items",
+                    'columns' => [
+                                //['class' => 'yii\grid\SerialColumn'],
+        /*
+                        [                'class' => 'kartik\grid\ExpandRowColumn',
+                            'value' => function ($model, $key, $index, $column){
+                                return GridView::ROW_COLLAPSED;
+                            },
+                            'detail' => function ($model, $key, $index, $column){
+                                $hetiene= HerramientaTiene::find()->where(['HE_ID'=>$model->HE_ID])->all();
 
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
-    'summary'=>'',
-                //'summary' => "asd {begin} - {end} of {totalCount} items",
-                'columns' => [
-                    [                'class' => 'kartik\grid\ExpandRowColumn',
-                        'value' => function ($model, $key, $index, $column){
-                            return GridView::ROW_COLLAPSED;
-                        },
-                        'detail' => function ($model, $key, $index, $column){
-                            $hetiene= HerramientaTiene::find()->where(['HE_ID'=>$model->HE_ID])->all();
+                                return Yii::$app->controller->renderPartial('expandhe', [
+                                        'hetiene' => $hetiene,
+                                        'model' => $model,
+                                    ]);
+                            },
+                        ],*/
+                        //'HE_NOMBRE',
+            [
+                'label'=>'Descripción',
+                'attribute'=>'HE_NOMBRE',
+                'format'=>'raw',
+                'value' => function($data){
+                    return Html::a($data->HE_NOMBRE, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['herramientas/view','id'=>$data->HE_ID])]);
+                }
+            ],
+                        [
+                            'attribute'=>'TH_ID',
+                            'value'=>'tH.TH_NOMBRE',
+                        ],
+                        
+                        [
+                            'attribute'=>'BO_ID',
+                            'value'=>'bO.BO_NOMBRE',
+                        ],
+                        'HE_CANT',
+                        'HE_COSTOUNIDAD',
 
-                            return Yii::$app->controller->renderPartial('expandhe', [
-                                    'hetiene' => $hetiene,
-                                    'model' => $model,
-                                ]);
-                        },
+                        ['class' => 'yii\grid\ActionColumn',
+                            'template'=>NULL,
+                        ],
                     ],
-                    'BO_ID',
-                    'HE_NOMBRE',
-                    'HE_CANT',
-                    'HE_COSTOUNIDAD',
+                ]); ?>
 
-                    ['class' => 'yii\grid\ActionColumn'],
-                ],
-            ]); ?>
+            </div>
 
         </div>
     </div>

@@ -44,7 +44,7 @@ class Bodegas extends \yii\db\ActiveRecord
     {
         return [
             'BO_ID' => 'ID',
-            'BO_NOMBRE' => 'Nombre',
+            'BO_NOMBRE' => 'Bodega',
             'BO_DIRECCION' => 'Dirección',
             'BO_CANTIDADHERRAMIENTAS' => 'Cantidad Herramientas',
             'BO_CANTIDADMATERIALES' => 'Cantidad Materiales',

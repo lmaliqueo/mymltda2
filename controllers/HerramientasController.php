@@ -51,7 +51,7 @@ class HerramientasController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -66,15 +66,13 @@ class HerramientasController extends Controller
         $model = new Herramientas();
         $herramientatiene= new HerramientaTiene();
         $estadoherramienta= EstadoHerramientas::findOne(1);
+        $model->HE_CANT=1;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $herramientatiene->HE_ID = $model->HE_ID;
             $herramientatiene->EH_ID = $estadoherramienta->EH_ID;
             $herramientatiene->HT_CANTHEESTADO = $model->HE_CANT;
             $herramientatiene->save();
-            $bodega = Bodegas::findOne($model->BO_ID);
-            $bodega->BO_CANTIDADHERRAMIENTAS=$bodega->BO_CANTIDADHERRAMIENTAS+1;
-            $bodega->save();
             return $this->redirect(['view', 'id' => $model->HE_ID]);
         } else {
             return $this->renderAjax('create', [

@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
    </p>
 <?php 
     Modal::begin([
-            'header'=>'<h4>Material</h4>',
+            'header'=>'<h4>Nuevo Material</h4>',
             'id'=>'modal',
             'size'=>'modal-lg',
         ]);
@@ -31,6 +31,15 @@ $this->params['breadcrumbs'][] = $this->title;
     Modal::end();
  ?>
 
+<?php 
+    Modal::begin([
+            'header'=>'<h4>Material</h4>',
+            'id'=>'modal-view',
+            'size'=>'modal-lg',
+        ]);
+    echo "<div class='modalContent'></div>";
+    Modal::end();
+ ?>
 
 <br>
 
@@ -68,8 +77,21 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],
 
+            [
+                'label'=>'Descripción',
+                'attribute'=>'MA_NOMBRE',
+                'format'=>'raw',
+                'value' => function($data){
+                    return Html::a($data->MA_NOMBRE, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['herramientas/view','id'=>$data->MA_ID])]);
+                }
+            ],
+
                     //'MA_ID',
-                    'MA_NOMBRE',
+                    //'MA_NOMBRE',
+                    [
+                        'attribute'=>'TMA_ID',
+                        'value'=>'tMA.TMA_NOMBRE',
+                    ],
                     'MA_CANTIDADTOTAL',
                     'MA_UNIDAD',
                     'MA_MEDIDA',

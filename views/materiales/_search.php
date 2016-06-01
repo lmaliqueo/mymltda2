@@ -17,13 +17,15 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'MA_ID') ?>
 
+    <?= $form->field($model, 'TMA_ID') ?>
+
     <?= $form->field($model, 'MA_NOMBRE') ?>
 
     <?= $form->field($model, 'MA_CANTIDADTOTAL') ?>
 
     <?= $form->field($model, 'MA_UNIDAD') ?>
 
-    <?= $form->field($model, 'MA_MEDIDA') ?>
+    <?php // echo $form->field($model, 'MA_MEDIDA') ?>
 
     <?php // echo $form->field($model, 'MA_TIPOMATERIALES') ?>
 

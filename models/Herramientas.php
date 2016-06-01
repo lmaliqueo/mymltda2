@@ -51,9 +51,9 @@ class Herramientas extends \yii\db\ActiveRecord
             'HE_ID' => 'ID',
             'BO_ID' => 'Bodega',
             'TH_ID' => 'Tipo de Herramienta',
-            'HE_NOMBRE' => 'Nombre',
+            'HE_NOMBRE' => 'Descripción',
             'HE_CANT' => 'Cantidad',
-            'HE_COSTOUNIDAD' => 'Costo por Unidad',
+            'HE_COSTOUNIDAD' => 'Costo Asociado',
         ];
     }
 

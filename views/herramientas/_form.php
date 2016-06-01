@@ -17,17 +17,23 @@ use kartik\select2\Select2;
     <?php $form = ActiveForm::begin(); ?>
 
 
-    <?= $form->field($model, 'HE_NOMBRE')->textInput(['maxlength' => true]) ?>
+<div class="row">
+    <div class="col-md-7">
+        <?= $form->field($model, 'HE_NOMBRE')->textInput(['maxlength' => true]) ?>
+    </div>
+    <div class="col-md-5">
+        <?= $form->field($model, 'TH_ID')->widget(Select2::classname(), [
+            'data' => ArrayHelper::map(TipoHerramienta::find()->all(),'TH_ID','TH_NOMBRE'),
+            'language' => 'es',
+            'options' => ['placeholder' => 'Selecionar tipo de herramienta'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]);
+        ?>
+    </div>
+</div>
 
-    <?= $form->field($model, 'TH_ID')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(TipoHerramienta::find()->all(),'TH_ID','TH_NOMBRE'),
-        'language' => 'es',
-        'options' => ['placeholder' => 'Selecionar tipo de herramienta'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]);
-    ?>
     
     <?= $form->field($model, 'BO_ID')->widget(Select2::classname(), [
         'data' => ArrayHelper::map(Bodegas::find()->all(),'BO_ID','BO_NOMBRE'),
@@ -42,11 +48,16 @@ use kartik\select2\Select2;
 
 
 
+<div class="row">
+    <div class="col-md-2">
+        <?= $form->field($model, 'HE_CANT')->textInput(['type'=>'number']) ?>
+    </div>
+    <div class="col-md-10">
+        <?= $form->field($model, 'HE_COSTOUNIDAD')->textInput() ?>
+    </div>
+</div>
 
 
-    <?= $form->field($model, 'HE_CANT')->textInput() ?>
-
-    <?= $form->field($model, 'HE_COSTOUNIDAD')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -248,6 +248,48 @@ class PersonaController extends Controller
         $actividades= Actividades::find()->where(['OT_ID'=>$ot])->all();
         $orden= OrdenTrabajo::findOne($ot);
 
+
+        $arreglo=$this->viewCalendario($ot, $asignados);
+/*
+        $arreglo=[];
+        foreach ($actividades as $actividad) {
+
+            $act = new \yii2fullcalendar\models\Event();
+            $act->id = $actividad->AC_ID;
+            $act->title = $actividad->AC_NOMBRE;
+            $act->start = $actividad->AC_FECHA_INICIO;
+            $act->className = 'btn hola';
+            if($actividad->AC_ESTADO=='Finalizado'){
+                $act->className = 'btn disabled';
+            }else{
+                $act->className = 'btn hola';                
+            }
+            $act->end = $actividad->AC_FECHA_TERMINO;
+            if ($asignados!=NULL) {
+                foreach ($asignados as $asignado) {
+                    if($asignado->AC_ID==$actividad->AC_ID){
+                        $act->color = '#f39c12';                    
+                    }else{
+                        $act->color = '#AFAFAF';                
+                    }
+                }
+            }elseif($actividad->AC_ESTADO!='Finalizado'){
+                $act->color = '#AFAFAF';                
+            }else{
+                  $act->color = '#5CB85C';                
+            }
+            $arreglo[] = $act;
+        }*/
+        return $this->renderAjax('calendario', [
+            'events' => $arreglo,
+            'ordentrabajo' => $orden,
+        ]);
+
+    }
+
+    protected function viewCalendario($id, $asignados){
+        $fechaactual= date('Y-m-d');
+        $actividades= Actividades::find()->where(['OT_ID'=>$id])->all();
         $arreglo=[];
         foreach ($actividades as $actividad) {
 
@@ -277,12 +319,10 @@ class PersonaController extends Controller
             }
             $arreglo[] = $act;
         }
-        return $this->renderAjax('calendario', [
-            'events' => $arreglo,
-            'ordentrabajo' => $orden,
-        ]);
-
+        return $arreglo;
     }
+
+
     public function actionModificarSueldo($id){
         $contrato= ContratoObrero::findOne($id);
         $ult_sueldo= SueldoObrero::find()->where(['COO_ID'=>$id])->orderBy(['SU_ID'=>SORT_DESC,])->one();

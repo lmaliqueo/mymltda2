@@ -19,7 +19,7 @@ class MaterialesSearch extends Materiales
     {
         return [
             [['MA_ID', 'MA_CANTIDADTOTAL', 'MA_MEDIDA', 'MA_COSTOUNIDAD'], 'integer'],
-            [['MA_NOMBRE', 'MA_UNIDAD', 'MA_TIPOMATERIALES'], 'safe'],
+            [['TMA_ID', 'MA_NOMBRE', 'MA_UNIDAD', 'MA_TIPOMATERIALES'], 'safe'],
         ];
     }
 
@@ -43,6 +43,8 @@ class MaterialesSearch extends Materiales
     {
         $query = Materiales::find();
 
+        // add conditions that should always apply here
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -54,7 +56,9 @@ class MaterialesSearch extends Materiales
             // $query->where('0=1');
             return $dataProvider;
         }
+        $query->joinWith('tMA');
 
+        // grid filtering conditions
         $query->andFilterWhere([
             'MA_ID' => $this->MA_ID,
             'MA_CANTIDADTOTAL' => $this->MA_CANTIDADTOTAL,
@@ -64,7 +68,7 @@ class MaterialesSearch extends Materiales
 
         $query->andFilterWhere(['like', 'MA_NOMBRE', $this->MA_NOMBRE])
             ->andFilterWhere(['like', 'MA_UNIDAD', $this->MA_UNIDAD])
-            ->andFilterWhere(['like', 'MA_TIPOMATERIALES', $this->MA_TIPOMATERIALES]);
+            ->andFilterWhere(['like', 'tipo_material.TMA_NOMBRE', $this->TMA_ID]);
 
         return $dataProvider;
     }
