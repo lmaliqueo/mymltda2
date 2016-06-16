@@ -80,13 +80,9 @@ class ActSactAsignaController extends Controller
         $subactividades = Subactividades::find()->where(['not in','SACT_ID',$subactividadasignados])->all();
         $model->AS_CANTIDADACTUAL=0;
         $model->AS_COSTOACTUAL=0;
+        $model->AS_COSTOTOTAL=0;
         if ($model->load(Yii::$app->request->post())) {
         
-            foreach ($asignados as $asig) {
-                if($asig->SACT_ID==$model->SACT_ID){
-                    return $this->redirect(['create', 'id' => $id]);
-                }
-            }
             $model->save();
             
             return $this->redirect(['create', 'id' => $id]);
@@ -178,6 +174,7 @@ class ActSactAsignaController extends Controller
     public function actionAsignarRecursos($id)
     {
         $model= ActSactAsigna::findOne($id);
+        $actividad= Actividades::findOne($model->AC_ID);
         $materiales= SactMatConsume::find()->where(['SACT_ID'=>$model->SACT_ID])->all();
         $obreros=SactObRequiere::find()->where(['SACT_ID'=>$model->SACT_ID])->all();
 
@@ -198,8 +195,10 @@ class ActSactAsignaController extends Controller
                     $material->AS_ID=$model->AS_ID;
                     $material->save();
                     $model->AS_COSTOTOTAL= $model->AS_COSTOTOTAL + ($material->MAS_CANTIDAD*$material->mA->MA_COSTOUNIDAD);
+                    $actividad->AC_COSTO_TOTAL= $actividad->AC_COSTO_TOTAL + ($material->MAS_CANTIDAD*$material->mA->MA_COSTOUNIDAD);
                 }
             }
+            $actividad->save();
             $model->save();
             return $this->redirect(['create', 'id' => $id]);
         }
@@ -215,6 +214,7 @@ class ActSactAsignaController extends Controller
     public function actionAsignarHerramientas($id)
     {
         $model= ActSactAsigna::findOne($id);
+        $actividad= Actividades::findOne($model->AC_ID);
         $herramientas=SactHeOcupan::find()->where(['SACT_ID'=>$model->SACT_ID])->all();
 
         $asignados= HerramientaAsignado::find()->where(['AS_ID'=>$model->AS_ID])->all();
@@ -259,8 +259,10 @@ class ActSactAsignaController extends Controller
                     $herramienta->AS_ID=$model->AS_ID;
                     $herramienta->save();
                     $model->AS_COSTOTOTAL=$model->AS_COSTOTOTAL+($herramienta->HAS_CANTIDAD*$herramienta->hE->HE_COSTOUNIDAD);
+                    $actividad->AC_COSTO_TOTAL= $actividad->AC_COSTO_TOTAL + ($herramienta->HAS_CANTIDAD*$herramienta->hE->HE_COSTOUNIDAD);
                 }
             }
+            $actividad->save();
             $model->save();
             return $this->redirect(['create', 'id' => $model->AC_ID]);
         }

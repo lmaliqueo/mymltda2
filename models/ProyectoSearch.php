@@ -18,8 +18,8 @@ class ProyectoSearch extends Proyecto
     public function rules()
     {
         return [
-            [['PRO_ID', 'COM_ID', 'PRO_COSTO_TOTAL'], 'integer'],
-            [['EMP_RUT', 'PRO_NOMBRE', 'PRO_OBSERVACIONES', 'PRO_DESCRIPCION', 'PRO_DIRECCION', 'PRO_FECHA_INICIO', 'PRO_FECHA_FINAL', 'PRO_INFORME', 'PRO_ESTADO'], 'safe'],
+            [['PRO_ID', 'PRO_COSTO_TOTAL'], 'integer'],
+            [['COM_ID', 'EMP_RUT', 'PRO_NOMBRE', 'PRO_OBSERVACIONES', 'PRO_DESCRIPCION', 'PRO_DIRECCION', 'PRO_FECHA_INICIO', 'PRO_FECHA_FINAL', 'PRO_INFORME', 'PRO_ESTADO'], 'safe'],
         ];
     }
 
@@ -57,10 +57,11 @@ class ProyectoSearch extends Proyecto
             return $dataProvider;
         }
 
+        $query->joinWith('cOM');
+
         // grid filtering conditions
         $query->andFilterWhere([
             'PRO_ID' => $this->PRO_ID,
-            'COM_ID' => $this->COM_ID,
             'PRO_COSTO_TOTAL' => $this->PRO_COSTO_TOTAL,
             'PRO_FECHA_INICIO' => $this->PRO_FECHA_INICIO,
             'PRO_FECHA_FINAL' => $this->PRO_FECHA_FINAL,
@@ -74,6 +75,7 @@ class ProyectoSearch extends Proyecto
             ->andFilterWhere(['like', 'PRO_DIRECCION', $this->PRO_DIRECCION])
             ->andFilterWhere(['like', 'PRO_INFORME', $this->PRO_INFORME])
             ->andFilterWhere(['like', 'PRO_ESTADO', $this->PRO_ESTADO]);
+        $query->andFilterWhere(['like', 'comuna.COM_NOMBRE', $this->COM_ID]);
 
         return $dataProvider;
     }

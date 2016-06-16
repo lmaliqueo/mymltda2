@@ -4,7 +4,6 @@ use yii\helpers\Html;
 
     <div class="box box-warning">
         <div class="box-header with-border"><h4 class="box-title"><?= $subact->SACT_NOMBRE ?></h4>
-            <div class="box-tools"><h3 class="text-orange no-margin">$ <?= $subact->SACT_COSTO ?></h3></div>
         </div>
         <div class="box-body">
 
@@ -13,7 +12,7 @@ use yii\helpers\Html;
                 <div class="col-md-4">
                     <table class="table">
                         <tr class="bg-orange">
-                            <th>N°</th>
+                            <th>Cant.</th>
                                 <th>Materiales</th>
                         </tr>
                         <tbody class="table table-bordered">
@@ -29,7 +28,7 @@ use yii\helpers\Html;
                 <div class="col-md-4">
                     <table class="table">
                         <tr class="bg-orange">
-                            <th>N°</th>
+                            <th>Cant.</th>
                             <th>Herramientas</th>
                         </tr>
                         <tbody class="table table-bordered">
@@ -45,7 +44,7 @@ use yii\helpers\Html;
                 <div class="col-md-4">
                     <table class="table">
                         <tr class="bg-orange">
-                                <th>N°</th>
+                                <th>Cant.</th>
                                 <th>Obreros</th>
                         </tr>
                         <tbody class="table table-bordered">

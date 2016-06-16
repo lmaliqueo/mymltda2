@@ -25,48 +25,40 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'EP_FACTURA')->textInput(['maxlength' => true]) ?>
      */ ?>
-     <div class="col-md-5">
-<table class="table table-condensed">
-    <tbody>
-        <tr>
-            <th>ESTADO PAGO</th>
-            <td>Estado de Pago N° <?= $model->EP_NUMEROEP ?></td>
-        </tr>
-        <tr>
-            <th>FECHA E.P.</th>
-            <td><?= $model->EP_FECHA?></td>
-        </tr>
-        <tr>
-            <th>NOMBRE DE LA OBRA</th>
-            <td><?= $proyecto->PRO_NOMBRE?></td>
-        </tr>
-        <tr>
-            <th>CLIENTE</th>
-            <td><?= $proyecto->eMPRUT->EMP_RAZON ?></td>
-        </tr>
-        <tr>
-            <th>RUT</th>
-            <td><?= $proyecto->EMP_RUT ?></td>
-        </tr>
-        <tr>
-            <th>DIRECCIÓN</th>
-            <td><?= $proyecto->eMPRUT->EMP_DIRECCION ?></td>
-        </tr>
-        <tr>
-            <th>FONOS</th>
-            <td><?= $proyecto->eMPRUT->EMP_TELEFONO ?></td>
-        </tr>
-        <tr>
-            <th>FECHA INICIO</th>
-            <td><?= $proyecto->PRO_FECHA_INICIO?></td>
-        </tr>
-        <tr>
-            <th>FECHA TERMINO</th>
-            <td><?= $proyecto->PRO_FECHA_FINAL?></td>
-        </tr>
-    </tbody>
-</table>
-</div>
+
+     <div class="row">
+        <div class="col-md-5">
+            <dl class="dl-horizontal">
+                <dt>CLIENTE</dt>
+                <dd><?= $proyecto->eMPRUT->EMP_RAZON ?></dd>
+
+                <dt>RUT</dt>
+                <dd><?= $proyecto->EMP_RUT ?></dd>
+
+                <dt>ESTADO PAGO</dt>
+                <dd>Estado de Pago N° <?= $model->EP_NUMEROEP ?></dd>
+
+                <dt>FECHA E.P.</dt>
+                <dd><?= $model->EP_FECHA?></dd>
+
+                <dt>NOMBRE DE LA OBRA</dt>
+                <dd><?= $proyecto->PRO_NOMBRE?></dd>
+
+                <dt>DIRECCIÓN</dt>
+                <dd><?= $proyecto->eMPRUT->EMP_DIRECCION ?></dd>
+
+                <dt>FECHA INICIO</dt>
+                <dd><?= $proyecto->PRO_FECHA_INICIO?></dd>
+
+                <dt>FECHA TERMINO</dt>
+                <dd><?= $proyecto->PRO_FECHA_FINAL?></dd>
+
+                <dt>FONOS</dt>
+                <dd><?= $proyecto->eMPRUT->EMP_TELEFONO ?></dd>
+
+            </dl>
+        </div>
+     </div>
 <br>
     <table class="table table-condensed">
         <thead>
@@ -84,8 +76,7 @@ use yii\widgets\ActiveForm;
         </tr></thead>
         <?php foreach ($actividades as $i=>$act): ?>
         <tr class="active">
-            <th><?= $act->AC_NOMBRE?></td>
-            <td colspan="9"></td>
+            <th colspan="10"><?= $act->AC_NOMBRE?></td>
         </tr>
             <tbody class="table table-bordered">
 
@@ -97,7 +88,7 @@ use yii\widgets\ActiveForm;
                 <td><ul><li><?= $key->sACT->SACT_NOMBRE ?></li></ul></td>
                 <td><?= $key->AS_CANTIDAD ?></td>
                 <td class="costo_sub" data="<?php echo $key->sACT->SACT_COSTO; ?>">$<?= $key->sACT->SACT_COSTO ?></td>
-                <td><?= $key->AS_COSTOTOTAL ?></td>
+                <td>$ <?= $key->AS_COSTOTOTAL ?></td>
                 <?php /*
                 <?php foreach ($arreglo as $count => $row){ ?>
                     <?php if($key->AS_ID == $row->AS_ID){ ?>
@@ -108,15 +99,15 @@ use yii\widgets\ActiveForm;
                     <?php } ?>
                 <?php } ?>*/ ?>
                 <td><?= $key->AS_CANTIDADACTUAL ?></td>
-                <td><?= $key->AS_COSTOACTUAL ?></td>
+                <td>$ <?= $key->AS_COSTOACTUAL ?></td>
                 <td><?= $key->AS_CANTIDADACTUAL ?></td>
-                <td><?= $key->AS_COSTOACTUAL ?></td>
+                <td>$ <?= $key->AS_COSTOACTUAL ?></td>
                 <?php foreach ($arreglo as $count => $row){ ?>
                     <?php if($key->AS_ID == $row->AS_ID){ ?>
-                        <td id="cantidad_actual">
-                            <?= $form->field($row, '['.$count.']AT_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_ep', 'data' => $key->AS_COSTOTOTAL, 'can_anterior' => $key->AS_CANTIDAD])->label(false) ?>
+                        <td id="cantidad_actual"class="warning" >
+                            <?= $form->field($row, '['.$count.']AT_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_ep', 'min'=>0, 'max'=>($key->AS_CANTIDAD - $key->AS_CANTIDADACTUAL),'data' => $key->AS_COSTOTOTAL, 'can_anterior' => $key->AS_CANTIDAD])->label(false) ?>
                         </td>
-                        <td id="costo_actual" data='<?php echo $row->AS_ID; ?><?php echo $key->AS_ID; ?>'><?= $row->AT_COSTO_EP ?></td>
+                        <td class="warning" id="costo_actual" data='<?php echo $row->AS_ID; ?><?php echo $key->AS_ID; ?>'>$ <?= $row->AT_COSTO_EP ?></td>
                     <?php } ?>
                 <?php } ?>
                 <?php } ?>

@@ -26,7 +26,9 @@ use dosamigos\datepicker\DateRangePicker;
     'language' => 'es',
     'clientOptions' => [
         'autoclose' => true,
-            'format' => 'yyyy-mm-dd'
+            'format' => 'yyyy-mm-dd',
+            'todayHighlight' => true,
+            'startDate'=>$proyecto->PRO_FECHA_INICIO
     ]
 ])->label(false);?>
 

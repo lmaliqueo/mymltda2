@@ -23,15 +23,15 @@ use yii\bootstrap\Modal;
  ?>
 
 
-        <h1><span class="glyphicon glyphicon glyphicon-pushpin" aria-hidden="true"></span> Asignar Sub-actividades</h1>
+        <h1>Asignar Sub-actividades</h1>
 <div class="act-sact-asigna-form">
 <br>
     <?php $form = ActiveForm::begin(); ?>
 
 
                         <div class="form-group">
-                            <?= Html::submitButton($model->isNewRecord ? '<span class="glyphicon glyphicon glyphicon-save" aria-hidden="true"></span> Asignar' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-                            <?= Html::a('<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Listo', ['actividades/calendario', 'id' => $model->aC->OT_ID], ['class' => 'btn btn-primary']) ?>
+                            <?= Html::submitButton($model->isNewRecord ? 'Asignar Sub-actividad' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success btn-flat' : 'btn btn-primary']) ?>
+                            <?php //Html::a('<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Listo', ['actividades/calendario', 'id' => $model->aC->OT_ID], ['class' => 'btn btn-primary']) ?>
                         </div>
 
 <div class="row">

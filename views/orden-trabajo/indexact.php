@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\bootstrap\Modal;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ActividadesSearch */
@@ -11,10 +12,10 @@ use yii\bootstrap\Modal;
 
 $this->title = $ordentrabajo->OT_NOMBRE;
 $this->params['breadcrumbs'][] = ['label' => $ordentrabajo->pRO->PRO_NOMBRE, 'url' => ['proyecto/view', 'id'=>$ordentrabajo->PRO_ID]];
-$this->params['breadcrumbs'][] = ['label' => $ordentrabajo->OT_NOMBRE, 'url' => ['orden-trabajo/indexpro', 'id'=>$ordentrabajo->PRO_ID]];
-$this->params['breadcrumbs'][] = 'Actividades';
+$this->params['breadcrumbs'][] = ['label' => 'Ordenes de Trabajos', 'url' => ['orden-trabajo/indexpro', 'id'=>$ordentrabajo->PRO_ID]];
+$this->params['breadcrumbs'][] = $ordentrabajo->OT_NOMBRE;
 ?>
-<div class="actividades-index">
+<div class="orden-trabajo-index">
 <?php /*
     <h1>Actividades</h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -56,35 +57,24 @@ $this->params['breadcrumbs'][] = 'Actividades';
 
             <dic class="nav-tabs-custom">
                 <ul class="nav nav-tabs pull-right">
-                    <li><a href="" data-toggle="tab" aria-expanded="false" id="obreros">Info. General</a></li>
+                    <li><a href="" data-toggle="tab" aria-expanded="false" id="avances">Rep. Avances</a></li>
+                    <li><a href="" data-toggle="tab" aria-expanded="false" id="inf_general">Grafico</a></li>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="recursos">Recursos</a></li>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="calendario">Calendario</a></li>
                     <li class="active"><a href="" data-toggle="tab" aria-expanded="true" id="index">Actividades</a></li>
-                    <li id="otid" class="pull-left header idorden" idot="<?php echo $ordentrabajo->OT_ID; ?>">  <i class="fa fa-arrow-circle-left text-blue"></i><strong>OT:</strong> <?= $ordentrabajo->OT_NOMBRE ?></li>
+                    <li id="otid" class="pull-left header idorden" idot="<?php echo $ordentrabajo->OT_ID; ?>"> <?= Html::a('<i class="fa fa-arrow-circle-left"></i> '.$ordentrabajo->OT_NOMBRE,['orden-trabajo/indexpro', 'id'=>$ordentrabajo->PRO_ID], ['class'=>'no-padding text-blue', 'title'=>'volver a ordenes de trabajos']) ?></li>
                 </ul>
                 <div class="tab-content" id="contenido">
-                            <?= Html::a('Crear Actividades', ['actividades/crear-calendario', 'id' => $ordentrabajo->OT_ID], ['class' => 'btn btn-primary btn-flat margin-bottom']) ?>
-
-                    <?= GridView::widget([
-                        'dataProvider' => $dataProvider,
-    'summary'=>'',
-                        'filterModel' => $searchModel,
-                        'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-
-                            'AC_NOMBRE',
-                            'AC_FECHA_INICIO',
-                            'AC_FECHA_TERMINO',
-                            'AC_COSTO_TOTAL',
-                            'AC_ESTADO',
-
-                            ['class' => 'yii\grid\ActionColumn'],
-                        ],
-                    ]); ?>
+                    <?= $this->render('../actividades/index', [
+                                        'dataProvider' => $dataProvider,
+                                        'searchModel' => $searchModel,
+                                        'ordentrabajo' => $ordentrabajo,
+                    ]) ?>
                 </div>
             </dic>
 
 
+        </div>
         </div>
 
 <?php 
@@ -110,9 +100,16 @@ $script = <<< JS
             $('#contenido').append(data);
         })
     });
-    $('#obreros').click(function(){
+    $('#inf_general').click(function(){
         var id= $('.idorden').attr('idot');
-        $.get('index.php?r=actividades/calendario',{ id : id }, function(data){
+        $.get('index.php?r=orden-trabajo/info-general',{ id : id }, function(data){
+            $('#contenido').empty();
+            $('#contenido').append(data);
+        })
+    });
+    $('#avances').click(function(){
+        var id= $('.idorden').attr('idot');
+        $.get('index.php?r=reportes-avances/index',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })

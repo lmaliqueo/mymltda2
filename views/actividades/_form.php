@@ -27,7 +27,9 @@ use dosamigos\datepicker\DateRangePicker;
     'language' => 'es',
     'clientOptions' => [
         'autoclose' => false,
-            'format' => 'yyyy-mm-dd'
+            'format' => 'yyyy-mm-dd',
+            'startDate' => $ordentrabajo->OT_FECHA_INICIO,
+            'endDate' => $ordentrabajo->OT_FECHA_TERMINO,
     ]
 ])->label(false);?>
 

@@ -23,7 +23,7 @@ $this->title = $ordentrabajo->OT_NOMBRE;
   ?>
 
 
-<h1>Crear Actividades</h1>
+<h1><?= Html::a('<i class="fa fa-arrow-circle-left"></i> Crear Actividades',['orden-trabajo/index-act','id'=>$ordentrabajo->OT_ID],['class'=>'text-blue']) ?></h1>
 <br>
   
 <?php /*

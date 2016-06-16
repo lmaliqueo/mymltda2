@@ -41,11 +41,11 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
 
         <div class="box box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Organización</h3>
+                <h3 class="box-title">Proyecto</h3>
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li><?= Html::a('<i class="fa fa-eye"></i> Proyecto', ['proyecto/view', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-eye"></i> Detalles', ['proyecto/view', 'id'=>$proyecto->PRO_ID]) ?></li>
                     <?php /*<li class="view" id="<?php echo $model->PRO_ID; ?>"><a href="#"><i class="fa fa-tasks"></i> <span style="padding-left:5px">InformaciÃ³n</span></a></li>*/ ?>
                     <li class="active"><a href="#"><i class="fa fa-tasks"></i> Ordenes de Trabajos</a></li>
                     <li><?= Html::a('<i class="fa fa-file-excel-o"></i> Estados de Pagos', ['estado-pago/index', 'id'=>$proyecto->PRO_ID]) ?></li>
@@ -60,6 +60,7 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
 
 
     <div class="col-md-9">
+        <?php /*
         <div id="otcontenido">
         <div class="panel box box-solid no-border">
             <?php if ($ordenes==NULL) { ?>
@@ -75,7 +76,7 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
                         <div class="panel box box-success no-margin">
                     <?php } ?>
                         <div class="box-header">
-                                 <h4 class="box-title"><a href="#<?php echo $ot->OT_NOMBRE; ?>" class="orden" id="<?php echo $ot->OT_ID; ?>"><?= $ot->OT_NOMBRE ?></a></h4>
+                                 <h4 class="box-title"><?= Html::a($ot->OT_NOMBRE,['orden-trabajo/index-act', 'id'=>$ot->OT_ID]) ?></h4>
                            <div class="box-tools pull-right" style="width: 40%">
                             <div class="progress-group">
                                 <span class="progress-text">Actividades</span>
@@ -110,26 +111,21 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
                         </div>
 
             </div>
-                <?php /*if ($model!=NULL) { ?>
-                        <dic class="nav-tabs-custom">
-                            <ul class="nav nav-tabs pull-right">
-                                <li class="active"><a href="" data-toggle="tab" aria-expanded="true">Actividades</a></li>
-                                <li><a href="" data-toggle="tab" aria-expanded="false">Calendario</a></li>
-                                <li><a href="" data-toggle="tab" aria-expanded="false">Reportes de Avances</a></li>
-                                <li><a href="" data-toggle="tab" aria-expanded="false">Stock de Materiales</a></li>
-                                <li class="pull-left header"><strong>OT:</strong> <?= $model->OT_NOMBRE ?></li>
-                            </ul>
-                        <div class="callout callout-info"><h4>hola</h4></div>
-                        </dic>
-                <?php }else{ ?>
-                        <div class="bs-callout bs-callout-primary"><h4>hola</h4></div>
-               <?php }*/ ?>
-            <?php } ?>
-            <?php /*
+        </div>
+
+        </div>
+    </div>        
+    </div>
+*/ ?>
+    <div class="box box-primary">
+        <div class="box-body no-padding">
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
+                'summary'=>'',
                 'filterModel' => $searchModel,
                 'columns' => [
+                            ['class' => 'yii\grid\SerialColumn'],
+                /*
                     [
                         'class' => 'kartik\grid\ExpandRowColumn',
                         'value' => function ($model, $key, $index, $column){
@@ -146,38 +142,31 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
                                 ]);
                         },
 
-                    ],
+                    ],*/
 
                     //'OT_ID',
                     //'pRO.PRO_NOMBRE',
-                    'OT_NOMBRE',
+            [
+                //'label'=>'N',
+                'attribute'=>'OT_NOMBRE',
+                'format'=>'raw',
+                'value' => function($data){
+                    return Html::a($data->OT_NOMBRE, ['orden-trabajo/index-act','id'=>$data->OT_ID], ['class'=>'text-muted', ]);
+                }
+            ],
                     //'OT_TIPO',
-                    'OT_FECHA_INICIO',
-                     'OT_FECHA_TERMINO',
-                     'OT_ESTADO',
-                    // 'OT_COSTO_TOTAL',
+                    'OT_FECHA_INICIO:date',
+                    'OT_FECHA_TERMINO:date',
+                    'OT_ESTADO',
+                    'OT_COSTO_TOTAL',
                     // 'OT_INFORME',
 
-                    ['class' => 'yii\grid\ActionColumn',
-                        'template' => '{actividades} {transaccion} {view} {update} {delete}',
-                        'buttons' => [
-                        'transaccion' => function ($url, $model, $key) { // <--- here you can override or create template for a button of a given name
-                             return Html::a('<span class="glyphicon glyphicon glyphicon-transfer" aria-hidden="true"></span>', ['orden-trabajo/transaccion', 'id' => $model->OT_ID]);
-                        },
-                        'actividades' => function ($url, $model, $key) { // <--- here you can override or create template for a button of a given name
-                             return Html::a('<span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span>', ['actividades/calendario', 'id' => $model->OT_ID]);
-                        },
-                    ],
-                    ],
                 ],
             ]); ?>
-            */ ?>
         </div>
-
-        </div>
-    </div>        
     </div>
-
+</div>
+</div>
 </div>
 
 

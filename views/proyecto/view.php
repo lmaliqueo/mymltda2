@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="proyecto-view">
 
-    <h1>Proyecto</h1>
+    <h1>Detalles</h1>
 
 
 <?php 
@@ -33,11 +33,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::button('Asignar Encargado', ['value'=>Url::to(['proyecto/asignar-encargado','id' => $model->PRO_ID]), 'class' => 'btn btn-primary btn-block margin-bottom','id'=>'modalButton']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Operaciones</h3>
+                <h3 class="box-title">Proyecto</h3>
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#"><i class="fa fa-eye"></i> Proyecto</a></li>
+                    <li class="active"><a href="#"><i class="fa fa-eye"></i> Detalles</a></li>
                     <?php /*<li class="view" id="<?php echo $model->PRO_ID; ?>"><a href="#"><i class="fa fa-tasks"></i> <span style="padding-left:5px">InformaciÃ³n</span></a></li>*/ ?>
                     <li><?= Html::a('<i class="fa fa-tasks"></i> Ordenes de Trabajos', ['orden-trabajo/indexpro', 'id'=>$model->PRO_ID]) ?></li>
                     <li><?= Html::a('<i class="fa fa-file-excel-o"></i> Estados de Pagos', ['estado-pago/index', 'id'=>$model->PRO_ID]) ?></li>

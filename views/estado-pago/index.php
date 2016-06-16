@@ -26,11 +26,11 @@ $this->params['breadcrumbs'][] = 'Estados de Pagos';
             <?= Html::a('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Generar Estado de Pago', ['create', 'id'=>$proyecto->PRO_ID], ['class' => 'btn btn-success btn-block margin-bottom']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Operaciones</h3>
+                <h3 class="box-title">Proyecto</h3>
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li><?= Html::a('<i class="fa fa-eye"></i> Proyecto', ['proyecto/view', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-eye"></i> Detalles', ['proyecto/view', 'id'=>$proyecto->PRO_ID]) ?></li>
                     <li><?= Html::a('<i class="fa fa-tasks"></i> Ordenes de Trabajos', ['orden-trabajo/indexpro', 'id'=>$proyecto->PRO_ID]) ?></li>
                     <li class="active"><a href="#"><i class="fa fa-file-excel-o"></i> Estado de Pagos</a></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['gastos-generales/index', 'id'=>$proyecto->PRO_ID]) ?></li>

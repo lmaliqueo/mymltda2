@@ -15,30 +15,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
  ?>
-<h3 class="header">Materiales</h3>
-<br>
-<div class="row">
-	<div class="col-md-4">
-	    <p>
-	        <?= Html::a('Generar Informe', ['informe-mat', 'idot' => $model->OT_ID], ['class' => 'btn btn-flat btn-primary btn-block', 'target'=>'_blank']) ?>
-	    </p>
-	</div>
-	<div class="col-md-8">
-		<?= DateRangePicker::widget([
-		    'name' => 'date_from',
-		    'value' => date('Y-m-d'),
-		    'nameTo' => 'name_to',
-		    'valueTo' => date('Y-m-d'),
-    		'language' => 'es',
-	        'clientOptions' => [
-	            'autoclose' => true,
-	            'format' => 'yyyy-mm-dd'
-	        ]
-		]);?>
-	</div>
-</div>
-		<?php /*
-		*/ ?>
 
 <?php 
     Modal::begin([
@@ -117,8 +93,25 @@ $this->params['breadcrumbs'][] = $this->title;
 <div id="contenidomat">
 
 
-	<div class="box box-info">
-		<div class="box-header with-border"><h4 class="box-title">Transacciones</h4></div>
+	<div class="box">
+		<div class="box-header with-border"><h4 class="box-title">Transacciones</h4>
+			<div class="box-tools">
+				<?= DateRangePicker::widget([
+				    'name' => 'date_from',
+				    'value' => $model->OT_FECHA_INICIO,
+				    'nameTo' => 'name_to',
+				    'valueTo' => date('Y-m-d'),
+		    		'language' => 'es',
+			        'clientOptions' => [
+			            'autoclose' => true,
+			            'format' => 'yyyy-mm-dd',
+		        		'todayHighlight' => true,
+		        		'startDate' => $model->OT_FECHA_INICIO,
+			            'endDate' => date('Y-m-d')
+			        ]
+				]);?>
+			</div>
+		</div>
 		<div class="box-body no-padding">
 			<table class="table table-hover">
 
@@ -154,50 +147,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		</div>
 	</div>
-	<?php /*
-	<div class="panel panel-info">
-	  <!-- Default panel contents -->
-	  <div class="panel-heading"><h4 class="text-center"><strong>Transaccion de Materiales</strong></h4></div>
-
-		<table class="table table-hover table-bordered">
-
-
-
-		 <?php foreach ($stock as $row): ?>
-
-			<tbody>
-			<tr>
-				<th colspan="4" class="text-center success"><?= $row->mA->MA_NOMBRE ?></th>
-			</tr>
-			<tr class="active">
-
-				<th>Proveedor</th>
-				<th>Fecha</th>
-				<th>Cantidad</th>
-				<th>Costo</th>
-			</tr>
-			<?php foreach ($adquirido as $key): ?>
-			<?php if($row->MA_ID == $key->MA_ID){ ?>
-			<tr>
-				<td><?= $key->pROV->PROV_NOMBRE ?></td>
-				<td><?= $key->tM->TM_FECHACOMPRA ?></td>
-				<td><?= $key->tM->TM_CANTIDAD ?></td>
-				<td><?= $key->tM->TM_PRECIO ?></td>
-
-			</tr>
-
-			<?php } ?>
-			<?php endforeach ?>
-			<tr>
-				<th colspan="2" class="text-right warning">Total:</th>
-				<th class="warning"><?= $row->SM_CANTIDAD ?></th>
-				<th class="warning"></th>
-			</tr>
-			<?php endforeach ?>
-			</tbody>
-
-		</table>
-	</div>*/ ?>
 </div>
 	</div>
 

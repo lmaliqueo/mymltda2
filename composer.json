@@ -25,7 +25,9 @@
         "kartik-v/yii2-grid": "@dev",
         "kartik-v/yii2-mpdf": "@dev",
         "dmstr/yii2-adminlte-asset": "2.*",
-        "freesoftwarefactory/cruge": "2.0.6"
+        "freesoftwarefactory/cruge": "2.0.6",
+        "2amigos/yii2-highcharts-widget": "~1.0",
+        "miloschuman/yii2-highcharts-widget": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

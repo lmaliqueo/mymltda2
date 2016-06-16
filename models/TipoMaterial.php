@@ -42,7 +42,7 @@ class TipoMaterial extends \yii\db\ActiveRecord
     {
         return [
             'TMA_ID' => 'Tma  ID',
-            'TMA_NOMBRE' => 'Tma  Nombre',
+            'TMA_NOMBRE' => 'Tipo de Material',
             'TMA_DESCRIPCION' => 'Tma  Descripcion',
         ];
     }

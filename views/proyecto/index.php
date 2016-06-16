@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
+use dosamigos\datepicker\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProyectoSearch */
@@ -24,26 +26,45 @@ $this->params['breadcrumbs'][] = $this->title;
     'summary'=>'',
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-            'PRO_NOMBRE',
+
+            [
+                //'label'=>'N',
+                'attribute'=>'PRO_NOMBRE',
+                'format'=>'raw',
+                'value' => function($data){
+                    return Html::a($data->PRO_NOMBRE, ['proyecto/view','id'=>$data->PRO_ID], ['class'=>'text-muted', ]);
+                }
+            ],
+
+            //'PRO_NOMBRE',
             'PRO_ESTADO',
-            'cOM.COM_NOMBRE',
-             'PRO_FECHA_INICIO',
+                        [
+                            'attribute'=>'COM_ID',
+                            'value'=>'cOM.COM_NOMBRE',
+                        ],
+             'PRO_FECHA_INICIO:date',
+             /*
+             [
+                'attribute'=>'PRO_FECHA_INICIO',
+                'value'=>'PRO_FECHA_INICIO',
+                'format'=>'raw',
+                'filter'=>DatePicker::widget([
+                            'model' => $searchModel,
+                            'attribute' => 'PRO_FECHA_INICIO',
+                                'clientOptions' => [
+                                    'autoclose' => true,
+                                    'format' => 'yyyy-mm-dd'
+                                ]
+                        ])
+             ],*/
              'PRO_DIRECCION',
              //'PRO_OBSERVACIONES:ntext',
             // 'PRO_DESCRIPCION',
              //'PRO_COSTO_TOTAL',
             // 'PRO_INFORME',
 
-            ['class' => 'yii\grid\ActionColumn',
-                            'template' => '{OT} {view} {update} {delete}',
-                'buttons' => [
-                'OT' => function ($url, $model, $key) { // <--- here you can override or create template for a button of a given name
-                     return Html::a('<span class="glyphicon glyphicon glyphicon-list" aria-hidden="true"></span>', ['orden-trabajo/indexpro', 'id' => $model->PRO_ID]);
-                }
-                ],
-            ],
+            //['class' => 'yii\grid\ActionColumn'],
 
         ],
         ]);         Html::a('Create Proyecto', ['create'], ['class' => 'btn btn-success'])

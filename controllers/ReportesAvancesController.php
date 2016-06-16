@@ -10,6 +10,7 @@ use app\models\OrdenTrabajo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
 
 /**
  * ReportesAvancesController implements the CRUD actions for ReportesAvances model.
@@ -34,12 +35,18 @@ class ReportesAvancesController extends Controller
      */
     public function actionIndex($id)
     {
-        $searchModel = new ReportesAvancesSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $ordentrabajo= OrdenTrabajo::findOne($id);
+        $searchModel = new ReportesAvancesSearch();
         $reportes= ReportesAvances::find()->where(['OT_ID'=>$id])->all();
+        $dataProvider = new ActiveDataProvider([
+            'query' => ReportesAvances::find()->
+                where(['OT_ID'=>$id]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
 
-        return $this->render('index', [
+        return $this->renderAjax('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'reportes' => $reportes,

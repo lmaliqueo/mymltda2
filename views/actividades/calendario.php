@@ -14,7 +14,7 @@ use yii\bootstrap\Modal;
         'id'=>'modalview', 
         'size'=>'modal-lg'  
         ]);
-    echo "<div id='modalContent'></div>";
+    echo "<div class='modalContent'></div>";
 
     Modal::end();
   ?>
@@ -75,7 +75,7 @@ $script = <<< JS
 
         $.get('index.php?r=actividades/view-modal',{'act':text , 'ot':ot},function(data){
              $('#modalview').modal('show')
-             .find('#modalContent')
+             .find('.modalContent')
              .html(data);
         });
 
@@ -87,7 +87,7 @@ $script = <<< JS
         var ot = document.getElementById("idOT").innerHTML;
         $.get('index.php?r=actividades/crear',{'date':date, 'ot':ot},function(data){
              $('#modal').modal('show')
-             .find('#modalContent')
+             .find('.modalContent')
              .html(data);
         });
 

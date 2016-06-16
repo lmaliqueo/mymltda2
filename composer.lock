@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "274d65fe2c6b9fbcc672867a2ef5e894",
-    "content-hash": "26a9113c5b1d8e3e92ab144a636610a9",
+    "hash": "2b402f023eccc54179b15342cdfcce38",
+    "content-hash": "9f9eae109310edb35b215a4259e0d8b1",
     "packages": [
         {
             "name": "2amigos/yii2-date-picker-widget",
@@ -67,6 +67,68 @@
                 "yii2"
             ],
             "time": "2015-04-02 11:48:05"
+        },
+        {
+            "name": "2amigos/yii2-highcharts-widget",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/yii2-highcharts-widget.git",
+                "reference": "ff3e2f52040d1ba982090cc71a0f47c0fc2516b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/yii2-highcharts-widget/zipball/ff3e2f52040d1ba982090cc71a0f47c0fc2516b6",
+                "reference": "ff3e2f52040d1ba982090cc71a0f47c0fc2516b6",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/highcharts-release": "4.1.4",
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*",
+                "scrutinizer/ocular": "~1.1"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                },
+                "asset-installer-paths": {
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "dosamigos\\highcharts\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "2amigOS! Consulting Group",
+                    "email": "hola@2amigos.us",
+                    "homepage": "http://2amigos.us",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Highcharts JS widget for Yii2.",
+            "homepage": "http://yiiwheels.com/extension/highcharts-widget",
+            "keywords": [
+                "2amigos",
+                "chart",
+                "extension",
+                "highcharts",
+                "widget",
+                "yii",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2015-07-16 14:31:06"
         },
         {
             "name": "almasaeed2010/adminlte",
@@ -279,6 +341,29 @@
                 "full-sized",
                 "jquery-plugin"
             ]
+        },
+        {
+            "name": "bower-asset/highcharts-release",
+            "version": "v4.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/highcharts/highcharts-dist.git",
+                "reference": "8ec04ca0aa02fe7e9584dc24b6902e4338360763"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/highcharts/highcharts-dist/zipball/8ec04ca0aa02fe7e9584dc24b6902e4338360763",
+                "reference": "8ec04ca0aa02fe7e9584dc24b6902e4338360763",
+                "shasum": ""
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": [
+                    "highcharts.js",
+                    "highcharts-more.js",
+                    "modules/exporting.js"
+                ]
+            }
         },
         {
             "name": "bower-asset/jquery",
@@ -1009,6 +1094,54 @@
                 "yii2"
             ],
             "time": "2016-02-17 11:49:30"
+        },
+        {
+            "name": "miloschuman/yii2-highcharts-widget",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/miloschuman/yii2-highcharts.git",
+                "reference": "6951fef6cc72273f8e4278154eb756416d5caab4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/miloschuman/yii2-highcharts/zipball/6951fef6cc72273f8e4278154eb756416d5caab4",
+                "reference": "6951fef6cc72273f8e4278154eb756416d5caab4",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "miloschuman\\highcharts\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Milo Schuman",
+                    "email": "miloschuman@gmail.com"
+                }
+            ],
+            "description": "Highcharts widget for Yii 2 Framework.",
+            "homepage": "https://github.com/miloschuman/yii2-highcharts",
+            "keywords": [
+                "extension",
+                "highcharts",
+                "highmaps",
+                "highstock",
+                "widget",
+                "yii2"
+            ],
+            "time": "2016-05-26 17:42:51"
         },
         {
             "name": "philippfrenzel/yii2fullcalendar",
@@ -1925,7 +2058,8 @@
     "stability-flags": {
         "kartik-v/yii2-widget-select2": 20,
         "kartik-v/yii2-grid": 20,
-        "kartik-v/yii2-mpdf": 20
+        "kartik-v/yii2-mpdf": 20,
+        "miloschuman/yii2-highcharts-widget": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -15,11 +15,14 @@ use app\models\ActividadesSearch;
 use app\models\MatProvAdquirido;
 use app\models\Materiales;
 use app\models\ActSactAsigna;
+use app\models\AsignaTiene;
+use app\models\EstadoPago;
 use app\models\CantidadUtilizada;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 
 /**
@@ -74,14 +77,17 @@ class OrdenTrabajoController extends Controller
     public function actionCreate($pro)
     {
         $model = new OrdenTrabajo();
+        $proyecto = Proyecto::findOne($pro);
         $model->PRO_ID = $pro;
         if ($model->load(Yii::$app->request->post())) {
             $model->OT_ESTADO='Pendiente';
+            $model->OT_COSTO_TOTAL=0;
             $model->save();
             return $this->redirect(['view', 'id' => $model->OT_ID]);
         } else {
             return $this->renderAjax('create', [
                 'model' => $model,
+                'proyecto' => $proyecto,
             ]);
         }
     }
@@ -138,8 +144,13 @@ class OrdenTrabajoController extends Controller
         public function actionIndexpro($id)
     {
         $searchModel = new OrdenTrabajoSearch();
-        $searchModel->PRO_ID = $id;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => OrdenTrabajo::find()->
+                where(['PRO_ID'=>$id]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
         $proyecto = Proyecto::findOne($id);
         $model = OrdenTrabajo::find()->where(['PRO_ID'=>$id, 'OT_ESTADO'=>'Activo'])->orderBy(['OT_FECHA_INICIO' => SORT_DESC,])->one();
         $ordenes = OrdenTrabajo::find()->where(['PRO_ID'=>$id])->orderBy(['OT_FECHA_INICIO' => SORT_ASC,])->all();
@@ -213,7 +224,7 @@ class OrdenTrabajoController extends Controller
         $searchModel->OT_ID=$id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->renderAjax('indexact', [
+        return $this->render('expandot', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'ordentrabajo' => $ordentrabajo,
@@ -251,6 +262,10 @@ class OrdenTrabajoController extends Controller
         $model= OrdenTrabajo::findOne($id);
         $actividades= Actividades::find()->where(['OT_ID'=>$id])->all();
         $array_act= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$id])->asArray()->all();
+        $array_asigna= ActSactAsigna::find()->where(['AC_ID'=>$array_act])->asArray()->all();
+        $array_epid= AsignaTiene::find()->select('EP_ID')->where(['AS_ID'=>$array_asigna])->asArray()->all(); 
+        $estado_pago= EstadoPago::find()->where(['EP_ID'=>$array_epid])->all();
+
 
         $subactividades= ActSactAsigna::find()->where(['AC_ID'=>$array_act])->all();
 
@@ -259,6 +274,7 @@ class OrdenTrabajoController extends Controller
             'model' => $model,
             'actividades' => $actividades,
             'subactividades' => $subactividades,
+            'estado_pago' => $estado_pago,
         ]);
        
 

@@ -37,11 +37,11 @@ $this->params['breadcrumbs'][] = 'Gastos Generales';
             <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Crear Gastos Generales', ['value'=>Url::to(['gastos-generales/create','id'=>$proyecto->PRO_ID]),'class'=> 'btn btn-success btn-block margin-bottom','id'=>'modalButton']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Operaciones</h3>
+                <h3 class="box-title">Proyecto</h3>
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li><?= Html::a('<i class="fa fa-eye"></i> Proyecto', ['proyecto/view', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-eye"></i> Detalles', ['proyecto/view', 'id'=>$proyecto->PRO_ID]) ?></li>
                     <li><?= Html::a('<i class="fa fa-tasks"></i> Ordenes de Trabajos', ['orden-trabajo/indexpro', 'id'=>$proyecto->PRO_ID]) ?></li>
                     <li><?= Html::a('<i class="fa fa-file-excel-o"></i> Estados de Pagos', ['estado-pago/index', 'id'=>$proyecto->PRO_ID]) ?></li>
                     <li class="active"><a href="#"><i class="glyphicon glyphicon-usd"></i> Gastos Generales</a></li>

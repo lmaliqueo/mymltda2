@@ -60,9 +60,11 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box box-primary">
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
+        'summary'=>'',
                 'filterModel' => $searchModel,
                 'columns' => [
-                    [                'class' => 'kartik\grid\ExpandRowColumn',
+                            ['class' => 'yii\grid\SerialColumn'],
+                /*    [                'class' => 'kartik\grid\ExpandRowColumn',
                         'value' => function ($model, $key, $index, $column){
                             return GridView::ROW_COLLAPSED;
                         },
@@ -75,14 +77,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'model' => $model,
                                 ]);
                         },
-                    ],
+                    ],*/
 
             [
                 'label'=>'Descripción',
                 'attribute'=>'MA_NOMBRE',
                 'format'=>'raw',
                 'value' => function($data){
-                    return Html::a($data->MA_NOMBRE, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['herramientas/view','id'=>$data->MA_ID])]);
+                    return Html::a($data->MA_NOMBRE, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['materiales/view','id'=>$data->MA_ID])]);
                 }
             ],
 
@@ -94,11 +96,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                     'MA_CANTIDADTOTAL',
                     'MA_UNIDAD',
-                    'MA_MEDIDA',
-                    // 'MA_TIPOMATERIALES',
-                    // 'MA_COSTOUNIDAD',
+                    //'MA_MEDIDA',
+                    'MA_COSTOUNIDAD',
 
-                    ['class' => 'yii\grid\ActionColumn'],
+                    //['class' => 'yii\grid\ActionColumn'],
                 ],
             ]); ?>
         </div>

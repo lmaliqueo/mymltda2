@@ -61,7 +61,7 @@ class MaterialesController extends Controller
         $transaccion= TransaccionMateriales::find()->where(['CM_ID'=>$idstock])->asArray()->all();
         $adquirido= MatProvAdquirido::find()->where(['TM_ID'=>$transaccion])->all();
 
-        return $this->render('view', [
+        return $this->renderAjax('view', [
             'model' => $this->findModel($id),
             'almacena' => $almacena,
             'stock' => $stock,

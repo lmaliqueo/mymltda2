@@ -9,25 +9,25 @@ use yii\bootstrap\Modal;
 /* @var $searchModel app\models\ActividadesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $ordentrabajo->OT_NOMBRE;
+/*$this->title = $ordentrabajo->OT_NOMBRE;
 $this->params['breadcrumbs'][] = ['label' => $ordentrabajo->pRO->PRO_NOMBRE, 'url' => ['proyecto/view', 'id'=>$ordentrabajo->PRO_ID]];
 $this->params['breadcrumbs'][] = ['label' => $ordentrabajo->OT_NOMBRE, 'url' => ['orden-trabajo/indexpro', 'id'=>$ordentrabajo->PRO_ID]];
-$this->params['breadcrumbs'][] = 'Actividades';
+$this->params['breadcrumbs'][] = 'Actividades';*/
 ?>
 <div class="actividades-index">
+<?php 
+    Modal::begin([
+            'header'=>'<h4>Actividades</h4>',
+            'id'=>'modalUp',
+            'size'=>'modal-lg',
+        ]);
+    echo "<div class='modalContentUpdate'></div>";
+    Modal::end();
+ ?>
 <?php /*
     <h1>Actividades</h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-<?php 
-    Modal::begin([
-            'header'=>'<h4>Actividades</h4>',
-            'id'=>'modal',
-            'size'=>'modal-lg',
-        ]);
-    echo "<div class='modalContent'></div>";
-    Modal::end();
- ?>
 
 
 <br>
@@ -61,15 +61,60 @@ $this->params['breadcrumbs'][] = 'Actividades';
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
+                            [
+                                //'label'=>'N',
+                                'attribute'=>'AC_NOMBRE',
+                                'format'=>'raw',
+                                'value' => function($data){
+                                    return Html::a($data->AC_NOMBRE, '#', ['class'=>'modalView text-muted', 'idact'=>$data->AC_ID]);
+                                }
+                            ],
                             'AC_NOMBRE',
-                            'AC_FECHA_INICIO',
-                            'AC_FECHA_TERMINO',
-                            'AC_COSTO_TOTAL',
+                            'AC_FECHA_INICIO:date',
+                            'AC_FECHA_TERMINO:date',
                             'AC_ESTADO',
+                            'AC_COSTO_TOTAL',
 
-                            ['class' => 'yii\grid\ActionColumn'],
+                            ['class' => 'yii\grid\ActionColumn',
+                                'template'=>'{update} {delete}',
+                                'buttons' => [
+                                    'update' => function ($url,$model) {
+                                        return Html::a(
+                                            '<span class="glyphicon glyphicon-pencil"></span>',
+                                            '#',['class'=>'modalUpdate', 'idact'=>$model->AC_ID, 'title'=>'Actualizar']);
+                                    },
+                                ],
+                            ],
                         ],
+    'options'=>['class'=>'grid-view gridview-newclass'],
+    'tableOptions' =>['class' => 'table table-hover table-bordered'],
                     ]); ?>
 
 
 </div>
+
+<?php 
+$script = <<< JS
+
+    $(document).on('click','.modalUpdate',function(){
+        var id = $(this).attr('idact');
+        $.get('index.php?r=actividades/update',{'id':id},function(data){
+             $('#modalUp').modal('show')
+             .find('.modalContentUpdate')
+             .html(data);
+        });
+
+    });
+
+
+    $(document).on('click','.modalView',function(){
+        var id = $(this).attr('idact');
+        $.get('index.php?r=actividades/view',{'id':id},function(data){
+             $('#modalUp').modal('show')
+             .find('.modalContentUpdate')
+             .html(data);
+        });
+    });
+JS;
+$this->registerJs($script);
+?>

@@ -9,14 +9,9 @@ use yii\bootstrap\Modal;
 /* @var $searchModel app\models\ReportesAvancesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $ordentrabajo->OT_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => $ordentrabajo->pRO->PRO_NOMBRE, 'url' => ['proyecto/view', 'id'=>$ordentrabajo->pRO->PRO_ID]];
-$this->params['breadcrumbs'][] = ['label' => $ordentrabajo->OT_NOMBRE, 'url' => ['orden-trabajo/indexpro', 'id'=>$ordentrabajo->PRO_ID]];
-$this->params['breadcrumbs'][] = 'Reportes de Avances';
 ?>
 <div class="reportes-avances-index">
 
-    <h1>Reportes de avances</h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 
@@ -30,12 +25,31 @@ $this->params['breadcrumbs'][] = 'Reportes de Avances';
     Modal::end();
  ?>
 
-<br>
+            <?= Html::button('Ingresar Reporte de avances', ['value'=>Url::to(['reportes-avances/create','id'=>$ordentrabajo->OT_ID]),'class'=> 'btn btn-flat btn-success margin-bottom','id'=>'modalButton']) ?>
+
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+
+                    'RA_ID',
+                    //'oT.OT_NOMBRE',
+                    'RA_TITULO',
+                    'RA_DESCRIPCION:ntext',
+                    'RA_FECHA:date',
+                    // 'RA_TEXTO:ntext',
+
+                    //['class' => 'yii\grid\ActionColumn'],
+                ],
+            ]); ?>
+
+
+    <?php /*
 <div class="row">
 
 
     <div class="col-md-3">
-            <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Ingresar Reporte de avances', ['value'=>Url::to(['reportes-avances/create','id'=>$ordentrabajo->OT_ID]),'class'=> 'btn btn-success btn-block margin-bottom','id'=>'modalButton']) ?>
         <div class="box box-solid">
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
@@ -49,27 +63,7 @@ $this->params['breadcrumbs'][] = 'Reportes de Avances';
     </div>
 
     <div class="col-md-9">    
-    <?php /*
-        <div class="box box-primary">
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
 
-                    'RA_ID',
-                    'oT.OT_NOMBRE',
-                    'RA_TITULO',
-                    'RA_DESCRIPCION:ntext',
-                    'RA_FECHA',
-                    // 'RA_TEXTO:ntext',
-
-                    ['class' => 'yii\grid\ActionColumn'],
-                ],
-            ]); ?>
-
-        </div>
-    */ ?>
 
             <ul class="timeline">
             <?php if ($reportes!=NULL) { ?>
@@ -103,4 +97,5 @@ $this->params['breadcrumbs'][] = 'Reportes de Avances';
             </ul>
     </div>
 </div>
+    */ ?>
 </div>

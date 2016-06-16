@@ -35,7 +35,7 @@ class Actividades extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['OT_ID'], 'required'],
+            [['OT_ID','AC_NOMBRE'], 'required'],
             [['OT_ID', 'AC_COSTO_TOTAL'], 'integer'],
             [['AC_FECHA_INICIO', 'AC_FECHA_TERMINO'], 'safe'],
             [['AC_NOMBRE'], 'string', 'max' => 50],

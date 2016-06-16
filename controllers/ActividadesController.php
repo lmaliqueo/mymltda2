@@ -70,8 +70,23 @@ class ActividadesController extends Controller
     public function actionView($id)
     {
         $model= $this->findModel($id);
-        return $this->render('view', [
+        $subact= ActSactAsigna::find()->where(['AC_ID'=>$model->AC_ID])->all();
+        $rutobreros= ManodeobraTrabajan::find()->select('PE_RUT')->where(['AC_ID'=>$model->AC_ID])->asArray()->all();
+        $obreros= ContratoObrero::find()->where(['PE_RUT'=>$rutobreros])->andWhere(['PRO_ID'=>$model->oT->PRO_ID])->all();
+
+        $sueldos=[];
+        if ($obreros!=NULL) {
+          foreach ($obreros as $ob) {
+              $sueldo_ob = SueldoObrero::find()->where(['COO_ID'=>$ob->COO_ID])->orderBy(['COO_ID' => SORT_DESC])->one();
+              $sueldos[]=$sueldo_ob;
+          }
+        }
+
+        return $this->renderAjax('view', [
             'model' => $model,
+            'subact' => $subact,
+            'obreros' => $obreros,
+            'sueldos' => $sueldos,
         ]);
     }
 
@@ -116,7 +131,7 @@ class ActividadesController extends Controller
     {
         $model = new Actividades();
             $model->OT_ID=$id;
-
+            $ordentrabajo= OrdenTrabajo::findOne($id);
         if ($model->load(Yii::$app->request->post())) {
             $model->AC_ESTADO='Pendiente';
             $model->AC_COSTO_TOTAL=0;
@@ -125,6 +140,7 @@ class ActividadesController extends Controller
         } else {
             return $this->renderAjax('create', [
                 'model' => $model,
+                'ordentrabajo' => $ordentrabajo,
             ]);
         }
     }
@@ -219,12 +235,13 @@ class ActividadesController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
+        $ordentrabajo = OrdenTrabajo::findOne($model->OT_ID);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->AC_ID]);
         } else {
-            return $this->render('update', [
+            return $this->renderAjax('update', [
                 'model' => $model,
+                'ordentrabajo' => $ordentrabajo,
             ]);
         }
     }
