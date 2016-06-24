@@ -8,6 +8,9 @@ use yii\bootstrap\Modal;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ReportesAvancesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+$this->title = $proyecto->PRO_NOMBRE;
+$this->params['breadcrumbs'][] = ['label' => 'Proyectos', 'url' => ['index']];
+$this->params['breadcrumbs'][] = 'Reportes de avances';
 
 ?>
 <div class="reportes-avances-index">
@@ -25,24 +28,61 @@ use yii\bootstrap\Modal;
     Modal::end();
  ?>
 
-            <?= Html::button('Ingresar Reporte de avances', ['value'=>Url::to(['reportes-avances/create','id'=>$ordentrabajo->OT_ID]),'class'=> 'btn btn-flat btn-success margin-bottom','id'=>'modalButton']) ?>
+    <h1>Reportes de Avances</h1>
 
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
-                'columns' => [
-                    ['class' => 'yii\grid\SerialColumn'],
+<br>
 
-                    'RA_ID',
-                    //'oT.OT_NOMBRE',
-                    'RA_TITULO',
-                    'RA_DESCRIPCION:ntext',
-                    'RA_FECHA:date',
-                    // 'RA_TEXTO:ntext',
+<div class="row">
+    <div class="col-md-3">
+            <?= Html::button('Ingresar Reporte de avances', ['value'=>Url::to(['reportes-avances/create','id' => $proyecto->PRO_ID]), 'class' => 'btn btn-success btn-block btn-flat margin-bottom','id'=>'modalButton']) ?>
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Proyecto</h3>
+            </div>
+            <div class="box-body no-padding">
+                <ul class="nav nav-pills nav-stacked">
+                    <?php /*<li class="view" id="<?php echo $model->PRO_ID; ?>"><a href="#"><i class="fa fa-tasks"></i> <span style="padding-left:5px">InformaciÃ³n</span></a></li>*/ ?>
+                    <li><?= Html::a('<i class="fa fa-eye"></i> Detalles', ['proyecto/view', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-tasks"></i> Ordenes de Trabajos', ['orden-trabajo/indexpro', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-file-excel-o"></i> Estados de Pagos', ['estado-pago/index', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li class="active"><a href="#"><i class="fa fa-inbox"></i> Reportes de Avances</a></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['gastos-generales/index', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Materiales', ['materiales/materiales-pro', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['informes-pro', 'id'=>$proyecto->PRO_ID]) ?></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="box box-primary">
+            <div class="box-body no-padding">
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],
 
-                    //['class' => 'yii\grid\ActionColumn'],
-                ],
-            ]); ?>
+                        //'RA_ID',
+                        'RA_TITULO',
+                        [
+                            'attribute'=>'OT_ID',
+                            'value'=>'oT.OT_NOMBRE',
+                        ],
+                        'RA_DESCRIPCION:ntext',
+                        'RA_FECHA:date',
+                        // 'RA_TEXTO:ntext',
+
+                        //['class' => 'yii\grid\ActionColumn'],
+                    ],
+                ]); ?>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
 
 
     <?php /*

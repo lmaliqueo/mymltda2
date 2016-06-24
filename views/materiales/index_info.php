@@ -11,16 +11,9 @@ use app\models\StockMateriales;
 /* @var $searchModel app\models\MaterialesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Materiales';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="materiales-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-   </p>
 <?php 
     Modal::begin([
             'header'=>'<h4>Nuevo Material</h4>',
@@ -43,24 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <br>
 
-<div class="row">
-    <div class="col-md-3">
-        <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Ingresar Material', ['value'=>Url::to('index.php?r=materiales/create'),'class'=> 'btn btn-success btn-block margin-bottom','id'=>'modalButton']) ?>
-        <div class="box box-solid">
-            <div class="box-body no-padding">
-                <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#">Materiales</a></li>
-                    <li><?= Html::a('Herramientas', ['herramientas/index']) ?></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-9">    
-        <div class="box box-primary">
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'summary'=>'',
+        'summary'=>'',
                 'filterModel' => $searchModel,
                 'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
@@ -79,30 +57,40 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],*/
 
+                    [
+                        'label'=>'Orden de Trabajo',
+                        'attribute'=>'OT_ID',
+                        'value'=>'oT.OT_NOMBRE',
+                    ],
             [
-                'label'=>'Descripción',
-                'attribute'=>'MA_NOMBRE',
+                'label'=>'Material',
+                'attribute'=>'MA_ID',
                 'format'=>'raw',
                 'value' => function($data){
                     return Html::a($data->MA_NOMBRE, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['materiales/view','id'=>$data->MA_ID])]);
                 }
             ],
-
                     //'MA_ID',
                     //'MA_NOMBRE',
                     [
-                        'attribute'=>'TMA_ID',
-                        'value'=>'tMA.TMA_NOMBRE',
+                        'label'=>'Tipo',
+                        'attribute'=>'MA_ID',
+                        'value'=>'mA.tMA.TMA_NOMBRE',
                     ],
-                    'MA_CANTIDADTOTAL',
-                    'MA_UNIDAD',
+                    [
+                        'label'=>'Unidad',
+                        'attribute'=>'MA_ID',
+                        'value'=>'mA.MA_UNIDAD',
+                    ],
+                    'SM_CANTIDAD',
+                    /*[
+                        'label'=>'Costo',
+                        'attribute'=>'MA_ID',
+                        'value'=>'mA.MA_COSTOUNIDAD',
+                    ],*/
                     //'MA_MEDIDA',
-                    'MA_COSTOUNIDAD',
-
+                    //'SM_ESTADO',
                     //['class' => 'yii\grid\ActionColumn'],
                 ],
             ]); ?>
-        </div>
-    </div>
-</div>
 </div>

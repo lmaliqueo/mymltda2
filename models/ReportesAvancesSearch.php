@@ -18,8 +18,8 @@ class ReportesAvancesSearch extends ReportesAvances
     public function rules()
     {
         return [
-            [['RA_ID', 'OT_ID'], 'integer'],
-            [['RA_TITULO', 'RA_DESCRIPCION', 'RA_FECHA'], 'safe'],
+            [['RA_ID', ], 'integer'],
+            [['OT_ID', 'RA_TITULO', 'RA_DESCRIPCION', 'RA_FECHA'], 'safe'],
         ];
     }
 
@@ -54,15 +54,17 @@ class ReportesAvancesSearch extends ReportesAvances
             // $query->where('0=1');
             return $dataProvider;
         }
+        $query->joinWith('oT');
 
         $query->andFilterWhere([
             'RA_ID' => $this->RA_ID,
-            'OT_ID' => $this->OT_ID,
+            //'OT_ID' => $this->OT_ID,
             'RA_FECHA' => $this->RA_FECHA,
         ]);
 
         $query->andFilterWhere(['like', 'RA_TITULO', $this->RA_TITULO])
-            ->andFilterWhere(['like', 'RA_DESCRIPCION', $this->RA_DESCRIPCION]);
+            ->andFilterWhere(['like', 'RA_DESCRIPCION', $this->RA_DESCRIPCION])
+            ->andFilterWhere(['like', 'orden_trabajo.OT_NOMBRE', $this->OT_ID]);
 
         return $dataProvider;
     }

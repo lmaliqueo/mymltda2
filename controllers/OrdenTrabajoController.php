@@ -166,6 +166,7 @@ class OrdenTrabajoController extends Controller
         }else{
             $actividades= NULL;
         }
+        $contenido='ot';
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -173,6 +174,7 @@ class OrdenTrabajoController extends Controller
             'model' => $model,
             'ordenes' => $ordenes,
             'actividades' => $actividades,
+            'contenido' => $contenido,
         ]);
     }
 
@@ -220,14 +222,17 @@ class OrdenTrabajoController extends Controller
     public function actionIndexAct($id)
     {
         $ordentrabajo= OrdenTrabajo::findOne($id);
+        $proyecto= Proyecto::findOne($ordentrabajo->PRO_ID);
         $searchModel = new ActividadesSearch();
         $searchModel->OT_ID=$id;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('expandot', [
+        $contenido='act';
+        return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'ordentrabajo' => $ordentrabajo,
+            'proyecto' => $proyecto,
+            'contenido' => $contenido,
         ]);
     }
 

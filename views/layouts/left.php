@@ -49,12 +49,12 @@ use yii\helpers\Html;
 
                         ],
                     ],
-                    ['label' => 'Bodega', 'icon' => 'fa fa-industry', 'url' => '#',
-                        'items' => [
+                    ['label' => 'Bodegas', 'icon' => 'fa fa-industry', 'url' => ['/bodegas'],
+                        /*'items' => [
                             ['label' => 'Materiales', 'icon' => 'fa fa-circle-o', 'url' => ['/materiales'],],
                             ['label' => 'Herramientas', 'icon' => 'fa fa-circle-o', 'url' => ['/herramientas'],],
 
-                        ],
+                        ],*/
                     ],
                     ['label' => 'Usuarios', 'icon' => 'fa fa-user', 'url' => '#',
                         'items' => [
@@ -68,7 +68,7 @@ use yii\helpers\Html;
                             ['label' => 'Sub-Actividades', 'icon' => 'fa fa-circle-o', 'url' => ['/subactividades'],],
                             ['label' => 'Clientes', 'icon' => 'fa fa-circle-o', 'url' => ['/empresa-cliente'],],
                             ['label' => 'Proveedores', 'icon' => 'fa fa-circle-o', 'url' => ['/proveedor'],],
-                            ['label' => 'Bodegas', 'icon' => 'fa fa-circle-o', 'url' => ['/bodegas'],],
+                            //['label' => 'Bodegas', 'icon' => 'fa fa-circle-o', 'url' => ['/bodegas'],],
                             ['label' => 'Personas', 'icon' => 'fa fa-circle-o', 'url' => ['/persona/index'],],
                         ],
                     ],

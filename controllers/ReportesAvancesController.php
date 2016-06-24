@@ -35,22 +35,23 @@ class ReportesAvancesController extends Controller
      */
     public function actionIndex($id)
     {
-        $ordentrabajo= OrdenTrabajo::findOne($id);
+        $proyecto = Proyecto::findOne($id);
+        $array_ot= OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$id])->asArray()->all();
         $searchModel = new ReportesAvancesSearch();
-        $reportes= ReportesAvances::find()->where(['OT_ID'=>$id])->all();
+        $reportes= ReportesAvances::find()->where(['OT_ID'=>$array_ot])->all();
         $dataProvider = new ActiveDataProvider([
             'query' => ReportesAvances::find()->
-                where(['OT_ID'=>$id]),
+                where(['OT_ID'=>$array_ot]),
             'pagination' => [
                 'pageSize' => 20,
             ],
         ]);
 
-        return $this->renderAjax('index', [
+        return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'reportes' => $reportes,
-            'ordentrabajo' => $ordentrabajo,
+            'proyecto' => $proyecto,
         ]);
     }
 

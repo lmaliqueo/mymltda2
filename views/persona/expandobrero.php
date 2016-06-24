@@ -65,7 +65,7 @@ use yii\bootstrap\Modal;
 
     <div class="box box-success">
         <div class="box-header with-border">
-            <h4 class="box-title">Proyecto: <span class="text-green"><?= $contrato->pRO->PRO_NOMBRE ?></span>  </h4>
+            <h4 class="box-title">Actividades</h4>
         </div>
         <div class="box-body no-padding">
             <?php if ($actividades!=NULL) { ?>
@@ -96,7 +96,7 @@ use yii\bootstrap\Modal;
                     </tbody>
                 </table>
             <?php }else{ ?>
-                <div class="text-center bg-gray-light">No posee actvidades asignados</div>
+                <div class="text-center bg-gray-light">No se han asignado actividades para este obrero</div>
             <?php } ?>
         </div>
         <div class="box-footer">

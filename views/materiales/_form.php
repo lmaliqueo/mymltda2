@@ -16,7 +16,15 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'MA_NOMBRE')->textInput(['maxlength' => true]) ?>
+
+    <div class="row">
+        <div class="col-md-3">
+            <?= $form->field($model, 'MA_ID')->textInput(['maxlength' => true, 'type'=>'number'])->label('ID Material') ?>
+        </div>
+        <div class="col-md-9">
+            <?= $form->field($model, 'MA_NOMBRE')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
 
 
 

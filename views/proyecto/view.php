@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="row">
     <div class="col-md-3">
-            <?= Html::button('Asignar Encargado', ['value'=>Url::to(['proyecto/asignar-encargado','id' => $model->PRO_ID]), 'class' => 'btn btn-primary btn-block margin-bottom','id'=>'modalButton']) ?>
+            <?= Html::button('Asignar Encargado', ['value'=>Url::to(['proyecto/asignar-encargado','id' => $model->PRO_ID]), 'class' => 'btn btn-success btn-block btn-flat margin-bottom','id'=>'modalButton']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Proyecto</h3>
@@ -41,7 +41,10 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?php /*<li class="view" id="<?php echo $model->PRO_ID; ?>"><a href="#"><i class="fa fa-tasks"></i> <span style="padding-left:5px">InformaciÃ³n</span></a></li>*/ ?>
                     <li><?= Html::a('<i class="fa fa-tasks"></i> Ordenes de Trabajos', ['orden-trabajo/indexpro', 'id'=>$model->PRO_ID]) ?></li>
                     <li><?= Html::a('<i class="fa fa-file-excel-o"></i> Estados de Pagos', ['estado-pago/index', 'id'=>$model->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-inbox"></i> Reportes de Avances', ['reportes-avances/index', 'id'=>$model->PRO_ID]) ?></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['gastos-generales/index', 'id'=>$model->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Materiales', ['materiales/materiales-pro', 'id'=>$model->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['informes-pro', 'id'=>$model->PRO_ID]) ?></li>
                 </ul>
             </div>
         </div>
@@ -68,13 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
     <div class="box-footer">
-        <?= Html::a('Eliminar', ['delete', 'id' => $model->PRO_ID], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?= Html::a('Generar Informe',['generar-info', 'id'=>$model->PRO_ID],['class'=>'btn btn-flat btn-primary']) ?>
     </div>
 </div>
 </div>

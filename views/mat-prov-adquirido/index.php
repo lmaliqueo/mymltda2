@@ -50,22 +50,32 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['class' => 'yii\grid\SerialColumn'],
 
                     [
+                            'label'=>'Material',
+                        'attribute'=>'MA_ID',
+                        'value'=>'mA.MA_NOMBRE',
+                    ],
+                        [
+                            'label'=>'Orden de Trabajo',
+                            'attribute'=>'TM_ID',
+                            'value'=>'tM.sM.oT.OT_NOMBRE',
+                        ],
+                    [
+                        'label'=>'Proveedor',
                         'attribute'=>'PROV_ID',
                         'value'=>'pROV.PROV_NOMBRE',
                     ],
                     [
-                        'attribute'=>'MA_ID',
-                        'value'=>'mA.MA_NOMBRE',
-                    ],
-                    [
+                        'label'=>'Fecha',
                         'attribute'=>'TM_ID',
                         'value'=>'tM.TM_FECHACOMPRA',
                     ],
                     [
+                        'label'=>'Cantidad',
                         'attribute'=>'TM_ID',
                         'value'=>'tM.TM_CANTIDAD',
                     ],
                     [
+                        'label'=>'Precio',
                         'attribute'=>'TM_ID',
                         'value'=>'tM.TM_PRECIO',
                     ],

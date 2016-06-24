@@ -9,9 +9,14 @@ use app\models\Usuario;
 use app\models\UsuariosControla;
 use app\models\EmpresaCliente;
 use app\models\ProyectoSearch;
+use app\models\OrdenTrabajo;
+use app\models\Actividades;
+use app\models\ActSactAsigna;
+use app\models\StockMateriales;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use kartik\mpdf\Pdf;
 
 /**
  * ProyectoController implements the CRUD actions for Proyecto model.
@@ -160,6 +165,44 @@ class ProyectoController extends Controller
             ]);
         }
     }
+    public function actionInformesPro($id)
+    {
+        $proyecto= Proyecto::findOne($id);
+        $orden_trabajos= OrdenTrabajo::find()->where(['PRO_ID'=>$id])->all();
+            return $this->render('informes_pro', [
+                'proyecto' => $proyecto,
+                'orden_trabajos' => $orden_trabajos,
+            ]);
 
+    }
+
+    public function actionInformeOt($idot/*, $inicio, $fin*/)
+    {
+        $model = OrdenTrabajo::findOne($idot);
+        $proyecto = $this->findModel($model->PRO_ID);
+        $actividades = Actividades::find()->where(['OT_ID'=>$model->OT_ID])->all();
+        $array_act = Actividades::find()->select('AC_ID')->where(['OT_ID'=>$model->OT_ID])->asArray()->all();
+
+        $items = ActSactAsigna::find()->where(['AC_ID'=>$array_act])->all();
+
+
+        $stock = StockMateriales::find()->where(['OT_ID'=>$idot])->all();
+        $array_stock= StockMateriales::find()->select('SM_ID')->where(['OT_ID'=>$idot])->asArray()->all();
+        //$transacciones= TransaccionMateriales::find()->where(['SM_ID'=>$array_stock])->andWhere('TM_FECHACOMPRA > :x and TM_FECHACOMPRA < :y',[':x'=>$inicio, ':y'=>$fin])->all();
+
+        $content= $this->renderPartial('informe', [
+                                            'model' => $model,
+                                            'actividades' => $actividades,
+                                            'items' => $items,
+                                            //'transacciones' => $transacciones,
+                                        ]);
+        $pdf = new Pdf();
+        $mpdf = $pdf->api; // fetches mpdf api
+        $mpdf->SetHeader('MyM construcción y electricidad'); // call methods or set any properties
+        $mpdf->WriteHtml($content); // call mpdf write html
+        $mpdf->cssFile='@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css';
+        $mpdf->Output(); // call the mpdf api output as needed
+        exit;
+    }
 
 }

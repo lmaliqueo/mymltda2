@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use kartik\grid\GridView;
+//use kartik\grid\GridView;
 use app\models\Actividades;
 use app\models\StockMateriales;
 use yii\bootstrap\Modal;
@@ -11,9 +11,6 @@ use yii\bootstrap\Modal;
 /* @var $searchModel app\models\OrdenTrabajoTrabajo */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $proyecto->PRO_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => $proyecto->PRO_NOMBRE, 'url' => ['proyecto/view', 'id'=>$proyecto->PRO_ID]];
-$this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
 ?>
 <div class="orden-trabajo-index">
 
@@ -30,13 +27,25 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
     Modal::end();
  ?>
 
-        <h1>Ordenes de Trabajos</h1>
+        <h1>
+            <?php if ($contenido=='ot') {
+                echo 'Ordenes de Trabajos';
+            }else{
+                echo 'Orden de Trabajo';
+            } ?>
+            
+        </h1>
         <br>
 
 <div class="row">
     <div class="col-md-3">
         <div class="otbutton">
-            <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Crear Orden de Trabajo', ['value'=>Url::to(['orden-trabajo/create','pro'=>$proyecto->PRO_ID]),'class'=> 'btn btn-success btn-block margin-bottom botonmodal','id'=>'modalButton']) ?>
+            <?php 
+            if($contenido=='ot'){
+                echo Html::button('Crear Orden de Trabajo', ['value'=>Url::to(['orden-trabajo/create','pro'=>$proyecto->PRO_ID]),'class'=> 'btn btn-success btn-block margin-bottom botonmodal','id'=>'modalButton']); 
+            }else{
+                echo Html::a('Crear Actividades', ['actividades/crear-calendario', 'id' => $ordentrabajo->OT_ID], ['class' => 'btn btn-primary btn-flat btn-block margin-bottom']);
+            } ?>
         </div>
 
         <div class="box box-solid">
@@ -49,7 +58,10 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
                     <?php /*<li class="view" id="<?php echo $model->PRO_ID; ?>"><a href="#"><i class="fa fa-tasks"></i> <span style="padding-left:5px">InformaciÃ³n</span></a></li>*/ ?>
                     <li class="active"><a href="#"><i class="fa fa-tasks"></i> Ordenes de Trabajos</a></li>
                     <li><?= Html::a('<i class="fa fa-file-excel-o"></i> Estados de Pagos', ['estado-pago/index', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-inbox"></i> Reportes de Avances', ['reportes-avances/index', 'id'=>$proyecto->PRO_ID]) ?></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['gastos-generales/index', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Materiales', ['materiales/materiales-pro', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['proyecto/informes-pro', 'id'=>$proyecto->PRO_ID]) ?></li>
                 </ul>
             </div>
         </div>
@@ -117,70 +129,24 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
     </div>        
     </div>
 */ ?>
-    <div class="box box-primary">
-        <div class="box-body no-padding">
-            <?= GridView::widget([
-                'dataProvider' => $dataProvider,
-                'summary'=>'',
-                'filterModel' => $searchModel,
-                'columns' => [
-                            ['class' => 'yii\grid\SerialColumn'],
-                /*
-                    [
-                        'class' => 'kartik\grid\ExpandRowColumn',
-                        'value' => function ($model, $key, $index, $column){
-                            return GridView::ROW_COLLAPSED;
-                        },
-                        'detail' => function ($model, $key, $index, $column){
-                            $actividades= Actividades::find()->where(['OT_ID'=>$model->OT_ID, 'AC_ESTADO'=>'En proceso'])->orderBy('AC_FECHA_INICIO')->limit(5)->all();
-                            $stock= StockMateriales::find()->where(['OT_ID'=>$model->OT_ID])->limit(5)->all();
 
-                            return Yii::$app->controller->renderPartial('expandot', [
-                                    'actividades' => $actividades,
-                                    'stock' => $stock,
-                                    'model' => $model,
-                                ]);
-                        },
+<?php if ($contenido=='ot') {
+    echo $this->render('indexot', [
+        'dataProvider' => $dataProvider,
+        'searchModel' => $searchModel,
+        'proyecto' => $proyecto,
+    ]);
+}else{
+    echo $this->render('indexact', [
+        'dataProvider' => $dataProvider,
+        'searchModel' => $searchModel,
+        'ordentrabajo' => $ordentrabajo,
+    ]);
+} ?>
 
-                    ],*/
 
-                    //'OT_ID',
-                    //'pRO.PRO_NOMBRE',
-            [
-                //'label'=>'N',
-                'attribute'=>'OT_NOMBRE',
-                'format'=>'raw',
-                'value' => function($data){
-                    return Html::a($data->OT_NOMBRE, ['orden-trabajo/index-act','id'=>$data->OT_ID], ['class'=>'text-muted', ]);
-                }
-            ],
-                    //'OT_TIPO',
-                    'OT_FECHA_INICIO:date',
-                    'OT_FECHA_TERMINO:date',
-                    'OT_ESTADO',
-                    'OT_COSTO_TOTAL',
-                    // 'OT_INFORME',
-
-                ],
-            ]); ?>
-        </div>
-    </div>
 </div>
 </div>
 </div>
 
-
-<?php 
-$script = <<< JS
-    $('.orden').click(function(){
-        var id= $(this).attr('id');
-        $.get('index.php?r=orden-trabajo/index-act',{ id : id }, function(data){
-            $('#otcontenido').empty();
-            $('#otcontenido').append(data);
-            $('#modalButton').attr('disabled',true);
-        })
-    });
-JS;
-$this->registerJs($script);
-?>
 

@@ -45,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="box box-solid">
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
+                    <li><?= Html::a('Materiales', ['materiales/index']) ?></li>
                     <li class="active"><a href="#">Herramientas</a></li>
                     <li><?= Html::a('Solicitud de Prestamo', ['solicitud-prestamo/index']) ?></li>
                 </ul>

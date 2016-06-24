@@ -131,8 +131,6 @@ class MatProvAdquiridoController extends Controller
         $almacena=new BoMatAlmacena();
         $stock=new StockMateriales();
 
-        // Uncomment the following line if AJAX validation is needed
-        //$this->performAjaxValidation($model);
         if ($model->load(Yii::$app->request->post())) {
 
             $transaccion->load(Yii::$app->request->post());

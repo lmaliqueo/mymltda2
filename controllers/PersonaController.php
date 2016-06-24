@@ -69,7 +69,7 @@ class PersonaController extends Controller
         $searchModel->CA_ID = 3;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('index_encargado', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'cargo'=> $cargo,
@@ -114,7 +114,7 @@ class PersonaController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index-encargado']);
         } else {
-            return $this->renderAjax('create', [
+            return $this->renderAjax('_formencargado', [
                 'model' => $model,
             ]);
         }
@@ -203,6 +203,19 @@ class PersonaController extends Controller
             return $this->redirect(['view', 'id' => $model->PE_RUT]);
         } else {
             return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionUpdateEncargado($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->PE_RUT]);
+        } else {
+            return $this->renderAjax('_formencargado', [
                 'model' => $model,
             ]);
         }

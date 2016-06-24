@@ -7,8 +7,6 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\TransaccionMaterialesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Transaccion Materiales';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaccion-materiales-index">
 
@@ -27,6 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'TM_ID',
+                    [
+                        'label'=>'Orden de Trabajo',
+                        'attribute'=>'SM_ID',
+                        'value'=>'sM.oT.OT_NOMBRE',
+                    ],
+                    [
+                        'label'=>'Material',
+                        'attribute'=>'SM_ID',
+                        'value'=>'sM.mA.MA_NOMBRE',
+                    ],
             'SM_ID',
             'TM_FECHACOMPRA',
             'TM_PRECIO',

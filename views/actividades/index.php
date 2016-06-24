@@ -51,8 +51,8 @@ $this->params['breadcrumbs'][] = 'Actividades';*/
     </div>
 </div>
 </div>
-*/ ?>
                             <?= Html::a('Crear Actividades', ['actividades/crear-calendario', 'id' => $ordentrabajo->OT_ID], ['class' => 'btn btn-primary btn-flat margin-bottom']) ?>
+*/ ?>
 
                     <?= GridView::widget([
     'summary'=>'',
@@ -83,11 +83,21 @@ $this->params['breadcrumbs'][] = 'Actividades';*/
                                             '<span class="glyphicon glyphicon-pencil"></span>',
                                             '#',['class'=>'modalUpdate', 'idact'=>$model->AC_ID, 'title'=>'Actualizar']);
                                     },
+                                    'delete' => function ($url,$model) {
+                                        return Html::a(
+                                            '<span class="glyphicon glyphicon-remove"></span>',
+                                            ['delete', 'id'=>$model->AC_ID],['class'=>'text-red', 'title'=>'Eliminar', 
+                                                    'data' => [
+                                                    'confirm' => '¿Esta seguro de borrar a este Encargado?',
+                                                    'method' => 'post',
+                                                ],
+                                            ]);
+                                    },
                                 ],
                             ],
                         ],
     'options'=>['class'=>'grid-view gridview-newclass'],
-    'tableOptions' =>['class' => 'table table-hover table-bordered'],
+    //'tableOptions' =>['class' => 'table table-hover table-bordered'],
                     ]); ?>
 
 

@@ -19,20 +19,33 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Bodegas', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+<div class="box box-primary">
+    <div class="box-body no-padding">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'summary'=>'',
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-            'BO_ID',
-            'BO_NOMBRE',
-            'BO_DIRECCION',
-            'BO_CANTIDADHERRAMIENTAS',
-            'BO_CANTIDADMATERIALES',
+                'BO_ID',
+                //'BO_NOMBRE',
+                [
+                    //'label'=>'N',
+                    'attribute'=>'BO_NOMBRE',
+                    'format'=>'raw',
+                    'value' => function($data){
+                        return Html::a($data->BO_NOMBRE, ['materiales/index','id'=>$data->BO_ID], ['class'=>'text-muted orden', 'idbo'=>$data->BO_ID]);
+                    }
+                ],
+                'BO_DIRECCION',
+                'BO_CANTIDADHERRAMIENTAS',
+                'BO_CANTIDADMATERIALES',
 
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
+    </div>
+</div>
 
 </div>

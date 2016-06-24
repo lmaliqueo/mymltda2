@@ -106,6 +106,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <li><?= Html::a('Obreros', ['asignar-obreros', 'id' => $model->AC_ID]) ?></li>
                         </ul>
                     </div>
+                    <?php /*
                     <?= Html::a('Actualizar', ['update', 'id' => $model->AC_ID], ['class' => 'btn btn-flat btn-primary']) ?>
                     <?= Html::a('Eliminar', ['delete', 'id' => $model->AC_ID], [
                         'class' => 'btn btn-flat btn-danger',
@@ -113,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'confirm' => 'Esta seguro de borrar esta Actividad',
                             'method' => 'post',
                         ],
-                    ]) ?>
+                    ]) ?>*/ ?>
              <div class="btn-group" role="group" aria-label="...">
             </div>
 </div>

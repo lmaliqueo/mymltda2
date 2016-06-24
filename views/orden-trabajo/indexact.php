@@ -57,11 +57,10 @@ $this->params['breadcrumbs'][] = $ordentrabajo->OT_NOMBRE;
 
             <dic class="nav-tabs-custom">
                 <ul class="nav nav-tabs pull-right">
-                    <li><a href="" data-toggle="tab" aria-expanded="false" id="avances">Rep. Avances</a></li>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="inf_general">Grafico</a></li>
-                    <li><a href="" data-toggle="tab" aria-expanded="false" id="recursos">Recursos</a></li>
+                    <?php /*<li><a href="" data-toggle="tab" aria-expanded="false" id="recursos">Recursos</a></li>*/ ?>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="calendario">Calendario</a></li>
-                    <li class="active"><a href="" data-toggle="tab" aria-expanded="true" id="index">Actividades</a></li>
+                    <li class="active"><?= Html::a('Actividades',['index-act', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
                     <li id="otid" class="pull-left header idorden" idot="<?php echo $ordentrabajo->OT_ID; ?>"> <?= Html::a('<i class="fa fa-arrow-circle-left"></i> '.$ordentrabajo->OT_NOMBRE,['orden-trabajo/indexpro', 'id'=>$ordentrabajo->PRO_ID], ['class'=>'no-padding text-blue', 'title'=>'volver a ordenes de trabajos']) ?></li>
                 </ul>
                 <div class="tab-content" id="contenido">
@@ -103,13 +102,6 @@ $script = <<< JS
     $('#inf_general').click(function(){
         var id= $('.idorden').attr('idot');
         $.get('index.php?r=orden-trabajo/info-general',{ id : id }, function(data){
-            $('#contenido').empty();
-            $('#contenido').append(data);
-        })
-    });
-    $('#avances').click(function(){
-        var id= $('.idorden').attr('idot');
-        $.get('index.php?r=reportes-avances/index',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
