@@ -106,7 +106,7 @@ use yii\helpers\ArrayHelper;
                                                         ?>
                                                     </td>
                                             <?php } ?>
-                                            <td>0</td>
+                                            <td><span class="costoxun">0</span></td>
                                             <td></td>
 
                                         <?php } ?>
@@ -142,15 +142,15 @@ $(function(){
             $(numeric).attr('disabled',true);
         }
 
-        var costo_actual = $(this).parent().parent().parent().children()[2];
+        var costo_actual = document.getElementsByClassName("costoxun");
         if(flag!=''){
             $.get('index.php?r=act-sact-asigna/get-costo-he',{ id : flag }, function(data){
                 var data = $.parseJSON(data);
 
-                $(costo_actual).text(data.HE_COSTOUNIDAD);
+                $(costo_actual[count-1]).text(data.HE_COSTOUNIDAD);
             })
         }else{
-                $(costo_actual).text(0);
+                $(costo_actual[count-1]).text(0);
         }
     });
 

@@ -34,14 +34,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <th>Fecha</th>
         <th></th>
     </tr>
-    <?php foreach ($transacciones as $transaccion) { 
+    <?php foreach ($adquiridos as $adq) { 
         foreach ($utlizados as $utilizado) {
-            if ($transaccion->TM_FECHACOMPRA < $utilizado[$contador_ut]->CU_FECHA_FINAL) { ?>
+            if ($adq->AD_FECHA < $utilizado[$contador_ut]->CU_FECHA_FINAL) { ?>
                 <tr>
-                    <td><?= $transaccion->tM->sM->oT->OT_NOMBRE ?></td>
-                    <td><?= $transaccion->mA->MA_NOMBRE ?></td>
-                    <td><?= $transaccion->tM->TM_CANTIDAD ?></td>
-                    <td><?= $transaccion->tM->TM_FECHACOMPRA ?></td>
+                    <td><?= $adq->sM->oT->OT_NOMBRE ?></td>
+                    <td><?= $adq->mA->MA_NOMBRE ?></td>
+                    <td><?= $adq->AD_CANTIDAD ?></td>
+                    <td><?= $adq->AD_FECHA ?></td>
                     <?php break; ?>
                 </tr>
         <?php }else{ ?>

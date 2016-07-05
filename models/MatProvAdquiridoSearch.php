@@ -58,7 +58,7 @@ class MatProvAdquiridoSearch extends MatProvAdquirido
             'AD_ID' => $this->AD_ID,
             'PROV_ID' => $this->PROV_ID,
             'MA_ID' => $this->MA_ID,
-            'TM_ID' => $this->TM_ID,
+            'SM_ID' => $this->SM_ID,
         ]);
 
         return $dataProvider;

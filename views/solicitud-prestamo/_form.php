@@ -17,15 +17,68 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
 
-    <?= $form->field($model, 'PE_RUT')->dropDownList(
-    ArrayHelper::map(Persona::find()->all(),'PE_RUT','PE_NOMBRES'),
-    ['prompt'=>'Selecciona una persona']
-    ) ?>
+
+<div class="box">
+    <div class="box-body">
+        <?= $form->field($model, 'PE_RUT')->dropDownList(
+        ArrayHelper::map(Persona::find()->all(),'PE_RUT','PE_NOMBRES'),
+        ['prompt'=>'Selecciona una persona']
+        ) ?>
 
 
-    <?= $form->field($model, 'SPRE_TITULO')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'SPRE_TITULO')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'SPRE_DESCRIPCION')->textarea(['rows' => 6]) ?>
+        <?= $form->field($model, 'SPRE_DESCRIPCION')->textarea(['rows' => 6]) ?>
+
+    <table class="table talbe-bordered no-margin bg-blue">
+        <tr>
+            <th>Cantidad</th>
+            <th>Herramientas</th>
+            <th></th>
+        </tr>
+    </table>
+
+         <?php DynamicFormWidget::begin([
+            'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
+            'widgetBody' => '.container-items', // required: css class selector
+            'widgetItem' => '.item', // required: css class
+            'limit' => 10, // the maximum times, an element can be cloned (default 999)
+            'min' => 1, // 0 or 1 (default 1)
+            'insertButton' => '.add-item', // css class
+            'deleteButton' => '.remove-item', // css class
+            'model' => $prestamo[0],
+            'formId' => 'dynamic-form',
+            'formFields' => [
+                'HE_ID',
+                'SOLI_CANTIDAD',
+            ],
+        ]); ?>
+    <div class="container-items">
+            <?php foreach ($prestamo as $i => $prest) { ?>
+        <table class="table item table-bordered no-margin">
+            <tr>
+                <td>
+                    <?= $form->field($prest, "[{$i}]SOLI_CANTIDAD")->textInput(['maxlength' => true])->label(false) ?>
+                </td>
+                <td>
+                    <?= $form->field($prest, "[{$i}]HE_ID")->dropDownList(
+                    ArrayHelper::map(Herramientas::find()->all(),'HE_ID','HE_NOMBRE'),
+                    ['prompt'=>'Selecciona una herramienta']
+                    )->label(false) ?>
+                </td>
+                <td><button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
+                    <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+                </td>
+            </tr>
+        </table>
+            <?php } ?>
+    </div>
+            <?php DynamicFormWidget::end(); ?>
+    </div>
+
+</div>
+
+<?php /*
 
     <div class="panel panel-default">
         <div class="panel-heading"><h4><i class="glyphicon glyphicon-envelope"></i> Herramientas</h4></div>
@@ -66,15 +119,13 @@ use yii\helpers\ArrayHelper;
                         ?>
                         <div class="row">
                             <div class="col-sm-6">
-                                <?= $form->field($prestamo, "[{$i}]SOLI_CANTIDAD")->textInput(['maxlength' => true]) ?>
-
-
+                                <?= $form->field($prestamo, "[{$i}]SOLI_CANTIDAD")->textInput(['maxlength' => true])->label(false) ?>
                             </div>
                             <div class="col-sm-6">
                                 <?= $form->field($prestamo, "[{$i}]HE_ID")->dropDownList(
                                 ArrayHelper::map(Herramientas::find()->all(),'HE_ID','HE_NOMBRE'),
                                 ['prompt'=>'Selecciona una herramienta']
-                                ) ?>
+                                )->label(false) ?>
                             </div>
                         </div><!-- .row -->
                     </div>
@@ -83,10 +134,9 @@ use yii\helpers\ArrayHelper;
             </div>
             <?php DynamicFormWidget::end(); ?>
         </div>
-    </div>
-
+    </div>*/ ?>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

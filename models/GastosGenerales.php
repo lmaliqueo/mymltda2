@@ -8,12 +8,12 @@ use Yii;
  * This is the model class for table "gastos_generales".
  *
  * @property integer $GG_ID
- * @property integer $PRO_ID
+ * @property integer $OT_ID
  * @property string $GG_TIPO
  * @property string $GG_DESCRIPCION
  * @property integer $GG_COSTO
  *
- * @property Proyecto $pRO
+ * @property Proyecto $oT
  */
 class GastosGenerales extends \yii\db\ActiveRecord
 {
@@ -31,8 +31,8 @@ class GastosGenerales extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['PRO_ID'], 'required'],
-            [['PRO_ID', 'GG_COSTO'], 'integer'],
+            [['OT_ID'], 'required'],
+            [['OT_ID', 'GG_COSTO'], 'integer'],
             [['GG_TIPO'], 'string', 'max' => 20],
             [['GG_DESCRIPCION'], 'string', 'max' => 50]
         ];
@@ -45,7 +45,7 @@ class GastosGenerales extends \yii\db\ActiveRecord
     {
         return [
             'GG_ID' => 'ID',
-            'PRO_ID' => 'Proyecto',
+            'OT_ID' => 'Orden de Trabajo',
             'GG_TIPO' => 'Tipo de Gasto',
             'GG_DESCRIPCION' => 'Descripcion',
             'GG_COSTO' => 'Costo',
@@ -55,8 +55,8 @@ class GastosGenerales extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPRO()
+    public function getOT()
     {
-        return $this->hasOne(Proyecto::className(), ['PRO_ID' => 'PRO_ID']);
+        return $this->hasOne(OrdenTrabajo::className(), ['OT_ID' => 'OT_ID']);
     }
 }

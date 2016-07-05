@@ -27,7 +27,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         'MA_ID',
                         //'MA_NOMBRE',
                         'tMA.TMA_NOMBRE',
-                        'MA_CANTIDADTOTAL',
                         'MA_UNIDAD',
                         'MA_COSTOUNIDAD',
                     ],

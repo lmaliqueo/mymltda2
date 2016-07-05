@@ -10,10 +10,14 @@ use Yii;
  * @property integer $AL_ID
  * @property integer $BO_ID
  * @property integer $MA_ID
- * @property integer $ALM_CANTMATERIALES
+ * @property integer $OT_ID
+ * @property integer $AL_CANTIDAD
+ * @property integer $AL_CANTIDAD_DESPACHO
  *
  * @property Bodegas $bO
  * @property Materiales $mA
+ * @property OrdenTrabajo $oT 
+ * @property OdMatEspecifica[] $odMatEspecificas
  */
 class BoMatAlmacena extends \yii\db\ActiveRecord
 {
@@ -31,8 +35,11 @@ class BoMatAlmacena extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['BO_ID', 'MA_ID'], 'required'],
-            [['BO_ID', 'MA_ID', 'AL_CANTMATERIALES'], 'integer']
+            [['BO_ID', 'MA_ID', 'OT_ID'], 'required'],
+            [['BO_ID', 'MA_ID', 'OT_ID', 'AL_CANTIDAD', 'AL_CANTIDAD_DESPACHO'], 'integer'],
+            [['BO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Bodegas::className(), 'targetAttribute' => ['BO_ID' => 'BO_ID']],
+            [['MA_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Materiales::className(), 'targetAttribute' => ['MA_ID' => 'MA_ID']],
+            [['OT_ID'], 'exist', 'skipOnError' => true, 'targetClass' => OrdenTrabajo::className(), 'targetAttribute' => ['OT_ID' => 'OT_ID']],
         ];
     }
 
@@ -45,7 +52,9 @@ class BoMatAlmacena extends \yii\db\ActiveRecord
             'AL_ID' => 'ID',
             'BO_ID' => 'Bodega',
             'MA_ID' => 'Material',
-            'AL_CANTMATERIALES' => 'Cantidad Material',
+            'OT_ID' => 'Orden de Trabajo',
+            'AL_CANTIDAD' => 'Cantidad',
+            'AL_CANTIDAD_DESPACHO' => 'Cantidad Despacho',
         ];
     }
 
@@ -64,4 +73,21 @@ class BoMatAlmacena extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Materiales::className(), ['MA_ID' => 'MA_ID']);
     }
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getOT() 
+    { 
+        return $this->hasOne(OrdenTrabajo::className(), ['OT_ID' => 'OT_ID']); 
+    }
+    
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getOdMatEspecificas() 
+    { 
+        return $this->hasMany(OdMatEspecifica::className(), ['AL_ID' => 'AL_ID']); 
+    } 
+
 }

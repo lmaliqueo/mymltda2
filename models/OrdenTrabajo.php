@@ -18,6 +18,8 @@ use Yii;
  * @property string $OT_INFORME
  *
  * @property Actividades[] $actividades
+ * @property BoMatAlmacena[] $boMatAlmacenas 
+ * @property GastosGenerales[] $gastosGenerales 
  * @property Proyecto $pRO
  * @property ReportesAvances[] $reportesAvances
  * @property StockMateriales[] $stockMateriales
@@ -73,6 +75,22 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
         return $this->hasMany(Actividades::className(), ['OT_ID' => 'OT_ID']);
     }
 
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getBoMatAlmacenas() 
+    { 
+        return $this->hasMany(BoMatAlmacena::className(), ['OT_ID' => 'OT_ID']); 
+    } 
+ 
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getGastosGenerales() 
+    { 
+        return $this->hasMany(GastosGenerales::className(), ['OT_ID' => 'OT_ID']); 
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */

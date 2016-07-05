@@ -31,19 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
         <th>Material</th>
         <th>Cantidad</th>
         <th>Costo</th>
-        <?php /*<th>Enviado</th>*/ ?>
+        <th>Bodega</th>
         <th>Fecha</th>
+        <th>Orden de Compra</th>
         <th>Proveedor</th>
     </tr>
-    <?php foreach ($transacciones as $transaccion) { ?>
+    <?php foreach ($adquisicion as $adq) { ?>
         <tr>
-            <td><?= $transaccion->tM->sM->oT->OT_NOMBRE ?></td>
-            <td><?= $transaccion->mA->MA_NOMBRE ?></td>
-            <td><?= $transaccion->tM->TM_CANTIDAD ?></td>
-            <td><?= $transaccion->tM->TM_COSTO ?></td>
-            <?php /*<td><?= $transaccion->tM ?></td>*/ ?>
-            <td><?= $transaccion->tM->TM_FECHACOMPRA ?></td>
-            <td><?= $transaccion->pROV->PROV_NOMBRE ?></td>
+            <td><?= $adq->sM->oT->OT_NOMBRE ?></td>
+            <td><?= $adq->mA->MA_NOMBRE ?></td>
+            <td><?= $adq->AD_CANTIDAD ?></td>
+            <td><?= $adq->AD_COSTO_TOTAL ?></td>
+            <td><?= $adq->bO->BO_NOMBRE ?></td>
+            <td><?= $adq->AD_FECHA ?></td>
+            <td><?= $adq->oRC->ORC_NUMERO_ORDEN ?></td>
+            <td><?= $adq->oRC->pROV->PROV_NOMBRE ?></td>
         </tr>
     <?php } ?>
 </table>

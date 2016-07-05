@@ -16,8 +16,9 @@ use Yii;
  * @property integer $MA_COSTOUNIDAD
  *
  * @property BoMatAlmacena[] $boMatAlmacenas
- * @property MatProvAdquirido[] $matProvAdquiridos
- * @property SactMatConsume[] $sactMatConsumes
+ * @property MatOrcAdquirido[] $matOrcAdquiridos
+ * @property MaterialAsignado[] $materialAsignados 
+ * @property TipoMaterial $tMA 
  * @property StockMateriales[] $stockMateriales
  */
 class Materiales extends \yii\db\ActiveRecord
@@ -37,9 +38,8 @@ class Materiales extends \yii\db\ActiveRecord
     {
         return [
             [['TMA_ID','MA_ID'], 'required'],
-            [['MA_ID','TMA_ID', 'MA_CANTIDADTOTAL', 'MA_MEDIDA', 'MA_COSTOUNIDAD'], 'integer'],
+            [['MA_ID','TMA_ID', 'MA_COSTOUNIDAD'], 'integer'],
             [['MA_NOMBRE', 'MA_UNIDAD'], 'string', 'max' => 50],
-            [['MA_TIPOMATERIALES'], 'string', 'max' => 20],
             [['TMA_ID'], 'exist', 'skipOnError' => true, 'targetClass' => TipoMaterial::className(), 'targetAttribute' => ['TMA_ID' => 'TMA_ID']],
         ];
     }
@@ -53,9 +53,7 @@ class Materiales extends \yii\db\ActiveRecord
             'MA_ID' => 'ID',
             'TMA_ID' => 'Tipo de Material',
             'MA_NOMBRE' => 'Descripción',
-            'MA_CANTIDADTOTAL' => 'Cantidad Total',
             'MA_UNIDAD' => 'Unidad',
-            'MA_MEDIDA' => 'Medida',
             'MA_COSTOUNIDAD' => 'Costo por Unidad',
         ];
     }
@@ -71,9 +69,9 @@ class Materiales extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMatProvAdquiridos()
+    public function getMatOrcAdquiridos()
     {
-        return $this->hasMany(MatProvAdquirido::className(), ['MA_ID' => 'MA_ID']);
+        return $this->hasMany(MatOrcAdquirido::className(), ['MA_ID' => 'MA_ID']);
     }
 
     /**

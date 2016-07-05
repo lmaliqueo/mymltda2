@@ -14,10 +14,10 @@ use Yii;
  * @property string $SM_ESTADO
  *
  * @property CantidadUtilizada[] $cantidadUtilizadas
+ * @property MatOrcAdquirido[] $matOrcAdquiridos 
  * @property PedidoAdjunta[] $pedidoAdjuntas
  * @property OrdenTrabajo $oT
  * @property Materiales $mA
- * @property TransaccionMateriales[] $transaccionMateriales
  */
 class StockMateriales extends \yii\db\ActiveRecord
 {
@@ -63,6 +63,14 @@ class StockMateriales extends \yii\db\ActiveRecord
         return $this->hasMany(CantidadUtilizada::className(), ['SM_ID' => 'SM_ID']);
     }
 
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getMatOrcAdquiridos() 
+    { 
+        return $this->hasMany(MatOrcAdquirido::className(), ['SM_ID' => 'SM_ID']); 
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -85,13 +93,5 @@ class StockMateriales extends \yii\db\ActiveRecord
     public function getMA()
     {
         return $this->hasOne(Materiales::className(), ['MA_ID' => 'MA_ID']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTransaccionMateriales()
-    {
-        return $this->hasMany(TransaccionMateriales::className(), ['SM_ID' => 'SM_ID']);
     }
 }

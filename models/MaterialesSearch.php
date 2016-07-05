@@ -18,8 +18,8 @@ class MaterialesSearch extends Materiales
     public function rules()
     {
         return [
-            [['MA_ID', 'MA_CANTIDADTOTAL', 'MA_MEDIDA', 'MA_COSTOUNIDAD'], 'integer'],
-            [['TMA_ID', 'MA_NOMBRE', 'MA_UNIDAD', 'MA_TIPOMATERIALES'], 'safe'],
+            [['MA_ID', 'MA_COSTOUNIDAD'], 'integer'],
+            [['TMA_ID', 'MA_NOMBRE', 'MA_UNIDAD'], 'safe'],
         ];
     }
 
@@ -61,8 +61,6 @@ class MaterialesSearch extends Materiales
         // grid filtering conditions
         $query->andFilterWhere([
             'MA_ID' => $this->MA_ID,
-            'MA_CANTIDADTOTAL' => $this->MA_CANTIDADTOTAL,
-            'MA_MEDIDA' => $this->MA_MEDIDA,
             'MA_COSTOUNIDAD' => $this->MA_COSTOUNIDAD,
         ]);
 

@@ -15,6 +15,7 @@ use Yii;
  *
  * @property BoMatAlmacena[] $boMatAlmacenas
  * @property Herramientas[] $herramientas
+ * @property MatOrcAdquirido[] $matOrcAdquiridos 
  */
 class Bodegas extends \yii\db\ActiveRecord
 {
@@ -66,4 +67,13 @@ class Bodegas extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Herramientas::className(), ['BO_ID' => 'BO_ID']);
     }
+         
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getMatOrcAdquiridos() 
+    { 
+        return $this->hasMany(MatOrcAdquirido::className(), ['BO_ID' => 'BO_ID']); 
+    }
 }
+

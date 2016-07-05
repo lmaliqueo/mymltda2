@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = 'Materiales';
    </p>
 <?php 
     Modal::begin([
-            'header'=>'<h4>Nuevo Material</h4>',
+            'header'=>'<h4>Orden de Compra</h4>',
             'id'=>'modal',
             'size'=>'modal-lg',
         ]);
@@ -46,8 +46,9 @@ $this->params['breadcrumbs'][] = 'Materiales';
 
 <div class="row">
     <div class="col-md-3">
+        <?= Html::button('Ingresar Orden de Compra',['value'=>Url::to(['ingresar-adquisiciones','id'=>$proyecto->PRO_ID]),'class'=>'btn btn-flat btn-primary btn-block margin-bottom modalView']) ?>
         <div class="otbutton">
-            <?= Html::button('Ingresar Material', ['value'=>Url::to(['crear-transaccion','id'=>$proyecto->PRO_ID]),'class'=> 'btn btn-success btn-block margin-bottom botonmodal','id'=>'modalButton']) ?>
+            <?= Html::button('Crear Orden de Despacho', ['value'=>Url::to(['crear-despacho-mat','id'=>$proyecto->PRO_ID]),'class'=> 'btn btn-warning btn-block margin-bottom btn-flat botonmodal modalView']) ?>
         </div>
 
         <div class="box box-solid">
@@ -76,9 +77,9 @@ $this->params['breadcrumbs'][] = 'Materiales';
             <dic class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active"><?= Html::a('Stock',['materiales-pro', 'id'=>$proyecto->PRO_ID]) ?></li>
-                    <li><a href="" data-toggle="tab" aria-expanded="false" id="transacciones">Transacciones</a></li>
-                    <li><a href="" data-toggle="tab" aria-expanded="false" id="movimientos">Movimientos</a></li>
                     <li><a href="asd" data-toggle="tab" aria-expanded="false" id="bodega">Bodega</a></li>
+                    <li><a href="" data-toggle="tab" aria-expanded="false" id="adquisicion">Adquisiciones</a></li>
+                    <li><a href="" data-toggle="tab" aria-expanded="false" id="movimientos">Movimientos</a></li>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="pedidos">Pedidos</a></li>
                 </ul>
                 <div class="tab-content" id="contenido">
@@ -99,9 +100,9 @@ $this->params['breadcrumbs'][] = 'Materiales';
 
 <?php 
 $script = <<< JS
-    $('#transacciones').click(function(){
+    $('#adquisicion').click(function(){
         var id= $proyecto->PRO_ID;
-        $.get('index.php?r=materiales/transacciones-pro',{ id : id }, function(data){
+        $.get('index.php?r=materiales/adquisicion-pro',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })

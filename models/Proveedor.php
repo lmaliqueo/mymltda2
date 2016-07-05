@@ -18,7 +18,7 @@ use Yii;
  * @property string $PROV_EMAIL
  * @property integer $PROV_CONTACTO
  *
- * @property MatProvAdquirido[] $matProvAdquiridos
+ * @property OrdenCompra[] $ordenCompras
  */
 class Proveedor extends \yii\db\ActiveRecord
 {
@@ -64,8 +64,8 @@ class Proveedor extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getMatProvAdquiridos()
+    public function getOrdenCompras()
     {
-        return $this->hasMany(MatProvAdquirido::className(), ['PROV_ID' => 'PROV_ID']);
+        return $this->hasMany(OrdenCompra::className(), ['PROV_ID' => 'PROV_ID']);
     }
 }

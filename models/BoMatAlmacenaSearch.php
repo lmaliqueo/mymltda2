@@ -18,7 +18,7 @@ class BoMatAlmacenaSearch extends BoMatAlmacena
     public function rules()
     {
         return [
-            [['AL_ID', 'BO_ID', 'MA_ID', 'AL_CANTMATERIALES'], 'integer'],
+            [['AL_ID', 'BO_ID', 'MA_ID', 'OT_ID', 'AL_CANTMATERIALES'], 'integer'],
         ];
     }
 
@@ -57,6 +57,7 @@ class BoMatAlmacenaSearch extends BoMatAlmacena
         $query->andFilterWhere([
             'AL_ID' => $this->AL_ID,
             'BO_ID' => $this->BO_ID,
+            'OT_ID' => $this->BO_ID,
             'MA_ID' => $this->MA_ID,
             'AL_CANTMATERIALES' => $this->AL_CANTMATERIALES,
         ]);

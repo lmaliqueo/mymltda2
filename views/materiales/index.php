@@ -94,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute'=>'TMA_ID',
                         'value'=>'tMA.TMA_NOMBRE',
                     ],
-                    'MA_CANTIDADTOTAL',
+                    //'MA_CANTIDADTOTAL',
                     'MA_UNIDAD',
                     //'MA_MEDIDA',
                     'MA_COSTOUNIDAD',
