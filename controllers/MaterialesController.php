@@ -367,6 +367,7 @@ class MaterialesController extends Controller
                                 $stock_new->MA_ID=$adquisicion->MA_ID;
                                 $stock_new->OT_ID = $stock->OT_ID;
                                 $stock_new->SM_CANTIDAD= $adquisicion->AD_CANTIDAD;
+                                print_r($stock_new->getErrors());
                                 $stock_new->save();
                                 $adquisicion->SM_ID = $stock_new->SM_ID;
                             }
