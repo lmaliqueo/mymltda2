@@ -27,37 +27,16 @@ $this->params['breadcrumbs'][] = $this->title;
   <?php /*    <h1><?= Html::encode($this->title) ?></h1>
   echo $this->render('_search', ['model' => $searchModel]);*/ ?>
 
-        <?php if($cargo==4){ ?>
-            <h1>Mano de Obra</h1>
-            <p>            
-                <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Registrar obrero', ['value'=>Url::to('index.php?r=persona/create-obrero'),'class'=> 'btn btn-success','id'=>'modalButton']) ?>
-            </p>
-        <?php }elseif($cargo==3){ ?>
-            <h1>Encargado de Construcción</h1>
-            <p>
-                <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Registrar Encargado', ['value'=>Url::to('index.php?r=persona/create'),'class'=> 'btn btn-success','id'=>'modalButton']) ?>
-            </p>
-        <?php } ?>
-
+                <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Registrar Persona', ['value'=>Url::to('index.php?r=persona/create'),'class'=> 'btn btn-success btn-flat margin-bottom','id'=>'modalButton']) ?>
 
 <?php 
-    if($cargo==4){
-        Modal::begin([
-                'header'=>'<h4>Obrero</h4>',
-                'id'=>'modal',
-                'size'=>'modal-lg',
-            ]);
-        echo "<div class='modalContent'></div>";
-        Modal::end();
-    }else{
-        Modal::begin([
-                'header'=>'<h4>Persona</h4>',
-                'id'=>'modal',
-                'size'=>'modal-lg',
-            ]);
-        echo "<div class='modalContent'></div>";
-        Modal::end();
-    }
+    Modal::begin([
+            'header'=>'<h4>Persona</h4>',
+            'id'=>'modal',
+            'size'=>'modal-lg',
+        ]);
+    echo "<div class='modalContent'></div>";
+    Modal::end();
  ?>
 
 
@@ -65,37 +44,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-    'summary'=>'',
+        'summary'=>'',
         'filterModel' => $searchModel,
         'columns' => [
-            [                'class' => 'kartik\grid\ExpandRowColumn',
-                'value' => function ($model, $key, $index, $column){
-                    return GridView::ROW_COLLAPSED;
-                },
-                'detail' => function ($model, $key, $index, $column){
-                    $trabaja= ManodeobraTrabajan::find()->where(['PE_RUT'=>$model->PE_RUT])->asArray()->all();
-                    $actividades= Actividades::find()->where(['AC_ID'=>$trabaja, 'AC_ESTADO'=>'En Proceso'])->all();
-                    $contrato= ContratoObrero::find()->where(['PE_RUT'=>$model->PE_RUT])->orderBy(['COO_ID' => SORT_DESC,])->one();
-                    if($contrato!=NULL){
-                        $sueldo= SueldoObrero::find()->where(['COO_ID'=>$contrato->COO_ID])->orderBy(['SU_ID' => SORT_DESC,])->one();
-                        return Yii::$app->controller->renderPartial('expandobrero', [
-                                'actividades' => $actividades,
-                                'model' => $model,
-                                'contrato' => $contrato,
-                                'sueldo' => $sueldo,
-                            ]);
-                    }else{
-                        return Yii::$app->controller->renderPartial('expandobrero', [
-                                'actividades' => $actividades,
-                                'model' => $model,
-                                'contrato' => $contrato,
-                             ]);
-                   }
-                },
-            ],
+            ['class' => 'yii\grid\SerialColumn'],
 
             'PE_RUT',
-            //'cA.CA_NOMBRECARGO',
+            'cA.CA_NOMBRECARGO',
             'PE_NOMBRES',
             'PE_APELLIDOPAT',
             'PE_APELLIDOMAT',

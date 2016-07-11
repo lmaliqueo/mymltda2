@@ -62,10 +62,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'filterModel' => $searchModel,
-        'summary'=>'',
+                    'summary'=>'',
                     //'summary' => "asd {begin} - {end} of {totalCount} items",
                     'columns' => [
-                                //['class' => 'yii\grid\SerialColumn'],
+                                ['class' => 'yii\grid\SerialColumn'],
         /*
                         [                'class' => 'kartik\grid\ExpandRowColumn',
                             'value' => function ($model, $key, $index, $column){

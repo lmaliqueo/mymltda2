@@ -100,7 +100,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($contrato!=NULL) {
                         return $contrato->tOB->TOB_NOMBRE;
                     }else{
-                        return '<span class="bg-light-red">Sin contrato</span>';
+                        return '<span class="not-set">Sin contrato</span>';
                     }
                 }                
             ],
@@ -112,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     if ($contrato!=NULL) {
                         return $contrato->pRO->PRO_NOMBRE;
                     }else{
-                        return '<span class="bg-light-red">Sin contrato</span>';
+                        return '<span class="not-set">Sin contrato</span>';
                     }
                 }                
             ],
@@ -121,11 +121,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>'raw',
                 'value' => function($data){
                     $contrato = ContratoObrero::find()->where(['PE_RUT'=>$data->PE_RUT])->orderBy(['COO_ID'=>SORT_DESC])->one();
-                    $sueldo = SueldoObrero::find()->where(['COO_ID'=>$contrato->COO_ID])->orderBy(['SU_ID'=>SORT_DESC])->one();
-                    if ($sueldo!=NULL) {
-                        return $sueldo->SU_CANTIDAD;
+                    if ($contrato!=NULL) {
+                        $sueldo = SueldoObrero::find()->where(['COO_ID'=>$contrato->COO_ID])->orderBy(['SU_ID'=>SORT_DESC])->one();
+                        if ($sueldo!=NULL) {
+                            return '$ '.$sueldo->SU_CANTIDAD;
+                        }else{
+                            return '<span class="not-set">Sin Sueldo<span>';
+                        }
                     }else{
-                        return '-';
+                        return '<span class="not-set">Sin Contrato<span>';
                     }
                 }
             ],
@@ -136,17 +140,21 @@ $this->params['breadcrumbs'][] = $this->title;
             //'PE_TELEFONO',
 
             ['class' => 'yii\grid\ActionColumn',
-                'header'=>'Acciones',
-                'template'=>'{obrero} {contrato} {trabajos}',
+                'template'=>'{contrato} {trabajos}',
                 'buttons' => [
-                    'obrero' => function ($url,$model) {
-                        return Html::button('Ver Obrero', ['value'=>Url::to('index.php?r=persona/view'),'class'=> 'btn btn-warning btn-flat btn-sm modalView',]);
-                    },
                     'contrato' => function ($url,$model) {
-                        return Html::button('Contratos', ['value'=>Url::to(['persona/ver-contrato-ob', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-primary btn-flat btn-sm modalViewTn',]);
+                        $contrato = ContratoObrero::find()->where(['PE_RUT'=>$model->PE_RUT])->one();
+                        if($contrato!=NULL){
+                            return Html::button('Ver Contrato', ['value'=>Url::to(['persona/ver-contrato-ob', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-warning btn-flat btn-sm modalViewTn',]);
+                        }else{
+                            return Html::button('Ingresar Contrato', ['value'=>Url::to(['persona/crear-contrato-ob', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-success btn-flat btn-sm modalViewTn',]);
+                        }
                     },
                     'trabajos' => function ($url,$model) {
-                        return Html::button('Proyecto', ['value'=>Url::to('index.php?r=persona/create-obrero'),'class'=> 'btn btn-primary btn-flat btn-sm modalView',]);
+                        $contrato = ContratoObrero::find()->where(['PE_RUT'=>$model->PE_RUT])->one();
+                        if($contrato!=NULL){
+                            return Html::button('Proyecto', ['value'=>Url::to(['ver-proyecto', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-primary btn-flat btn-sm modalViewTn',]);
+                        }
                     },
                 ],
             ],

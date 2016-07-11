@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'PRO_NOMBRE',
                         [
                             'label'=>'Cliente',
-                            'attribute'=>'EMP_RAZON',
+                            'attribute'=>'EMP_RUT',
                             'value'=>'eMPRUT.EMP_RAZON',
                         ],
                         [

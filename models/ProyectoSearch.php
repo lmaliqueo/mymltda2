@@ -58,6 +58,7 @@ class ProyectoSearch extends Proyecto
         }
 
         $query->joinWith('cOM');
+        $query->joinWith('eMPRUT');
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -68,7 +69,7 @@ class ProyectoSearch extends Proyecto
             'PRO_DIRECCION' => $this->PRO_DIRECCION,
         ]);
 
-        $query->andFilterWhere(['like', 'EMP_RUT', $this->EMP_RUT])
+        $query->andFilterWhere(['like', 'empresa-cliente.EMP_RUT', $this->EMP_RUT])
             ->andFilterWhere(['like', 'PRO_NOMBRE', $this->PRO_NOMBRE])
             ->andFilterWhere(['like', 'PRO_OBSERVACIONES', $this->PRO_OBSERVACIONES])
             ->andFilterWhere(['like', 'PRO_DESCRIPCION', $this->PRO_DESCRIPCION])

@@ -56,14 +56,23 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
     'summary'=>'',
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
 
             'PE_RUT',
             //'cA.CA_NOMBRECARGO',
-            'PE_NOMBRES',
-            'PE_APELLIDOPAT',
-            'PE_APELLIDOMAT',
+            //'PE_NOMBRES',
+            //'PE_APELLIDOPAT',
+            [
+                'label'=>'Nombre',
+                'attribute'=>'PE_NOMBRES',
+                'format'=>'raw',
+                'value' => function($data){
+                    return $data->PE_NOMBRES.' '.$data->PE_APELLIDOPAT.' '.$data->PE_APELLIDOMAT;
+                }
+            ],
+            //'PE_APELLIDOMAT',
             'PE_TELEFONO',
 
             ['class' => 'yii\grid\ActionColumn',

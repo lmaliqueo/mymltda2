@@ -18,27 +18,25 @@ use yii\helpers\ArrayHelper;
     <?php $form = ActiveForm::begin(); ?>
 
 
-    <div class="row">
-        <div class="col-md-6">
-                <label class="control-label">Actual</label>
+            
+    <table class="table table-striped">
+        <tr>
             <?php if ($ult_sueldo!=NULL) { ?>
-                <h4 class="text-blue"><strong>$<?= $ult_sueldo->SU_CANTIDAD ?></strong></h4> 
-                <p><span class="glyphicon glyphicon glyphicon-calendar" aria-hidden="true"></span> <?= $ult_sueldo->SU_FECHA ?></p>
+                <th>Actual: </th>
+                <th class="text-blue">$ <?= $ult_sueldo->SU_CANTIDAD ?></th>
             <?php }else{ ?>
-                <p>sin sueldo</p>
+                <th>Actual: </th>
+                <td><span class="not-set">Sin sueldo</span></td>
             <?php } ?>
-        </div>
-        <div class="col-md-6">
-            <label class="control-label">Nuevo</label> 
-            <?= $form->field($model, 'SU_CANTIDAD')->textInput(['maxlength' => true, 'min'=>'0', 'type' => 'number'])->label(false) ?>
-        </div>
-    </div>
+        </tr>
+        <tr>
+            <th>Nuevo: </th>
+            <td><?= $form->field($model, 'SU_CANTIDAD')->textInput(['maxlength' => true, 'min'=>'0', 'type' => 'number', 'class'=>'input-group-sm'])->label(false) ?></td>
+        </tr>
+    </table>
 
-<div class="modal-footer">
+
     <div class="form-group no-margin">
         <?= Html::submitButton($model->isNewRecord ? 'Ingresar' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-</div>
     <?php ActiveForm::end(); ?>
-
-</div>

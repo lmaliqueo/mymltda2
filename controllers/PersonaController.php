@@ -315,9 +315,9 @@ class PersonaController extends Controller
 
     }
 
-    protected function viewCalendario($id, $asignados){
-        $fechaactual= date('Y-m-d');
-        $actividades= Actividades::find()->where(['OT_ID'=>$id])->all();
+    protected function viewCalendario(/*$id, $asignados*/$actividades){
+        //$fechaactual= date('Y-m-d');
+        //$actividades= Actividades::find()->where(['OT_ID'=>$id])->all();
         $arreglo=[];
         foreach ($actividades as $actividad) {
 
@@ -380,6 +380,41 @@ class PersonaController extends Controller
             'contrato' => $contrato,
             'sueldo' => $sueldo,
         ]);
+
+    }
+    public function actionCrearContratoOb($rut)
+    {
+        $obrero= Persona::findOne($rut);
+        $contrato = new ContratoObrero();
+        $sueldo = new SueldoObrero();
+        $contrato->COO_FECHA = date('Y-m-d');
+        if ($contrato->load(Yii::$app->request->post()) && $sueldo->load(Yii::$app->request->post())) {
+
+            $contrato->PE_RUT=$obrero->PE_RUT;
+            $contrato->save();
+            $sueldo->SU_FECHA= date('Y-m-d');
+            $sueldo->COO_ID=$contrato->COO_ID;
+            $sueldo->save();
+            return $this->redirect(['index-obrero', 'id' => $obrero->PE_RUT]);
+
+        } else {
+            return $this->renderAjax('_contrato', [
+                'obrero' => $obrero,
+                'contrato' => $contrato,
+                'sueldo' => $sueldo,
+            ]);
+        }
+    }
+    public function actionVerProyecto($rut)
+    {
+        $obrero = $this->findModel($rut);
+        $array_asignados = ManodeobraTrabajan::find()->select('AC_ID')->where(['PE_RUT'=>$rut])->asArray()->all();
+        $actividades = Actividades::find()->where(['AC_ID'=>$array_asignados])->all();
+        $arreglo = $this->viewCalendario($actividades);
+        return $this->renderAjax('calendario', [
+            'events' => $arreglo,
+        ]);
+
 
     }
 
