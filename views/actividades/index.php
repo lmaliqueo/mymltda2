@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = 'Actividades';*/
                     <?= GridView::widget([
     'summary'=>'',
                         'dataProvider' => $dataProvider,
-                        'filterModel' => $searchModel,
+                        //'filterModel' => $searchModel,
                         'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
 
@@ -66,13 +66,26 @@ $this->params['breadcrumbs'][] = 'Actividades';*/
                                 'attribute'=>'AC_NOMBRE',
                                 'format'=>'raw',
                                 'value' => function($data){
-                                    return Html::a($data->AC_NOMBRE, '#', ['class'=>'modalView text-muted', 'idact'=>$data->AC_ID]);
+                                    return Html::a('<i class="fa fa-eye"></i> '.$data->AC_NOMBRE, '#', ['class'=>'modalView text-muted', 'idact'=>$data->AC_ID, 'title'=>'Ver Actividad']);
                                 }
                             ],
-                            'AC_NOMBRE',
                             'AC_FECHA_INICIO:date',
                             'AC_FECHA_TERMINO:date',
                             'AC_ESTADO',
+                            [
+                                //'label'=>'N',
+                                'attribute'=>'AC_ESTADO',
+                                'format'=>'raw',
+                                'value' => function($data){
+                                    if ($data->AC_ESTADO == 'Pendiente') {
+                                        return '<span class="label label-warning">'.$data->AC_ESTADO.'</span>';
+                                    }elseif ($data->AC_ESTADO == 'En proceso') {
+                                        return '<span class="label label-primary">'.$data->AC_ESTADO.'</span>';
+                                    }elseif ($data->AC_ESTADO == 'Finalizado') {
+                                        return '<span class="label label-success">'.$data->AC_ESTADO.'</span>';
+                                    }
+                                }
+                            ],
                             'AC_COSTO_TOTAL',
 
                             ['class' => 'yii\grid\ActionColumn',

@@ -34,12 +34,10 @@ use app\models\StockMateriales;
     Modal::end();
  ?>
 
-<br>
-
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
         'summary'=>'',
-                'filterModel' => $searchModel,
+                //'filterModel' => $searchModel,
                 'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
                 /*    [                'class' => 'kartik\grid\ExpandRowColumn',
@@ -67,7 +65,7 @@ use app\models\StockMateriales;
                 'attribute'=>'MA_ID',
                 'format'=>'raw',
                 'value' => function($data){
-                    return Html::a($data->MA_NOMBRE, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['materiales/view','id'=>$data->MA_ID])]);
+                    return Html::a($data->mA->MA_NOMBRE, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['materiales/view','id'=>$data->MA_ID])]);
                 }
             ],
                     //'MA_ID',

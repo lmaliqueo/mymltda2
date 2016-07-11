@@ -7,6 +7,7 @@ use app\models\Persona;
 use app\models\PersonaSearch;
 use app\models\ManodeobraTrabajan;
 use app\models\Actividades;
+use app\models\Cargo;
 use app\models\ActSactAsigna;
 use app\models\ContratoObrero;
 use app\models\SueldoObrero;
@@ -14,6 +15,8 @@ use app\models\OrdenTrabajo;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+use yii\helpers\Json;
 
 /**
  * PersonaController implements the CRUD actions for Persona model.
@@ -54,7 +57,19 @@ class PersonaController extends Controller
         $searchModel->CA_ID = 4;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+
+        $cargo_obrero = Cargo::find()->where(['CA_NOMBRECARGO'=>'Mano de Obra'])->one();
+        $searchModel = new Persona();
+        $dataProvider = new ActiveDataProvider([
+            'query' => Persona::find()->
+                where(['CA_ID'=>$cargo_obrero->CA_ID]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+
+
+        return $this->render('index_obrero', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'cargo'=> $cargo,
@@ -354,4 +369,18 @@ class PersonaController extends Controller
             ]);
         }
     }
+
+    public function actionVerContratoOb($rut)
+    {
+        $obrero= Persona::findOne($rut);
+        $contrato = ContratoObrero::find()->where(['PE_RUT'=>$rut])->orderBy(['COO_ID'=>SORT_DESC])->one();
+        $sueldo = SueldoObrero::find()->where(['COO_ID'=>$contrato->COO_ID])->orderBy(['SU_ID'=>SORT_DESC])->one();
+        return $this->renderAjax('view_contrato_ob', [
+            'obrero' => $obrero,
+            'contrato' => $contrato,
+            'sueldo' => $sueldo,
+        ]);
+
+    }
+
 }

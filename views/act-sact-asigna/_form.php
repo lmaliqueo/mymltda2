@@ -124,20 +124,15 @@ $script = <<< JS
                 $('#actsactasigna-as_costototal').attr('value',data.SACT_COSTO);
                 $('#actsactasigna-as_cantidad').attr('value',1);
             })
-            $.get('index.php?r=act-sact-asigna/get-costo',{ id : subactividadID }, function(data){
-                var data = $.parseJSON(data);
-                $('#actsactasigna-as_costototal').attr('value',data.SACT_COSTO);
-                $('#actsactasigna-as_cantidad').attr('value',1);
-            })
             $.get('index.php?r=act-sact-asigna/get-subactividad',{ id : subactividadID }, function(data){
                  $('#subactividad').empty();
                 $('#subactividad').append(data);
             })
         }else{
 
-                $('#actsactasigna-as_cantidad').attr('value',0);
-                $('#actsactasigna-as_costototal').attr('value',0);
-                 $('#subactividad').empty();
+            $('#actsactasigna-as_cantidad').attr('value',0);
+            $('#actsactasigna-as_costototal').attr('value',0);
+            $('#subactividad').empty();
        }
     });
 

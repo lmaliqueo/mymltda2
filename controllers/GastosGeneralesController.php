@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\GastosGenerales;
 use app\models\Proyecto;
+use app\models\OrdenTrabajo;
 use app\models\GastosGeneralesSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -34,11 +35,12 @@ class GastosGeneralesController extends Controller
      */
     public function actionIndex($id)
     {
+        $array_ot= OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$id])->asArray()->all();
         $searchModel = new GastosGeneralesSearch();
         //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider = new ActiveDataProvider([
             'query' => GastosGenerales::find()->
-                where(['PRO_ID'=>$id]),
+                where(['OT_ID'=>$array_ot]),
             'pagination' => [
                 'pageSize' => 20,
             ],

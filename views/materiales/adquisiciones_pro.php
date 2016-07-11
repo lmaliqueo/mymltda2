@@ -25,15 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
     Modal::end();
  ?>
 
-<table class="table table-hover">
-    <tr class="bg-blue">
-        <th>Orden de Trabajo</th>
+<table class="table table-hover table-bordered">
+    <tr class="warning">
+        <th>O. Trabajo</th>
         <th>Material</th>
         <th>Cantidad</th>
         <th>Costo</th>
         <th>Bodega</th>
         <th>Fecha</th>
-        <th>Orden de Compra</th>
+        <th>O.C.</th>
+        <th>Estado</th>
         <th>Proveedor</th>
     </tr>
     <?php foreach ($adquisicion as $adq) { ?>
@@ -42,9 +43,12 @@ $this->params['breadcrumbs'][] = $this->title;
             <td><?= $adq->mA->MA_NOMBRE ?></td>
             <td><?= $adq->AD_CANTIDAD ?></td>
             <td><?= $adq->AD_COSTO_TOTAL ?></td>
-            <td><?= $adq->bO->BO_NOMBRE ?></td>
+            <td><?php if ($adq->BO_ID!=NULL) {
+                echo $adq->bO->BO_NOMBRE;
+            } ?></td>
             <td><?= $adq->AD_FECHA ?></td>
             <td><?= $adq->oRC->ORC_NUMERO_ORDEN ?></td>
+            <td><?= $adq->oRC->ORC_ESTADO ?></td>
             <td><?= $adq->oRC->pROV->PROV_NOMBRE ?></td>
         </tr>
     <?php } ?>

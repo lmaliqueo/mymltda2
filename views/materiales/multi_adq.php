@@ -15,9 +15,13 @@ use wbraganca\dynamicform\DynamicFormWidget;
 /* @var $this yii\web\View */
 /* @var $model app\models\MatProvAdquirido */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->title=$proyecto->PRO_NOMBRE;
+
 ?>
 
-
+<h1>Crear Orden de Compra</h1>
+<br>
 <div class="materiales-form">
 
 
@@ -43,10 +47,6 @@ use wbraganca\dynamicform\DynamicFormWidget;
 
             */ ?>
 
-<div class="row">
-    <div class="col-md-6">
-    </div>
-</div>
         <div class="box box-solid">
             <div class="box-header bg-light-blue">
                 <h4 class="box-title">Datos de la Orden de Compra</h4>
@@ -54,7 +54,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="control-label">N° ORDEN DE COMPRA: </label>
+                        <label class="control-label">N° ORDEN: </label>
                         <?= $orden_compra->ORC_NUMERO_ORDEN ?>
                         <br>
                         <label class="control-label">PROYECTO: </label>
@@ -70,8 +70,8 @@ use wbraganca\dynamicform\DynamicFormWidget;
                         <label class="control-label">CIUDAD: </label>
                         <?= $proyecto->cOM->COM_NOMBRE ?>
                         <br>
-                        <label class="control-label">CLIENTE: </label>
-                        <?= $proyecto->eMPRUT->EMP_RAZON ?>
+                        <label class="control-label">ENVIAR: </label>
+                        <label class="badge bg-green" id="destino_mat">Construcción</label>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
                 ]);
                 ?>
 
-                <?= $form->field($stock, 'OT_ID',['template'=>'
+                <?= $form->field($orden_compra, 'OT_ID',['template'=>'
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="pull-right">
@@ -154,7 +154,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
             'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
             'widgetBody' => '.container-items', // required: css class selector
             'widgetItem' => '.item', // required: css class
-            'limit' => 2, // the maximum times, an element can be cloned (default 999)
+            'limit' => $cant_materiales, // the maximum times, an element can be cloned (default 999)
             'min' => 1, // 0 or 1 (default 1)
             'insertButton' => '.add-item', // css class
             'deleteButton' => '.remove-item', // css class
@@ -168,41 +168,51 @@ use wbraganca\dynamicform\DynamicFormWidget;
         ]); ?>
 
 
-    <table class="table talbe-bordered no-margin bg-light-blue">
-        <tr>
-            <th>Cantidad</th>
-            <th style="width:37%">Materiales</th>
-            <th style="width:27%">Costo Total</th>
-            <th style="width:6%"><button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button></th>
-        </tr>
-    </table>
-
-    <div class="container-items">
-            <?php foreach ($adquisiciones as $i => $adquisicion) { ?>
-        <table class="table item table-bordered no-margin">
+<div class="box box-solid">
+    <div class="box-header">
+        <h4 class="box-title">Materiales</h4>
+    </div>
+    <div class="box-body no-padding">
+        <table class="table talbe-bordered no-margin bg-light-blue">
             <tr>
-                <td>
-                    <?= $form->field($adquisicion, "[{$i}]AD_CANTIDAD")->textInput(['maxlength' => true,'type'=>'number', 'class'=>'form-control cant_mat', 'min'=>1,])->label(false) ?>
-                </td>
-                <td>
-                    <?= $form->field($adquisicion, "[{$i}]MA_ID")->dropDownList(
-                    ArrayHelper::map(Materiales::find()->all(),'MA_ID','MA_NOMBRE'),
-                    ['prompt'=>'Seleccione un material', 'class'=>'idmat form-control', 'contador'=>$i]
-                    )->label(false) ?>
-                </td>
-                <td><?= $form->field($adquisicion, "[{$i}]AD_COSTO_TOTAL")->textInput(['maxlength' => true,'input_costo'=>$i, 'type'=>'number', 'disabled'=>true, 'class'=>'costo_mat form-control'])->label(false) ?></td>
-                <td>
-                    <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
-                </td>
+                <th style="width:28%">Cantidad</th>
+                <th style="width:39%">Descripción</th>
+                <th style="width:27%">Costo Total</th>
+                <th style="width:6%"><button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button></th>
             </tr>
         </table>
-            <?php } ?>
+
+        <div class="container-items">
+                <?php foreach ($adquisiciones as $i => $adquisicion) { ?>
+            <table class="table item table-bordered no-margin">
+                <tr>
+                    <td>
+                        <?= $form->field($adquisicion, "[{$i}]AD_CANTIDAD")->textInput(['maxlength' => true,'type'=>'number', 'class'=>'form-control cant_mat', 'min'=>1,])->label(false) ?>
+                    </td>
+                    <td>
+                        <?= $form->field($adquisicion, "[{$i}]MA_ID")->dropDownList(
+                        ArrayHelper::map(Materiales::find()->all(),'MA_ID','MA_NOMBRE'),
+                        ['prompt'=>'Seleccione un material', 'class'=>'idmat form-control', 'contador'=>$i]
+                        )->label(false) ?>
+                    </td>
+                    <td><?= $form->field($adquisicion, "[{$i}]AD_COSTO_TOTAL")->textInput(['maxlength' => true,'input_costo'=>$i, 'type'=>'number', 'disabled'=>true, 'class'=>'costo_mat form-control'])->label(false) ?></td>
+                    <td>
+                        <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+                    </td>
+                </tr>
+            </table>
+                <?php } ?>
+        </div>
+        <?php DynamicFormWidget::end(); ?>
     </div>
-            <?php DynamicFormWidget::end(); ?>
-    </div>
+</div>
+
+
+</div>
+
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Ingresar' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($orden_compra->isNewRecord ? 'Ingresar' : 'Guardar', ['class' => $orden_compra->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
@@ -258,6 +268,16 @@ $(function(){
         }else{
             document.getElementById("matorcadquirido-"+cont+"-ad_costo_total").value=0;
        }
+    });
+    $(document).on('change', '#bomatalmacena-bo_id', function(e) {
+        var contenido = $(this).val();
+        if (contenido != '') {
+            $('#destino_mat').empty();
+            $('#destino_mat').append('Bodega');
+        }else{
+            $('#destino_mat').empty();
+            $('#destino_mat').append('Construcción');
+        }
     });
 });
 

@@ -58,7 +58,8 @@ $this->params['breadcrumbs'][] = 'Reportes de avances';
             <div class="box-body no-padding">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
+                    'summary'=>'',
+                    //'filterModel' => $searchModel,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 
@@ -72,7 +73,14 @@ $this->params['breadcrumbs'][] = 'Reportes de avances';
                         'RA_FECHA:date',
                         // 'RA_TEXTO:ntext',
 
-                        //['class' => 'yii\grid\ActionColumn'],
+                        ['class' => 'yii\grid\ActionColumn',
+                            'template'=>'{ver}',
+                            'buttons' => [
+                                'ver' => function ($url,$model) {
+                                    return Html::a('Ver Reporte', ['view', 'id'=>$model->RA_ID],['class'=>'btn btn-warning btn-flat btn-sm']);
+                                },
+                            ],
+                        ],
                     ],
                 ]); ?>
             </div>

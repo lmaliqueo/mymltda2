@@ -37,7 +37,7 @@ class MatOrcAdquirido extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['ORC_ID', 'MA_ID', 'SM_ID'], 'required'],
+            [['MA_ID'], 'required'],
             [['ORC_ID', 'MA_ID', 'BO_ID', 'SM_ID', 'AD_CANTIDAD', 'AD_COSTO_TOTAL'], 'integer'],
             [['AD_FECHA'], 'safe'],
             [['ORC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => OrdenCompra::className(), 'targetAttribute' => ['ORC_ID' => 'ORC_ID']],

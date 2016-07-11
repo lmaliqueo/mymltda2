@@ -25,8 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
     Modal::end();
  ?>
 
-<table class="table table-hover">
-    <tr class="bg-navy">
+<table class="table table-bordered">
+    <tr class="danger">
         <th>Orden de Trabajo</th>
         <th>Material</th>
         <th>Cantidad</th>

@@ -25,22 +25,23 @@ $this->params['breadcrumbs'][] = $this->title;
     Modal::end();
  ?>
 <?php $contador_ut=0; ?>
-<table class="table table-hover">
-    <tr class="bg-light-black">
+<table class="table table-hover table-bordered">
+    <tr class="info">
         <th>ID</th>
         <th>Material</th>
         <th>Tipo Material</th>
-        <?php /*<th>OT</th>*/ ?>
+        <th>Orden de Trabajo</th>
         <th>Bodega</th>
         <th>Cantidad</th>
     </tr>
     <?php foreach ($materiales as $material) { ?>
         <tr>
             <td><?= $material->MA_ID ?></td>
-            <td><?= $material->bO->BO_NOMBRE ?></td>
             <td><?= $material->mA->MA_NOMBRE ?></td>
             <td><?= $material->mA->tMA->TMA_NOMBRE ?></td>
-            <td><?= $material->ALM_CANTMATERIALES ?></td>
+            <td><?= $material->oT->OT_NOMBRE ?></td>
+            <td><?= $material->bO->BO_NOMBRE ?></td>
+            <td><?= $material->AL_CANTIDAD ?></td>
         </tr>
     <?php } ?>
 </table>

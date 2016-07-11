@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = 'Gastos Generales';
 
 <div class="row">
     <div class="col-md-3">
-            <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Crear Gastos Generales', ['value'=>Url::to(['gastos-generales/create','id'=>$proyecto->PRO_ID]),'class'=> 'btn btn-success btn-block margin-bottom','id'=>'modalButton']) ?>
+            <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Crear Gastos Generales', ['value'=>Url::to(['gastos-generales/create','id'=>$proyecto->PRO_ID]),'class'=> 'btn btn-success btn-block btn-flat margin-bottom','id'=>'modalButton']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Proyecto</h3>
@@ -58,19 +58,19 @@ $this->params['breadcrumbs'][] = 'Gastos Generales';
 
     <div class="col-md-9">
         <div class="box box-primary">
-            <div class="box-body">
+            <div class="box-body no-padding">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
+                    //'filterModel' => $searchModel,
                     'columns' => [
                         ['class' => 'yii\grid\SerialColumn'],
 
                         'GG_ID',
-                        'PRO_ID',
+                        'OT_ID',
                         'GG_TIPO',
-                        'GG_DESCRIPCION',
+                        'GG_DESCRIPCION:ntext',
                         'GG_COSTO',
-                        // 'GG_TEXT:ntext',
+                        // 'GG_TEXT',
 
                         ['class' => 'yii\grid\ActionColumn'],
                     ],

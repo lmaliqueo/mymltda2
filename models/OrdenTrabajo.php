@@ -20,6 +20,8 @@ use Yii;
  * @property Actividades[] $actividades
  * @property BoMatAlmacena[] $boMatAlmacenas 
  * @property GastosGenerales[] $gastosGenerales 
+ * @property OrdenCompra[] $ordenCompras
+ * @property OrdenDespacho[] $ordenDespachos
  * @property Proyecto $pRO
  * @property ReportesAvances[] $reportesAvances
  * @property StockMateriales[] $stockMateriales
@@ -45,7 +47,8 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
             [['OT_FECHA_INICIO', 'OT_FECHA_TERMINO'], 'safe'],
             [['OT_NOMBRE'], 'string', 'max' => 50],
             [['OT_TIPO', 'OT_ESTADO'], 'string', 'max' => 20],
-            [['OT_INFORME'], 'string', 'max' => 100]
+            [['OT_INFORME'], 'string', 'max' => 100],
+            [['PRO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Proyecto::className(), 'targetAttribute' => ['PRO_ID' => 'PRO_ID']],
         ];
     }
 
@@ -91,6 +94,21 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
         return $this->hasMany(GastosGenerales::className(), ['OT_ID' => 'OT_ID']); 
     }
     
+    /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function getOrdenCompras()
+    {
+       return $this->hasMany(OrdenCompra::className(), ['OT_ID' => 'OT_ID']);
+    }
+    /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function getOrdenDespachos()
+    {
+       return $this->hasMany(OrdenDespacho::className(), ['OT_ID' => 'OT_ID']);
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

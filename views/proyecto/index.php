@@ -17,15 +17,17 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Crear Proyecto', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Proyecto', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
     </p>
 <div class="box box-primary">
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-    'summary'=>'',
-        'filterModel' => $searchModel,
+        'summary'=>'',
+        //'filterModel' => $searchModel,
+        'emptyCell'=>'-',
         'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
 
 
             [
@@ -38,7 +40,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             //'PRO_NOMBRE',
-            'PRO_ESTADO',
+                        [
+                            'label'=>'Cliente',
+                            'attribute'=>'EMP_RAZON',
+                            'value'=>'eMPRUT.EMP_RAZON',
+                        ],
                         [
                             'attribute'=>'COM_ID',
                             'value'=>'cOM.COM_NOMBRE',
@@ -59,16 +65,23 @@ $this->params['breadcrumbs'][] = $this->title;
                         ])
              ],*/
              'PRO_DIRECCION',
+            'PRO_ESTADO',
              //'PRO_OBSERVACIONES:ntext',
             // 'PRO_DESCRIPCION',
              //'PRO_COSTO_TOTAL',
             // 'PRO_INFORME',
 
-            //['class' => 'yii\grid\ActionColumn'],
-
+            ['class' => 'yii\grid\ActionColumn',
+                'template'=>'{ver}',
+                'buttons' => [
+                    'ver' => function ($url,$model) {
+                        return Html::a('Ver Proyecto', ['view', 'id'=>$model->PRO_ID],['class'=>'btn btn-warning btn-flat btn-sm']);
+                    },
+                ],
+            ],
         ],
-        ]);         Html::a('Create Proyecto', ['create'], ['class' => 'btn btn-success'])
-    ?>
+        'tableOptions' =>['class' => 'table table-striped table-bordered'],
+    ]); ?>
 
 </div>
 </div>

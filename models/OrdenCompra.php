@@ -15,6 +15,7 @@ use Yii;
  * @property string $ORC_DESCRIPCION
  * @property integer $ORC_COSTO_ENVIO
  * @property integer $ORC_COSTO_TOTAL
+ * @property string $ORC_ESTADO
  *
  * @property MatOrcAdquirido[] $matOrcAdquiridos
  * @property Proveedor $pROV
@@ -35,10 +36,12 @@ class OrdenCompra extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['PROV_ID'], 'required'],
-            [['PROV_ID', 'ORC_NUMERO_ORDEN', 'ORC_COSTO_ENVIO', 'ORC_COSTO_TOTAL'], 'integer'],
+            [['PROV_ID', 'OT_ID'], 'required'],
+            [['PROV_ID', 'OT_ID', 'ORC_NUMERO_ORDEN', 'ORC_COSTO_ENVIO', 'ORC_COSTO_TOTAL'], 'integer'],
             [['ORC_FECHA_PEDIDO', 'ORC_FECHA_PAGO'], 'safe'],
+            [['ORC_ESTADO'], 'string', 'max' => 20],
             [['ORC_DESCRIPCION'], 'string'],
+            [['OT_ID'], 'exist', 'skipOnError' => true, 'targetClass' => OrdenTrabajo::className(), 'targetAttribute' => ['OT_ID' => 'OT_ID']],
             [['PROV_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::className(), 'targetAttribute' => ['PROV_ID' => 'PROV_ID']],
         ];
     }
@@ -50,6 +53,7 @@ class OrdenCompra extends \yii\db\ActiveRecord
     {
         return [
             'ORC_ID' => 'Orc  ID',
+            'OT_ID' => 'Orden de Trabajo',
             'PROV_ID' => 'Proveedor',
             'ORC_NUMERO_ORDEN' => 'Numero de Orden',
             'ORC_FECHA_PEDIDO' => 'Fecha de Pedido',
@@ -57,6 +61,7 @@ class OrdenCompra extends \yii\db\ActiveRecord
             'ORC_DESCRIPCION' => 'Descripción',
             'ORC_COSTO_ENVIO' => 'Costo de Envio',
             'ORC_COSTO_TOTAL' => 'Costo Total',
+            'ORC_ESTADO' => 'Estado',
         ];
     }
 
@@ -68,6 +73,14 @@ class OrdenCompra extends \yii\db\ActiveRecord
         return $this->hasMany(MatOrcAdquirido::className(), ['ORC_ID' => 'ORC_ID']);
     }
 
+    /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function getOT() 
+    { 
+       return $this->hasOne(OrdenTrabajo::className(), ['OT_ID' => 'OT_ID']); 
+    } 
+   
     /**
      * @return \yii\db\ActiveQuery
      */

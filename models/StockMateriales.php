@@ -37,7 +37,9 @@ class StockMateriales extends \yii\db\ActiveRecord
         return [
             [['OT_ID', 'MA_ID'], 'required'],
             [['OT_ID', 'MA_ID', 'SM_CANTIDAD'], 'integer'],
-            [['SM_ESTADO'], 'string', 'max' => 20]
+            [['SM_ESTADO'], 'string', 'max' => 20],
+            [['OT_ID'], 'exist', 'skipOnError' => true, 'targetClass' => OrdenTrabajo::className(), 'targetAttribute' => ['OT_ID' => 'OT_ID']],
+            [['MA_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Materiales::className(), 'targetAttribute' => ['MA_ID' => 'MA_ID']],
         ];
     }
 

@@ -80,7 +80,7 @@ class ReportesAvancesController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->save();
-            return $this->redirect(['view', 'id' => $model->RA_ID]);
+            return $this->actionIndex($id);
         } else {
             return $this->renderAjax('_form', [
                 'model' => $model,

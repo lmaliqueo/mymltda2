@@ -35,7 +35,7 @@ class BoMatAlmacena extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['BO_ID', 'MA_ID', 'OT_ID'], 'required'],
+            [['MA_ID', 'OT_ID'], 'required'],
             [['BO_ID', 'MA_ID', 'OT_ID', 'AL_CANTIDAD', 'AL_CANTIDAD_DESPACHO'], 'integer'],
             [['BO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Bodegas::className(), 'targetAttribute' => ['BO_ID' => 'BO_ID']],
             [['MA_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Materiales::className(), 'targetAttribute' => ['MA_ID' => 'MA_ID']],

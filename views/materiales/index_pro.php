@@ -20,8 +20,13 @@ $this->params['breadcrumbs'][] = 'Materiales';
     <h1>Materiales</h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-   </p>
+
+<?php /*
+        <?= Html::button('Ingresar Orden de Compra',['value'=>Url::to(['ingresar-adquisiciones','id'=>$proyecto->PRO_ID]),'class'=>'btn btn-flat btn-primary btn-block margin-bottom modalView']) ?>
+
+            <?= Html::button('Crear Orden de Despacho', ['value'=>Url::to(['crear-despacho-mat','id'=>$proyecto->PRO_ID]),'class'=> 'btn btn-warning btn-block margin-bottom btn-flat botonmodal modalView']) ?>
+*/ ?>
+
 <?php 
     Modal::begin([
             'header'=>'<h4>Orden de Compra</h4>',
@@ -46,9 +51,9 @@ $this->params['breadcrumbs'][] = 'Materiales';
 
 <div class="row">
     <div class="col-md-3">
-        <?= Html::button('Ingresar Orden de Compra',['value'=>Url::to(['ingresar-adquisiciones','id'=>$proyecto->PRO_ID]),'class'=>'btn btn-flat btn-primary btn-block margin-bottom modalView']) ?>
+        <?= Html::a('Ingresar Orden de Compra',['ingresar-adquisiciones','id'=>$proyecto->PRO_ID],['class'=>'btn btn-flat btn-primary btn-block margin-bottom']) ?>
+        <?= Html::a('Ingresar Orden de Despacho',['crear-despacho-mat','id'=>$proyecto->PRO_ID],['class'=>'btn btn-flat btn-success btn-block margin-bottom']) ?>
         <div class="otbutton">
-            <?= Html::button('Crear Orden de Despacho', ['value'=>Url::to(['crear-despacho-mat','id'=>$proyecto->PRO_ID]),'class'=> 'btn btn-warning btn-block margin-bottom btn-flat botonmodal modalView']) ?>
         </div>
 
         <div class="box box-solid">
@@ -78,15 +83,20 @@ $this->params['breadcrumbs'][] = 'Materiales';
                 <ul class="nav nav-tabs">
                     <li class="active"><?= Html::a('Stock',['materiales-pro', 'id'=>$proyecto->PRO_ID]) ?></li>
                     <li><a href="asd" data-toggle="tab" aria-expanded="false" id="bodega">Bodega</a></li>
-                    <li><a href="" data-toggle="tab" aria-expanded="false" id="adquisicion">Adquisiciones</a></li>
+                    <?php /*<li><a href="" data-toggle="tab" aria-expanded="false" id="adquisicion">Adquisiciones</a></li>*/ ?>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="movimientos">Movimientos</a></li>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="pedidos">Pedidos</a></li>
+                    <li><a href="" data-toggle="tab" aria-expanded="false" id="orden-compra">Ordenes de Compra</a></li>
+                    <li><a href="" data-toggle="tab" aria-expanded="false" id="orden-despacho">Ordenes de Despacho</a></li>
                 </ul>
-                <div class="tab-content" id="contenido">
-                    <?= $this->render('index_info', [
-                                        'dataProvider' => $dataProvider,
-                                        'searchModel' => $searchModel,
-                    ]) ?>
+                <div class="tab-content">
+                    <br>
+                    <div id="contenido">
+                        <?= $this->render('index_info', [
+                                            'dataProvider' => $dataProvider,
+                                            'searchModel' => $searchModel,
+                        ]) ?>
+                    </div>
                 </div>
             </dic>
 
@@ -131,6 +141,20 @@ $script = <<< JS
     $('#avances').click(function(){
         var id= $('.idorden').attr('idot');
         $.get('index.php?r=reportes-avances/index',{ id : id }, function(data){
+            $('#contenido').empty();
+            $('#contenido').append(data);
+        })
+    });
+    $('#orden-compra').click(function(){
+        var id= $proyecto->PRO_ID;
+        $.get('index.php?r=materiales/index-oc',{ id : id }, function(data){
+            $('#contenido').empty();
+            $('#contenido').append(data);
+        })
+    });
+    $('#orden-despacho').click(function(){
+        var id= $proyecto->PRO_ID;
+        $.get('index.php?r=materiales/index-od',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })

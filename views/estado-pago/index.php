@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = 'Estados de Pagos';
                 'dataProvider' => $dataProvider,
     'summary'=>'',
     'showOnEmpty'=>true,
-                'filterModel' => $searchModel,
+                //'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 

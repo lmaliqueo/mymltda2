@@ -50,11 +50,11 @@ use yii\helpers\Html;
                         ],
                     ],
                     ['label' => 'Bodegas', 'icon' => 'fa fa-industry', 'url' => ['/bodegas'],
-                        /*'items' => [
+                        'items' => [
                             ['label' => 'Materiales', 'icon' => 'fa fa-circle-o', 'url' => ['/materiales'],],
                             ['label' => 'Herramientas', 'icon' => 'fa fa-circle-o', 'url' => ['/herramientas'],],
 
-                        ],*/
+                        ],
                     ],
                     ['label' => 'Usuarios', 'icon' => 'fa fa-user', 'url' => '#',
                         'items' => [

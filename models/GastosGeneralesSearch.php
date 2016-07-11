@@ -18,7 +18,7 @@ class GastosGeneralesSearch extends GastosGenerales
     public function rules()
     {
         return [
-            [['GG_ID', 'PRO_ID', 'GG_COSTO'], 'integer'],
+            [['GG_ID', 'OT_ID', 'GG_COSTO'], 'integer'],
             [['GG_TIPO', 'GG_DESCRIPCION', 'GG_TEXT'], 'safe'],
         ];
     }
@@ -57,7 +57,7 @@ class GastosGeneralesSearch extends GastosGenerales
 
         $query->andFilterWhere([
             'GG_ID' => $this->GG_ID,
-            'PRO_ID' => $this->PRO_ID,
+            'OT_ID' => $this->OT_ID,
             'GG_COSTO' => $this->GG_COSTO,
         ]);
 

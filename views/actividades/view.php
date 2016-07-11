@@ -94,27 +94,6 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-flat btn-success">Asignar
-                        </button>
-                        <button type="button" class="btn btn-success btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><?= Html::a('Sub-Actividad', ['act-sact-asigna/create', 'id' => $model->AC_ID]) ?></li>
-                            <li><?= Html::a('Obreros', ['asignar-obreros', 'id' => $model->AC_ID]) ?></li>
-                        </ul>
-                    </div>
-                    <?php /*
-                    <?= Html::a('Actualizar', ['update', 'id' => $model->AC_ID], ['class' => 'btn btn-flat btn-primary']) ?>
-                    <?= Html::a('Eliminar', ['delete', 'id' => $model->AC_ID], [
-                        'class' => 'btn btn-flat btn-danger',
-                        'data' => [
-                            'confirm' => 'Esta seguro de borrar esta Actividad',
-                            'method' => 'post',
-                        ],
-                    ]) ?>*/ ?>
-             <div class="btn-group" role="group" aria-label="...">
-            </div>
+                    <?= Html::a('Asignar Sub-actividades', ['act-sact-asigna/create', 'id' => $model->AC_ID], ['class' => 'btn btn-flat btn-primary']) ?>
+                    <?= Html::a('Asignar Obrero', ['asignar-obreros', 'id' => $model->AC_ID], ['class' => 'btn btn-flat btn-warning']) ?>
 </div>

@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'summary'=>'',
-                    'filterModel' => $searchModel,
+                    //'filterModel' => $searchModel,
                     'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
                     /*
@@ -55,11 +55,28 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
                         //'OT_TIPO',
                         'OT_FECHA_INICIO:date',
                         'OT_FECHA_TERMINO:date',
-                        'OT_ESTADO',
+                            [
+                                //'label'=>'N',
+                                'attribute'=>'OT_ESTADO',
+                                'format'=>'raw',
+                                'value' => function($data){
+                                    return '<span class="label label-primary">'.$data->OT_ESTADO.'</span>';
+                                }
+                            ],
+                        //'OT_ESTADO',
                         'OT_COSTO_TOTAL',
                         // 'OT_INFORME',
+                        ['class' => 'yii\grid\ActionColumn',
+                            'template'=>'{ver}',
+                            'buttons' => [
+                                'ver' => function ($url,$model) {
+                                    return Html::a('Ver Orden de Trabajo', ['orden-trabajo/index-act','id'=>$model->OT_ID], ['class'=>'btn btn-flat btn-sm btn-warning orden', 'idot'=>$model->OT_ID]);
+                                },
+                            ],
+                        ],
 
                     ],
+                'tableOptions' =>['class' => 'table table-striped table-bordered'],
                 ]); ?>
             </div>
         </div>
