@@ -35,13 +35,12 @@ class ReportesAvancesController extends Controller
      */
     public function actionIndex($id)
     {
-        $proyecto = Proyecto::findOne($id);
-        $array_ot= OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$id])->asArray()->all();
+        $ordentrabajo = OrdenTrabajo::findOne($id);
         $searchModel = new ReportesAvancesSearch();
-        $reportes= ReportesAvances::find()->where(['OT_ID'=>$array_ot])->all();
+        $reportes= ReportesAvances::find()->where(['OT_ID'=>$ordentrabajo->OT_ID])->all();
         $dataProvider = new ActiveDataProvider([
             'query' => ReportesAvances::find()->
-                where(['OT_ID'=>$array_ot]),
+                where(['OT_ID'=>$ordentrabajo->OT_ID]),
             'pagination' => [
                 'pageSize' => 20,
             ],
@@ -50,8 +49,7 @@ class ReportesAvancesController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'reportes' => $reportes,
-            'proyecto' => $proyecto,
+            'ordentrabajo' => $ordentrabajo,
         ]);
     }
 
@@ -134,5 +132,12 @@ class ReportesAvancesController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionViewModal($id)
+    {
+        return $this->renderAjax('view', [
+            'model' => $this->findModel($id),
+        ]);
     }
 }

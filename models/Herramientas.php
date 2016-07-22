@@ -13,9 +13,12 @@ use Yii;
  * @property integer $HE_CANT
  * @property integer $HE_COSTOUNIDAD
  *
+ * @property HerramientaAsignado[] $herramientaAsignados 
  * @property HerramientaTiene[] $herramientaTienes
  * @property Bodegas $bO
-* @property TipoHerramienta $tH
+ * @property TipoHerramienta $tH
+ * @property RhHeReingresan[] $rhHeReingresans
+ * @property DhHeRetiran[] $dhHeRetirans
  * @property SpreHeSolicita[] $spreHeSolicitas
  */
 class Herramientas extends \yii\db\ActiveRecord
@@ -88,6 +91,22 @@ class Herramientas extends \yii\db\ActiveRecord
     public function getTH()
     {
         return $this->hasOne(TipoHerramienta::className(), ['TH_ID' => 'TH_ID']);
+    }
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getRhHeReingresans() 
+    { 
+        return $this->hasMany(RhHeReingresan::className(), ['HE_ID' => 'HE_ID']); 
+    } 
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getDhHeRetirans() 
+    { 
+        return $this->hasMany(DhHeRetiran::className(), ['HE_ID' => 'HE_ID']); 
     }
 
     /**

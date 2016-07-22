@@ -50,46 +50,7 @@ class PersonaController extends Controller
             'cargo'=> $cargo,
         ]);
     }
-    public function actionIndexObrero()
-    {
-        $searchModel = new PersonaSearch();
-        $cargo=4;
-        $searchModel->CA_ID = 4;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-
-        $cargo_obrero = Cargo::find()->where(['CA_NOMBRECARGO'=>'Mano de Obra'])->one();
-        $searchModel = new Persona();
-        $dataProvider = new ActiveDataProvider([
-            'query' => Persona::find()->
-                where(['CA_ID'=>$cargo_obrero->CA_ID]),
-            'pagination' => [
-                'pageSize' => 20,
-            ],
-        ]);
-
-
-        return $this->render('index_obrero', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'cargo'=> $cargo,
-
-        ]);
-    }
-
-    public function actionIndexEncargado()
-    {
-        $searchModel = new PersonaSearch();
-        $cargo=3;
-        $searchModel->CA_ID = 3;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index_encargado', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'cargo'=> $cargo,
-        ]);
-    }
 
     /**
      * Displays a single Persona model.
@@ -121,18 +82,95 @@ class PersonaController extends Controller
         }
     }
 
-    public function actionCreateEncargado()
+    /**
+     * Updates an existing Persona model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param string $id
+     * @return mixed
+     */
+
+    public function actionAsignaModal($act, $ot)
     {
-        $model = new Persona();
-        $model->CA_ID=3;
+        $model=Actividades::find()->where(['AC_NOMBRE'=>$act])->andWhere(['OT_ID'=>$ot])->one();
+        $subact= ActSactAsigna::find()->where(['AC_ID'=>$model->AC_ID])->all();
+        return $this->renderAjax('actividad', [
+            'model' => $model,
+            'subact' => $subact,
+        ]);
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index-encargado']);
+            return $this->redirect(['view', 'id' => $model->PE_RUT]);
         } else {
-            return $this->renderAjax('_formencargado', [
+            return $this->render('update', [
                 'model' => $model,
             ]);
         }
+    }
+
+
+    /**
+     * Deletes an existing Persona model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param string $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Persona model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $id
+     * @return Persona the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Persona::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+/*############################################################################################################*/
+/*#################################################### MANO DE OBRAS ########################################################*/
+/*############################################################################################################*/
+
+    public function actionIndexObrero()
+    {
+        $searchModel = new PersonaSearch();
+        $cargo=4;
+        $searchModel->CA_ID = 4;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
+        $cargo_obrero = Cargo::find()->where(['CA_NOMBRECARGO'=>'Mano de Obra'])->one();
+        $searchModel = new Persona();
+        $dataProvider = new ActiveDataProvider([
+            'query' => Persona::find()->
+                where(['CA_ID'=>$cargo_obrero->CA_ID]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+
+
+        return $this->render('index_obrero', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'cargo'=> $cargo,
+
+        ]);
     }
 
     public function actionCreateObrero()
@@ -193,77 +231,6 @@ class PersonaController extends Controller
         /*}*/
     }
 
-    /**
-     * Updates an existing Persona model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param string $id
-     * @return mixed
-     */
-
-    public function actionAsignaModal($act, $ot)
-    {
-        $model=Actividades::find()->where(['AC_NOMBRE'=>$act])->andWhere(['OT_ID'=>$ot])->one();
-        $subact= ActSactAsigna::find()->where(['AC_ID'=>$model->AC_ID])->all();
-        return $this->renderAjax('actividad', [
-            'model' => $model,
-            'subact' => $subact,
-        ]);
-    }
-
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->PE_RUT]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    public function actionUpdateEncargado($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->PE_RUT]);
-        } else {
-            return $this->renderAjax('_formencargado', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Deletes an existing Persona model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param string $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the Persona model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param string $id
-     * @return Persona the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Persona::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
 
     public function actionGetCalendario($rut, $ot)
     {
@@ -278,36 +245,7 @@ class PersonaController extends Controller
 
 
         $arreglo=$this->viewCalendario($ot, $asignados);
-/*
-        $arreglo=[];
-        foreach ($actividades as $actividad) {
 
-            $act = new \yii2fullcalendar\models\Event();
-            $act->id = $actividad->AC_ID;
-            $act->title = $actividad->AC_NOMBRE;
-            $act->start = $actividad->AC_FECHA_INICIO;
-            $act->className = 'btn hola';
-            if($actividad->AC_ESTADO=='Finalizado'){
-                $act->className = 'btn disabled';
-            }else{
-                $act->className = 'btn hola';                
-            }
-            $act->end = $actividad->AC_FECHA_TERMINO;
-            if ($asignados!=NULL) {
-                foreach ($asignados as $asignado) {
-                    if($asignado->AC_ID==$actividad->AC_ID){
-                        $act->color = '#f39c12';                    
-                    }else{
-                        $act->color = '#AFAFAF';                
-                    }
-                }
-            }elseif($actividad->AC_ESTADO!='Finalizado'){
-                $act->color = '#AFAFAF';                
-            }else{
-                  $act->color = '#5CB85C';                
-            }
-            $arreglo[] = $act;
-        }*/
         return $this->renderAjax('calendario', [
             'events' => $arreglo,
             'ordentrabajo' => $orden,
@@ -417,5 +355,62 @@ class PersonaController extends Controller
 
 
     }
+
+/*############################################################################################################*/
+/*#################################################### MANO DE OBRAS ########################################################*/
+/*############################################################################################################*/
+
+/*############################################################################################################*/
+/*#################################################### ENCARGADO DE OBRAS ########################################################*/
+/*############################################################################################################*/
+
+
+
+    public function actionIndexEncargado()
+    {
+        $searchModel = new PersonaSearch();
+        $cargo=3;
+        $searchModel->CA_ID = 3;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index_encargado', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'cargo'=> $cargo,
+        ]);
+    }
+
+    public function actionCreateEncargado()
+    {
+        $model = new Persona();
+        $model->CA_ID=3;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index-encargado']);
+        } else {
+            return $this->renderAjax('_formencargado', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+
+    public function actionUpdateEncargado($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->PE_RUT]);
+        } else {
+            return $this->renderAjax('_formencargado', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+/*############################################################################################################*/
+/*#################################################### ENCARGADO DE OBRAS ########################################################*/
+/*############################################################################################################*/
+
 
 }

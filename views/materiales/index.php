@@ -45,12 +45,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
     <div class="col-md-3">
-        <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Ingresar Material', ['value'=>Url::to('index.php?r=materiales/create'),'class'=> 'btn btn-success btn-block margin-bottom','id'=>'modalButton']) ?>
+        <?= Html::button('Ingresar Material', ['value'=>Url::to('index.php?r=materiales/create'),'class'=> 'btn btn-success btn-flat btn-block margin-bottom','id'=>'modalButton']) ?>
         <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Operaciones</h3>
+            </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#">Materiales</a></li>
-                    <li><?= Html::a('Herramientas', ['herramientas/index']) ?></li>
+                    <li class="active"><a href="#">Lista materiales</a></li>
+                    <li><?= Html::a('Adquisición materiales', ['materiales/orden-compra-index']) ?></li>
+                    <li><?= Html::a('Despacho materiales', ['materiales/orden-despacho-index']) ?></li>
+                    <li><?= Html::a('Pedidos materiales', ['pedido-materiales/index']) ?></li>
+                    <li><?= Html::a('Proveedores', ['proveedor/index']) ?></li>
                 </ul>
             </div>
         </div>
@@ -61,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'summary'=>'',
-                'filterModel' => $searchModel,
+                //'filterModel' => $searchModel,
                 'columns' => [
                             ['class' => 'yii\grid\SerialColumn'],
                 /*    [                'class' => 'kartik\grid\ExpandRowColumn',
@@ -79,6 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                     ],*/
 
+                    'MA_ID',
             [
                 'label'=>'Descripción',
                 'attribute'=>'MA_NOMBRE',
@@ -88,7 +95,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
 
-                    //'MA_ID',
                     //'MA_NOMBRE',
                     [
                         'attribute'=>'TMA_ID',

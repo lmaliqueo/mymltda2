@@ -24,6 +24,8 @@ use Yii;
  * @property OrdenDespacho[] $ordenDespachos
  * @property Proyecto $pRO
  * @property ReportesAvances[] $reportesAvances
+ * @property RetornoHerramientas[] $retornoHerramientas 
+ * @property DespachoHerramientas[] $despachoHerramientas 
  * @property StockMateriales[] $stockMateriales
  */
 class OrdenTrabajo extends \yii\db\ActiveRecord
@@ -128,6 +130,23 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getRetornoHerramientas() 
+    { 
+        return $this->hasMany(RetornoHerramientas::className(), ['OT_ID' => 'OT_ID']); 
+    } 
+
+    /** 
+    * @return \yii\db\ActiveQuery 
+    */ 
+    public function getDespachoHerramientas() 
+    { 
+        return $this->hasMany(DespachoHerramientas::className(), ['OT_ID' => 'OT_ID']); 
+    } 
+ 
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+
     public function getStockMateriales()
     {
         return $this->hasMany(StockMateriales::className(), ['OT_ID' => 'OT_ID']);

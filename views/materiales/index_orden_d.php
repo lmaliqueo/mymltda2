@@ -48,11 +48,14 @@ $this->params['breadcrumbs'][] = $this->title;
             <td><?= $despacho->OD_ESTADO ?></td>
             <td>$ </td>
             <td><?php
-            if ($despacho->OD_ESTADO=='Pendiente') {
-                echo Html::a('Aprovar despacho',['autorizar-orden-despacho', 'id'=>$despacho->OD_ID],['class'=>'btn btn-flat btn-success']);
-            } ?>
-            <?= Html::button('Ver despacho', ['value'=>Url::to(['ver-orden-despacho','id'=>$despacho->OD_ID]), 'class'=>'btn btn-flat btn-warning btn-sm modalDespacho']) ?>
-
+                if ($despacho->OD_ESTADO=='Pendiente') {
+                    echo Html::button('Ver despacho', ['value'=>Url::to(['ver-orden-despacho','id'=>$despacho->OD_ID]), 'class'=>'btn btn-flat btn-warning btn-sm modalDespacho']);
+                }elseif($despacho->OD_ESTADO=='Denegado'){
+                    echo Html::button('Ver despacho', ['value'=>Url::to(['ver-orden-despacho','id'=>$despacho->OD_ID]), 'class'=>'btn btn-flat btn-danger btn-sm modalDespacho']);
+                }else{
+                    echo Html::button('Ver despacho', ['value'=>Url::to(['ver-orden-despacho','id'=>$despacho->OD_ID]), 'class'=>'btn btn-flat btn-primary btn-sm modalDespacho']);
+                } ?>
+            </td>
         </tr>
     <?php } ?>
 </table>

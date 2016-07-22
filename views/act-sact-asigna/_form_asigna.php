@@ -16,7 +16,7 @@ use wbraganca\dynamicform\DynamicFormWidget;
 /* @var $model app\models\MatProvAdquirido */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->title='Orden de Compra';
+$this->title=$proyecto->PRO_NOMBRE;
 
 ?>
 
@@ -55,23 +55,23 @@ $this->title='Orden de Compra';
                 <div class="row">
                     <div class="col-md-6">
                         <label class="control-label">N° ORDEN: </label>
-                        <span id="num-orden"><?= $orden_compra->ORC_NUMERO_ORDEN ?></span>  
+                        <?= $orden_compra->ORC_NUMERO_ORDEN ?>
                         <br>
                         <label class="control-label">PROYECTO: </label>
-                        <span id="pro-name"><?= $proyecto->PRO_NOMBRE ?></span>
+                        <?= $proyecto->PRO_NOMBRE ?>
                         <br>
                         <label class="control-label">DIRECCIÓN: </label>
-                        <span id="pro-direc"><?= $proyecto->PRO_DIRECCION ?></span>
+                        <?= $proyecto->PRO_DIRECCION ?>
                     </div>
                     <div class="col-md-6">
                         <label class="control-label">FECHA PEDIDO: </label>
                         <?= $orden_compra->ORC_FECHA_PEDIDO ?>
                         <br>
                         <label class="control-label">CIUDAD: </label>
-                        <span id="pro-ciud"><?= $proyecto->cOM->COM_NOMBRE ?></span>
+                        <?= $proyecto->cOM->COM_NOMBRE ?>
                         <br>
                         <label class="control-label">ENVIAR: </label>
-                        <h3 class="label label-success" id="destino_mat">Construcción</h3>
+                        <label class="badge bg-green" id="destino_mat">Construcción</label>
                     </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@ $this->title='Orden de Compra';
                             </div>
                         </div>'
                     ,])->widget(Select2::classname(), [
-                    'data' => ArrayHelper::map($ordenes_trabajos,'OT_ID','OT_NOMBRE','pRO.PRO_NOMBRE'),
+                    'data' => ArrayHelper::map($ordenes_trabajos,'OT_ID','OT_NOMBRE'),
                     'language' => 'es',
                     'options' => ['placeholder' => 'Seleccionar OT'],
                     'pluginOptions' => [

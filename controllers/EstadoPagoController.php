@@ -42,8 +42,8 @@ class EstadoPagoController extends Controller
      */
     public function actionIndex($id)
     {
-        $proyecto= Proyecto::findOne($id);
-        $otid= OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$id])->asArray()->all();
+        $ordentrabajo= OrdenTrabajo::findOne($id);
+        $otid= OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$ordentrabajo->PRO_ID])->asArray()->all();
         $acid= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$otid])->asArray()->all();
         $asid= ActSactAsigna::find()->select('AS_ID')->where(['AC_ID'=>$acid])->asArray()->all();
         $epid= AsignaTiene::find()->select('EP_ID')->where(['AS_ID'=>$asid])->asArray()->all();
@@ -62,7 +62,7 @@ class EstadoPagoController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'proyecto' => $proyecto,
+            'ordentrabajo' => $ordentrabajo,
         ]);
     }
 

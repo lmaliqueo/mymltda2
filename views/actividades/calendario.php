@@ -68,7 +68,7 @@ $script = <<< JS
 
     $(document).on('click','.fc-content',function(){
         var act = $(this).text();
-        var ot = $('#otid').attr('idot');
+        var ot = $ordentrabajo->OT_ID;
         for (i = 1, len = act.length, text = ""; i < len; i++) { 
             text += act[i];
         }

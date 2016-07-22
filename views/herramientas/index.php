@@ -41,12 +41,16 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="row">
     <div class="col-md-3">
-            <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Ingresar Herramienta', ['value'=>Url::to(['herramientas/create']),'class'=> 'btn btn-success btn-block margin-bottom','id'=>'modalButton']) ?>
+            <?= Html::button('Ingresar Herramienta', ['value'=>Url::to(['herramientas/create']),'class'=> 'btn btn-success btn-block btn-flat margin-bottom','id'=>'modalButton']) ?>
         <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">Operaciones</h3>
+            </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li><?= Html::a('Materiales', ['materiales/index']) ?></li>
-                    <li class="active"><a href="#">Herramientas</a></li>
+                    <li class="active"><a href="#">Lista herramientas</a></li>
+                    <li><?= Html::a('Despacho de herramientas', ['herramientas/despachos-index']) ?></li>
+                    <li><?= Html::a('Retorno de herramientas', ['herramientas/retorno-index']) ?></li>
                     <li><?= Html::a('Solicitud de Prestamo', ['solicitud-prestamo/index']) ?></li>
                 </ul>
             </div>
@@ -61,25 +65,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="box-body no-padding">
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
+                    //'filterModel' => $searchModel,
                     'summary'=>'',
-                    //'summary' => "asd {begin} - {end} of {totalCount} items",
                     'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
-        /*
-                        [                'class' => 'kartik\grid\ExpandRowColumn',
-                            'value' => function ($model, $key, $index, $column){
-                                return GridView::ROW_COLLAPSED;
-                            },
-                            'detail' => function ($model, $key, $index, $column){
-                                $hetiene= HerramientaTiene::find()->where(['HE_ID'=>$model->HE_ID])->all();
-
-                                return Yii::$app->controller->renderPartial('expandhe', [
-                                        'hetiene' => $hetiene,
-                                        'model' => $model,
-                                    ]);
-                            },
-                        ],*/
                         //'HE_NOMBRE',
             [
                 'label'=>'Descripción',
@@ -102,7 +91,25 @@ $this->params['breadcrumbs'][] = $this->title;
                         'HE_COSTOUNIDAD',
 
                         ['class' => 'yii\grid\ActionColumn',
-                            'template'=>NULL,
+                            'template'=>'{ver} {actualizar}',
+                            'buttons'=>[
+                                    'ver'=> function ($url,$model) {
+                                        return Html::button(
+                                            'Ver Herramienta', [
+                                                'value'=>Url::to(['view','id'=>$model->HE_ID]),
+                                                'class'=>'btn btn-sm btn-flat btn-warning modalView',
+                                                'title'=>'Actualizar'
+                                        ]);
+                                    },
+                                    'actualizar'=> function ($url,$model) {
+                                        return Html::button(
+                                            'Actualizar', [
+                                                'value'=>Url::to(['update','id'=>$model->HE_ID]),
+                                                'class'=>'btn btn-sm btn-flat btn-primary modalAct',
+                                                'title'=>'Actualizar'
+                                        ]);
+                                    },
+                            ],
                         ],
                     ],
                 ]); ?>
@@ -113,3 +120,18 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 </div>
+
+
+<?php 
+$script = <<< JS
+
+
+    $('.modalAct').click(function() {
+        $('#modal-view').modal('show')
+        .find('.modalContent')
+        .load($(this).attr('value'));
+    });
+
+JS;
+$this->registerJs($script);
+?>

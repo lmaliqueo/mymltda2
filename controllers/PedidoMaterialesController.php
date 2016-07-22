@@ -6,6 +6,8 @@ use Yii;
 use app\models\PedidoMateriales;
 use app\models\PedidoMaterialesSearch;
 use app\models\PedidoAdjunta;
+use app\models\OrdenTrabajo;
+use app\models\Proyecto;
 use app\models\StockMateriales;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -53,6 +55,18 @@ class PedidoMaterialesController extends Controller
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionIndexPro($id)
+    {
+        $proyecto = Proyecto::findOne($id);
+        $array_ot = OrdenTrabajo::find()->select()->where(['PRO_ID'=>$id])->asArray()->all();
+        $pedidos = PedidoMateriales::find()-where(['[OT_ID'=>$array_ot])->all();
+
+        return $this->render('index-pro', [
+            'proyecto' => $proyecto,
+            'pedidos' => $pedidos,
         ]);
     }
 

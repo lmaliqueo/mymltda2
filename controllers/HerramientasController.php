@@ -7,6 +7,8 @@ use app\models\Herramientas;
 use app\models\HerramientaTiene;
 use app\models\HerramientasSearch;
 use app\models\EstadoHerramientas;
+use app\models\DespachoHerramientas;
+use app\models\RetornoHerramientas;
 use app\models\Bodegas;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -51,8 +53,13 @@ class HerramientasController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $estado_he = HerramientaTiene::find()->where(['HE_ID'=>$id])->all();
+        $cant_estado = HerramientaTiene::find()->where(['HE_ID'=>$id])->count();
         return $this->renderAjax('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'estado_he' => $estado_he,
+            'cant_estado' => $cant_estado,
         ]);
     }
 
@@ -89,12 +96,12 @@ class HerramientasController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->find(Model($id));
+        $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->HE_ID]);
         } else {
-            return $this->render('update', [
+            return $this->renderAjax('update', [
                 'model' => $model,
             ]);
         }
@@ -132,4 +139,29 @@ class HerramientasController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionDespachosIndex()
+    {
+        $despachos_he= DespachoHerramientas::find()->all();
+
+        return $this->render('index_despacho', [
+            'despachos_he' => $despachos_he,
+        ]);
+    }
+
+    public function actionRetornoIndex()
+    {
+        $retorno_he = RetornoHerramientas::find()->all();
+        return $this->render('index_retorno', [
+            'retorno_he' => $retorno_he,
+        ]);
+    }
+
+
+    public function actionCrearDespachos()
+    {
+        $herramientas = Herramientas::find()->where()->all();
+    }
+
+
 }

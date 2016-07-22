@@ -7,16 +7,23 @@ use kartik\mpdf\Pdf;
 use app\models\OrdenTrabajo;
 use app\models\OrdenTrabajoSearch;
 use app\models\StockMateriales;
+use app\models\StockMaterialesSearch;
 use app\models\TransaccionMateriales;
 use app\models\Proyecto;
 use app\models\PedidoAdjunta;
 use app\models\Actividades;
-use app\models\ActividadesSearch;
-use app\models\MatProvAdquirido;
+use app\models\EstadoPago;
+use app\models\GastosGenerales;
+use app\models\ReportesAvances;
 use app\models\Materiales;
+use app\models\ActividadesSearch;
+use app\models\EstadoPagoSearch;
+use app\models\GastosGeneralesSearch;
+use app\models\ReportesAvancesSearch;
+use app\models\MaterialesSearch;
+use app\models\MatProvAdquirido;
 use app\models\ActSactAsigna;
 use app\models\AsignaTiene;
-use app\models\EstadoPago;
 use app\models\CantidadUtilizada;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -41,7 +48,116 @@ class OrdenTrabajoController extends Controller
             ],
         ];
     }
+/*##########################################################################################################################################*/
+/*################################################################ INDEX-OT ################################################################*/
+/*##########################################################################################################################################*/
 
+    public function actionIndexActividades($id)
+    {
+        $ordentrabajo= OrdenTrabajo::findOne($id);
+        $searchModel = new ActividadesSearch();
+        $searchModel->OT_ID=$id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('../actividades/index-ot', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'ordentrabajo' => $ordentrabajo,
+        ]);
+    }
+
+    public function actionIndexEstadoPago($id)
+    {
+        $ordentrabajo= OrdenTrabajo::findOne($id);
+        $acid= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$id])->asArray()->all();
+        $asid= ActSactAsigna::find()->select('AS_ID')->where(['AC_ID'=>$acid])->asArray()->all();
+        $epid= AsignaTiene::find()->select('EP_ID')->where(['AS_ID'=>$asid])->asArray()->all();
+        $searchModel = new EstadoPagoSearch();
+        $dataProvider = new ActiveDataProvider([
+            'query' => EstadoPago::find()->
+                where(['EP_ID'=>$epid]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+
+
+        //$searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('../estado-pago/index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'ordentrabajo' => $ordentrabajo,
+        ]);
+    }
+
+    public function actionIndexReportesAvances($id)
+    {
+        $ordentrabajo = OrdenTrabajo::findOne($id);
+        $searchModel = new ReportesAvancesSearch();
+        $reportes= ReportesAvances::find()->where(['OT_ID'=>$ordentrabajo->OT_ID])->all();
+        $dataProvider = new ActiveDataProvider([
+            'query' => ReportesAvances::find()->
+                where(['OT_ID'=>$ordentrabajo->OT_ID]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+
+        return $this->render('../reportes-avances/index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'ordentrabajo' => $ordentrabajo,
+        ]);
+    }
+
+    public function actionIndexGastosGenerales($id)
+    {
+        $ordentrabajo= OrdenTrabajo::findOne($id);
+        $searchModel = new GastosGeneralesSearch();
+        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => GastosGenerales::find()->
+                where(['OT_ID'=>$id]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+
+        return $this->render('../gastos-generales/index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'ordentrabajo' => $ordentrabajo,
+        ]);
+    }
+
+    public function actionIndexMateriales($id)
+    {
+        $ordentrabajo = OrdenTrabajo::findOne($id);
+        $stock = StockMateriales::find()->where(['OT_ID'=>$id])->all();
+
+
+
+        $searchModel = new StockMaterialesSearch();
+        $dataProvider = new ActiveDataProvider([
+            'query' => StockMateriales::find()->
+                where(['OT_ID'=>$id]),
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+        ]);
+
+        return $this->render('../materiales/index_pro', [
+            'ordentrabajo' => $ordentrabajo,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+
+/*##########################################################################################################################################*/
+/*################################################################ INDEX-OT ################################################################*/
+/*##########################################################################################################################################*/
     /**
      * Lists all OrdenTrabajo models.
      * @return mixed
@@ -51,7 +167,7 @@ class OrdenTrabajoController extends Controller
         $searchModel = new OrdenTrabajoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('index-gen', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -88,6 +204,23 @@ class OrdenTrabajoController extends Controller
             return $this->renderAjax('create', [
                 'model' => $model,
                 'proyecto' => $proyecto,
+            ]);
+        }
+    }
+
+    public function actionCrearOt()
+    {
+        $model = new OrdenTrabajo();
+        $proyectos = Proyecto::find()->where(['PRO_ESTADO'=>'Pendiente'])->all();
+        if ($model->load(Yii::$app->request->post())) {
+            $model->OT_ESTADO='Pendiente';
+            $model->OT_COSTO_TOTAL=0;
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->OT_ID]);
+        } else {
+            return $this->renderAjax('create', [
+                'model' => $model,
+                'proyectos' => $proyectos,
             ]);
         }
     }
@@ -178,6 +311,7 @@ class OrdenTrabajoController extends Controller
         ]);
     }
 
+/*
         public function actionTransaccion($id)
     {
         $stock= StockMateriales::find()->where('OT_ID=:x',[':x'=>$id])->all();
@@ -207,7 +341,7 @@ class OrdenTrabajoController extends Controller
                 'utilizados'=> $utilizados,
             ]);
     }
-
+*/
     public function actionGetPedidos($mat, $ot){
         $material= Materiales::find()->where(['MA_NOMBRE'=>$mat])->one();
         $orden= OrdenTrabajo::find()->where(['OT_NOMBRE'=>$ot])->one();
@@ -256,15 +390,11 @@ class OrdenTrabajoController extends Controller
         $mpdf->Output(); // call the mpdf api output as needed
         exit;
     }
-    public function actionButtonAct($id){
-        $model=OrdenTrabajo::findOne($id);
-        return $this->renderAjax('button_act', [
-            'model' => $model,
-        ]);
-    }
-    public function actionInfoGeneral($id)
+
+    public function actionGraficoOt($id)
     {
         $model= OrdenTrabajo::findOne($id);
+        $ordentrabajo=$model;
         $actividades= Actividades::find()->where(['OT_ID'=>$id])->all();
         $array_act= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$id])->asArray()->all();
         $array_asigna= ActSactAsigna::find()->where(['AC_ID'=>$array_act])->asArray()->all();
@@ -275,11 +405,12 @@ class OrdenTrabajoController extends Controller
         $subactividades= ActSactAsigna::find()->where(['AC_ID'=>$array_act])->all();
 
 
-        return $this->renderAjax('general', [
+        return $this->render('grafico_index', [
             'model' => $model,
             'actividades' => $actividades,
             'subactividades' => $subactividades,
             'estado_pago' => $estado_pago,
+            'ordentrabajo' => $ordentrabajo,
         ]);
        
 

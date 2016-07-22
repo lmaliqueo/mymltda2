@@ -50,6 +50,21 @@ class ActividadesController extends Controller
             'ordentrabajo' => $ordentrabajo,
         ]);
     }
+
+    public function actionIndexOt($id)
+    {
+        $ordentrabajo= OrdenTrabajo::findOne($id);
+        $searchModel = new ActividadesSearch();
+        $searchModel->OT_ID=$id;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index-ot', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'ordentrabajo' => $ordentrabajo,
+        ]);
+    }
+
     public function actionCalendario($id)
     {
         $fechaactual= date('Y-m-d');
@@ -76,10 +91,10 @@ class ActividadesController extends Controller
 
         $sueldos=[];
         if ($obreros!=NULL) {
-          foreach ($obreros as $ob) {
-              $sueldo_ob = SueldoObrero::find()->where(['COO_ID'=>$ob->COO_ID])->orderBy(['COO_ID' => SORT_DESC])->one();
-              $sueldos[]=$sueldo_ob;
-          }
+            foreach ($obreros as $ob) {
+                $sueldo_ob = SueldoObrero::find()->where(['COO_ID'=>$ob->COO_ID])->orderBy(['COO_ID' => SORT_DESC])->one();
+                $sueldos[]=$sueldo_ob;
+            }
         }
 
         return $this->renderAjax('view', [
@@ -188,30 +203,30 @@ class ActividadesController extends Controller
         $arreglo=[];
         foreach ($actividades as $actividad) {
 
-              $act = new \yii2fullcalendar\models\Event();
-              $act->id = $actividad->AC_ID;
-              $act->title = $actividad->AC_NOMBRE;
-              $act->start = $actividad->AC_FECHA_INICIO;
-              $act->className = 'btn';
-              $act->end = $actividad->AC_FECHA_TERMINO;
-              if(($fechaactual>=$actividad->AC_FECHA_INICIO) && ($fechaactual<$actividad->AC_FECHA_TERMINO)){
-                  if($actividad->AC_ESTADO=='Pendiente'){
-                      $actividadactual= Actividades::find()->where(['AC_ID'=>$actividad->AC_ID])->one();
-                      $actividadactual->AC_ESTADO='En proceso';
-                      $actividadactual->save();
-                  }
-              }
-              if($actividad->AC_ESTADO=='Finalizado'){
-                  $act->color = '#5CB85C';
-              }elseif ($actividad->AC_ESTADO=='En proceso') {
-                  if($fechaactual > $actividad->AC_FECHA_TERMINO){
-                      $act->color = '#f39c12';
-                  }
-              }elseif($actividad->AC_ESTADO=='Pendiente'){
-                  $act->color = '#AFAFAF';
+            $act = new \yii2fullcalendar\models\Event();
+            $act->id = $actividad->AC_ID;
+            $act->title = $actividad->AC_NOMBRE;
+            $act->start = $actividad->AC_FECHA_INICIO;
+            $act->className = 'btn';
+            $act->end = $actividad->AC_FECHA_TERMINO;
+            if(($fechaactual>=$actividad->AC_FECHA_INICIO) && ($fechaactual<$actividad->AC_FECHA_TERMINO)){
+                if($actividad->AC_ESTADO=='Pendiente'){
+                    $actividadactual= Actividades::find()->where(['AC_ID'=>$actividad->AC_ID])->one();
+                    $actividadactual->AC_ESTADO='En proceso';
+                    $actividadactual->save();
+                }
+            }
+            if($actividad->AC_ESTADO=='Finalizado'){
+                $act->color = '#5CB85C';
+            }elseif ($actividad->AC_ESTADO=='En proceso') {
+                if($fechaactual > $actividad->AC_FECHA_TERMINO){
+                    $act->color = '#f39c12';
+                }
+            }elseif($actividad->AC_ESTADO=='Pendiente'){
+                $act->color = '#AFAFAF';
 
-              }
-              $arreglo[] = $act;
+            }
+            $arreglo[] = $act;
         }
         $searchModel = new ActividadesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -296,10 +311,10 @@ class ActividadesController extends Controller
 
         $sueldos=[];
         if ($contratos!=NULL) {
-          foreach ($contratos as $ob) {
-              $sueldo_ob = SueldoObrero::find()->where(['COO_ID'=>$ob->COO_ID])->orderBy(['COO_ID' => SORT_DESC])->one();
-              $sueldos[]=$sueldo_ob;
-          }
+            foreach ($contratos as $ob) {
+                $sueldo_ob = SueldoObrero::find()->where(['COO_ID'=>$ob->COO_ID])->orderBy(['COO_ID' => SORT_DESC])->one();
+                $sueldos[]=$sueldo_ob;
+            }
         }
 
 
@@ -309,11 +324,11 @@ class ActividadesController extends Controller
 
         } else {
             return $this->render('asignar_obreros', [
-              'model' => $model,
-              'trabajan' => $trabajan,
-              'obreros' => $obreros,
-              'sueldos' => $sueldos,
-              'obrero_asignado' => $obrero_asignado,
+                'model' => $model,
+                'trabajan' => $trabajan,
+                'obreros' => $obreros,
+                'sueldos' => $sueldos,
+                'obrero_asignado' => $obrero_asignado,
             ]);
         }
     }

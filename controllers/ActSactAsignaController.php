@@ -289,4 +289,70 @@ class ActSactAsignaController extends Controller
         }
     }
 
+
+/*
+    public function actionAsignarSubact($id)
+    {
+        $actividad = Actividades::findOne($id);
+        $asignar_subact = [new ActSactAsigna];
+
+        $
+        $array_exist_subact = ActSactAsigna::find()->select('SACT_ID')->where(['AC_ID'=>$id])->asArray()->all();
+        if ($array_exist_subact) {
+            $array_noasig= Subactividades::fin()->select('SACT_ID')->where(['not in','SACT_ID', $array_exist_subact])->asArray()->all();
+            $cantidad_subact= Subactividades::find()->where([])->count();
+        }else{
+            $cantidad_subact= Subactividades::find()->count();            
+        }
+
+
+
+        if ($actividad->load(Yii::$app->request->post())) {
+            //$model->save();
+            $asignar_subact = Model::createMultiple(ActSactAsigna::classname());
+            Model::loadMultiple($asignar_subact, Yii::$app->request->post());
+
+
+            // validate all models
+            //$valid = $model->validate();
+            $valid = Model::validateMultiple($asignar_subact);
+            $valid = true;
+
+            if ($valid) {
+                //$model->save();
+                $transaction = \Yii::$app->db->beginTransaction();
+                $orden_compra->save();
+                try {
+                    if ($flag = $orden_compra->save(false)) {
+                        foreach ($asignar_subact as $asignar) {
+
+                            $asignar->AC_ID = $actividad->AC_ID;
+                            $asignar->AS_COSTOTOTAL = 0;
+                            $asignar->AS_CANTIDADACTUAL = 0;
+                            $asignar->AS_COSTOACTUAL = 0;
+                            if (! ($flag = $adquisicion->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['orden-trabajo/index-act', 'id' => $actividad->oT->PRO_ID]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
+        }else{
+            return $this->render('multi_adq', [
+                'actividad' => $actividad,
+                'cantidad_subact' => $cantidad_subact,
+                'asignar_subact' => (empty($asignar_subact)) ? [new MatOrcAdquirido] : $asignar_subact
+            ]);
+        }
+
+
+    }*/
+
 }

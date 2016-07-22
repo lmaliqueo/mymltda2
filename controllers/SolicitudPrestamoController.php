@@ -7,11 +7,13 @@ use app\models\SolicitudPrestamo;
 use app\models\SolicitudPrestamoSearch;
 use app\models\SpreHeSolicita;
 use app\models\HerramientaTiene;
+use app\models\Herramientas;
 use app\models\EstadoHerramientas;
 use app\models\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * SolicitudPrestamoController implements the CRUD actions for SolicitudPrestamo model.
@@ -66,6 +68,7 @@ class SolicitudPrestamoController extends Controller
     {
         $model = new SolicitudPrestamo();
         $prestamo= [new SpreHeSolicita];
+        $cant_he = Herramientas::find()->count();
             $model->SPRE_FECHA= date('Y-m-d');
             $model->SPRE_ESTADO='Pendiente';
             $libre= EstadoHerramientas::find()->where('EH_NOMBREESTADO=:x',[':x'=>'Libre'])->one();
@@ -118,6 +121,7 @@ class SolicitudPrestamoController extends Controller
         }else{
             return $this->render('create', [
                 'model' => $model,
+                'cant_he' => $cant_he,
                 'prestamo' => (empty($prestamo)) ? [new SpreHeSolicita] : $prestamo
             ]);
         }
@@ -201,4 +205,14 @@ class SolicitudPrestamoController extends Controller
         }
     }
 
+    public function actionGetCantidad($id){
+        $herramienta= Herramientas::findOne($id);
+        $herramienta_libre = HerramientaTiene::find()->where(['HE_ID'=>$id])->andWhere(['EH_ID'=>1])->one();
+        $datos=[
+                'max'=>$herramienta_libre->HT_CANTHEESTADO,
+                'tipo'=>$herramienta_libre->hE->tH->TH_NOMBRE,
+                'id'=>$herramienta_libre->HE_ID,
+        ];
+        echo Json::encode($datos);
+    }
 }

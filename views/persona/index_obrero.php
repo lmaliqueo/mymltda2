@@ -164,16 +164,3 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 </div>
 
-
-<?php 
-$script = <<< JS
-
-    $('.modalViewTn').click(function() {
-        $('#modal-view-tn').modal('show')
-        .find('.modalContent')
-        .load($(this).attr('value'));
-    });
-    
-JS;
-$this->registerJs($script);
-?>

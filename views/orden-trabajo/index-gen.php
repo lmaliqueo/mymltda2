@@ -2,17 +2,36 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+//use kartik\grid\GridView;
+use yii\bootstrap\Modal;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\OrdenTrabajoTrabajo */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$this->title = $proyecto->PRO_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => $proyecto->PRO_NOMBRE, 'url' => ['proyecto/view', 'id'=>$proyecto->PRO_ID]];
-$this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
+$this->title='Ordenes de Trabajos';
 ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<div class="orden-trabajo-index">
 
+    <?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
+
+
+<?php 
+    Modal::begin([
+            'header'=>'<h4>Orden de Trabajo</h4>',
+            'id'=>'modal',
+            'size'=>'modal-lg',
+        ]);
+    echo "<div class='modalContent'></div>";
+    Modal::end();
+ ?>
+
+        <h1>Ordenes de Trabajos</h1>
+        <br>
+
+<p>
+        <?= Html::button('Generar Orden de Trabajo', ['value'=>Url::to(['orden-trabajo/crear-ot']),'class'=> 'btn btn-success btn-flat','id'=>'modalButton']) ?>
+</p>
 
 
         <div class="box box-primary">
@@ -44,13 +63,27 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
 
                         //'OT_ID',
                         //'pRO.PRO_NOMBRE',
+
                 [
-                    //'label'=>'N',
+                    'label'=>'OT',
                     'attribute'=>'OT_NOMBRE',
                     'format'=>'raw',
                     'value' => function($data){
-                        return Html::a($data->OT_NOMBRE, ['orden-trabajo/index-act','id'=>$data->OT_ID], ['class'=>'text-muted orden', 'idot'=>$data->OT_ID]);
+                        //return Html::a($data->OT_NOMBRE, ['orden-trabajo/index-act','id'=>$data->OT_ID], ['class'=>'text-muted orden', 'idot'=>$data->OT_ID]);
+                        return '<strong>'.$data->OT_NOMBRE.'</strong>';
                     }
+                ],
+                [
+                    //'label'=>'N',
+                    'attribute'=>'PRO_ID',
+                    'format'=>'raw',
+                    'value' => 'pRO.PRO_NOMBRE'
+                ],
+                [
+                    'label'=>'Cliente',
+                    'attribute'=>'PRO_ID',
+                    'format'=>'raw',
+                    'value' => 'pRO.eMPRUT.EMP_RAZON'
                 ],
                         //'OT_TIPO',
                         'OT_FECHA_INICIO:date',
@@ -67,10 +100,15 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
                         'OT_COSTO_TOTAL',
                         // 'OT_INFORME',
                         ['class' => 'yii\grid\ActionColumn',
-                            'template'=>'{ver}',
+                            'template'=>'{ver} {actualizar}',
                             'buttons' => [
                                 'ver' => function ($url,$model) {
-                                    return Html::a('Ver Orden de Trabajo', ['orden-trabajo/index-act','id'=>$model->OT_ID], ['class'=>'btn btn-flat btn-warning btn-sm orden', 'idot'=>$model->OT_ID]);
+                                    return Html::a('Ver Orden de Trabajo', ['orden-trabajo/index-actividades','id'=>$model->OT_ID], ['class'=>'btn btn-flat btn-warning btn-sm orden', 'idot'=>$model->OT_ID]);
+                                },
+                                'actualizar' => function ($url,$model) {
+                                    if ($model->OT_ESTADO!='Finalizado') {
+                                        return Html::button('Actualizar', ['value'=>Url::to(['update','id'=>$model->OT_ID]), 'class'=>'btn btn-flat btn-primary btn-sm orden', 'id'=>'modalButton']);
+                                    }
                                 },
                             ],
                         ],
@@ -80,3 +118,9 @@ $this->params['breadcrumbs'][] = 'Ordenes de Trabajos';
                 ]); ?>
             </div>
         </div>
+
+
+
+</div>
+
+

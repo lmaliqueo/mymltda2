@@ -47,8 +47,8 @@ use yii\bootstrap\Modal;
                     <label class="control-label">ORDEN DE TRABAJO: </label>
                     <?= $orden_compra->oT->OT_NOMBRE ?>
                     <br>
-                    <label class="control-label">ENVIAR: </label>
-                    <label class="badge bg-blue" id="destino_mat"><?= $envio ?></label>
+                    <label class="control-label">ENVIO: </label>
+                    <strong class="text-green"><?= $envio ?></strong>
                 </div>
             </div>
         </div>

@@ -42,13 +42,22 @@ use yii\helpers\Html;
                 'items' => [
                     ['label' => 'Menú', 'options' => ['class' => 'header']],
                     ['label' => 'Proyectos', 'icon' => 'fa fa-archive', 'url' => ['/proyecto']],
+                    ['label' => 'Orden de Trabajos', 'icon' => 'fa fa-tasks', 'url' => ['/orden-trabajo']],
+                    ['label' => 'Inventario', 'icon' => 'fa fa-list-alt', 'url' => '#',
+                        'items' => [
+                            ['label' => 'Materiales', 'icon' => 'fa fa-circle-o', 'url' => ['/materiales'],],
+                            ['label' => 'Herramientas', 'icon' => 'fa fa-circle-o', 'url' => ['/herramientas'],],
+
+                        ],
+                    ],
                     ['label' => 'Mano de Obra', 'icon' => 'fa fa-male', 'url' => '#',
                         'items' => [
-                            ['label' => 'Mano de Obra', 'icon' => 'fa fa-circle-o', 'url' => ['/persona/index-obrero'],],
+                            ['label' => 'Obreros', 'icon' => 'fa fa-circle-o', 'url' => ['/persona/index-obrero'],],
                             ['label' => 'Encargados de Obras', 'icon' => 'fa fa-circle-o', 'url' => ['/persona/index-encargado'],],
 
                         ],
                     ],
+                    /*
                     ['label' => 'Bodegas', 'icon' => 'fa fa-industry', 'url' => ['/bodegas'],
                         'items' => [
                             ['label' => 'Materiales', 'icon' => 'fa fa-circle-o', 'url' => ['/materiales'],],
@@ -62,7 +71,10 @@ use yii\helpers\Html;
                             ['label' => 'Administrar', 'icon' => 'fa fa-circle-o', 'url' => '#',],
 
                         ],
-                    ],
+                    ],*/
+                    ['label' => 'Sub-Actividades', 'icon' => 'glyphicon glyphicon-inbox', 'url' => ['/subactividades']],
+                    ['label' => 'Proveedores', 'icon' => 'fa fa-truck', 'url' => ['/proveedores']],
+                    /*
                     ['label' => 'Base de Datos', 'icon' => 'fa fa-database', 'url' => '#',
                         'items' => [
                             ['label' => 'Sub-Actividades', 'icon' => 'fa fa-circle-o', 'url' => ['/subactividades'],],
@@ -71,7 +83,7 @@ use yii\helpers\Html;
                             //['label' => 'Bodegas', 'icon' => 'fa fa-circle-o', 'url' => ['/bodegas'],],
                             ['label' => 'Personas', 'icon' => 'fa fa-circle-o', 'url' => ['/persona/index'],],
                         ],
-                    ],
+                    ],*/
                     ['label' => 'Cerrar Sesión', 'icon' => 'fa fa-circle-o text-red', 'url' => '#',],
 
                 ],

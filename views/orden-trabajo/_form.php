@@ -4,6 +4,9 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use dosamigos\datepicker\DatePicker;
 use dosamigos\datepicker\DateRangePicker;
+use kartik\select2\Select2;
+
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\OrdenTrabajo */
@@ -18,6 +21,15 @@ use dosamigos\datepicker\DateRangePicker;
 
     <?php /* $form->field($model, 'OT_TIPO')->textInput(['maxlength' => true]) */ ?>
 
+            <?= $form->field($model, 'PRO_ID')->widget(Select2::classname(), [
+                'data' => ArrayHelper::map($proyectos,'PRO_ID','PRO_NOMBRE'),
+                'language' => 'es',
+                'options' => ['placeholder' => 'Selecionar proyecto'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]);
+            ?>
 
 
 <label class="control-label">Fecha</label>
@@ -28,7 +40,7 @@ use dosamigos\datepicker\DateRangePicker;
         'autoclose' => true,
             'format' => 'yyyy-mm-dd',
             'todayHighlight' => true,
-            'startDate'=>$proyecto->PRO_FECHA_INICIO
+            'startDate'=>date('Y-m-d')
     ]
 ])->label(false);?>
 

@@ -35,22 +35,21 @@ class GastosGeneralesController extends Controller
      */
     public function actionIndex($id)
     {
-        $array_ot= OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$id])->asArray()->all();
+        $ordentrabajo= OrdenTrabajo::findOne($id);
         $searchModel = new GastosGeneralesSearch();
         //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider = new ActiveDataProvider([
             'query' => GastosGenerales::find()->
-                where(['OT_ID'=>$array_ot]),
+                where(['OT_ID'=>$id]),
             'pagination' => [
                 'pageSize' => 20,
             ],
         ]);
-        $proyecto= Proyecto::findOne($id);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'proyecto' => $proyecto,
+            'ordentrabajo' => $ordentrabajo,
         ]);
     }
 
@@ -74,7 +73,6 @@ class GastosGeneralesController extends Controller
     public function actionCreate($id)
     {
         $model = new GastosGenerales();
-        $model->PRO_ID=$id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->GG_ID]);

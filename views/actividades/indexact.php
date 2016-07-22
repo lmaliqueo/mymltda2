@@ -55,15 +55,14 @@ $this->params['breadcrumbs'][] = $ordentrabajo->OT_NOMBRE;
         <div class="box box-solid">
 
             <dic class="nav-tabs-custom">
-                <ul class="nav nav-tabs pull-right">
-                    <li><a href="" data-toggle="tab" aria-expanded="false" id="inf_general">Grafico</a></li>
-                    <?php /*<li><a href="" data-toggle="tab" aria-expanded="false" id="recursos">Recursos</a></li>*/ ?>
+                <ul class="nav nav-tabs">
+                    <li class="active"><?= Html::a('Actividades',['orden-trabajo/index-actividades', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="calendario">Calendario</a></li>
-                    <li class="active"><?= Html::a('Actividades',['index-act', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
-                    <li id="otid" class="pull-left header idorden" idot="<?php echo $ordentrabajo->OT_ID; ?>"> <?= Html::a('<i class="fa fa-arrow-circle-left"></i> '.$ordentrabajo->OT_NOMBRE,['orden-trabajo/indexpro', 'id'=>$ordentrabajo->PRO_ID], ['class'=>'no-padding text-blue', 'title'=>'volver a ordenes de trabajos']) ?></li>
+                    <?php /*<li><a href="" data-toggle="tab" aria-expanded="false" id="inf_general">Grafico</a></li>*/ ?>
+                    <?php /*<li><a href="" data-toggle="tab" aria-expanded="false" id="recursos">Recursos</a></li>*/ ?>
                 </ul>
                 <div class="tab-content" id="contenido">
-                    <?= $this->render('../actividades/index', [
+                    <?= $this->render('index', [
                                         'dataProvider' => $dataProvider,
                                         'searchModel' => $searchModel,
                                         'ordentrabajo' => $ordentrabajo,
@@ -78,28 +77,28 @@ $this->params['breadcrumbs'][] = $ordentrabajo->OT_NOMBRE;
 <?php 
 $script = <<< JS
     $('#calendario').click(function(){
-        var id= $('.idorden').attr('idot');
+        var id= $ordentrabajo->OT_ID;
         $.get('index.php?r=actividades/calendario',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
     });
     $('#index').click(function(){
-        var id= $('.idorden').attr('idot');
+        var id= $ordentrabajo->OT_ID;
         $.get('index.php?r=actividades/index',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
     });
     $('#recursos').click(function(){
-        var id= $('.idorden').attr('idot');
+        var id= $ordentrabajo->OT_ID;
         $.get('index.php?r=orden-trabajo/transaccion',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
     });
     $('#inf_general').click(function(){
-        var id= $('.idorden').attr('idot');
+        var id= $ordentrabajo->OT_ID;
         $.get('index.php?r=orden-trabajo/info-general',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);

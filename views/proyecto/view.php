@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="proyecto-view">
 
-    <h1>Detalles</h1>
+    <h1>Proyecto</h1>
 
 
 <?php 

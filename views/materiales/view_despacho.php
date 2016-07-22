@@ -87,14 +87,14 @@ use yii\bootstrap\Modal;
             echo Html::a('Autorizar', ['autorizar-orden-despacho', 'id' => $orden_despacho->OD_ID], [
                 'class' => 'btn btn-success btn-flat',
                 'data' => [
-                'confirm' => '¿Esta seguro de AUTORIZAR esta Orden de Compra?',
+                'confirm' => '¿Esta seguro de AUTORIZAR este Orden de Despacho?',
                 'method' => 'post',
                 ],
             ]);
-            echo Html::a('Anular', ['anular-orden-despacho', 'id' => $orden_despacho->OD_ID], [
+            echo Html::a('Anular', ['denegar-orden-despacho', 'id' => $orden_despacho->OD_ID], [
                 'class' => 'btn btn-danger btn-flat',
                 'data' => [
-                    'confirm' => '¿Esta seguro de ANULAR esta Orden de Compra?',
+                    'confirm' => '¿Esta seguro de ANULAR este Orden de Despacho?',
                     'method' => 'post',
                 ],
             ]);

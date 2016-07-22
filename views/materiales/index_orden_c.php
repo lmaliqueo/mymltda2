@@ -51,12 +51,16 @@ $this->params['breadcrumbs'][] = $this->title;
             <td><?= $envio[$count] ?></td>
             <td><?= $compra->ORC_ESTADO ?></td>
             <td>$ <?= $compra->ORC_COSTO_TOTAL ?></td>
-            <td><?php
-            if ($compra->ORC_ESTADO=='Pendiente') {
-                echo Html::a('Aprovar compra',['autorizar-orden-compra', 'id'=>$compra->ORC_ID],['class'=>'btn btn-flat btn-success']);
-            }
-             ?>            
-                <?= Html::button('Ver compra', ['value'=>Url::to(['ver-orden-compra','id'=>$compra->ORC_ID]), 'class'=>'btn btn-flat btn-warning btn-sm modalCompra']) ?>
+            <td>
+                <?php
+                    if ($compra->ORC_ESTADO=='Pendiente') {
+                        echo Html::button('Ver compra', ['value'=>Url::to(['ver-orden-compra','id'=>$compra->ORC_ID]), 'class'=>'btn btn-flat btn-warning btn-sm modalCompra']);
+                    }elseif($compra->ORC_ESTADO=='Denegado'){
+                        echo Html::button('Ver compra', ['value'=>Url::to(['ver-orden-compra','id'=>$compra->ORC_ID]), 'class'=>'btn btn-flat btn-danger btn-sm modalCompra']);
+                    }else{
+                        echo Html::button('Ver compra', ['value'=>Url::to(['ver-orden-compra','id'=>$compra->ORC_ID]), 'class'=>'btn btn-flat btn-primary btn-sm modalCompra']);
+                    }
+                 ?>            
             </td>
 
         </tr>

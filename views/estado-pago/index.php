@@ -7,9 +7,9 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\EstadoPagoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $proyecto->PRO_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => $proyecto->PRO_NOMBRE, 'url' => ['proyecto/view', 'id'=>$proyecto->PRO_ID]];
-$this->params['breadcrumbs'][] = 'Estados de Pagos';
+$this->title = $ordentrabajo->OT_NOMBRE;
+$this->params['breadcrumbs'][] = ['label' => 'Estados de Pagos', 'url' => ['ordentrabajo/index']];
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="estado-pago-index">
 
@@ -23,20 +23,20 @@ $this->params['breadcrumbs'][] = 'Estados de Pagos';
 <br>
 <div class="row">
     <div class="col-md-3">
-            <?= Html::a('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Generar Estado de Pago', ['create', 'id'=>$proyecto->PRO_ID], ['class' => 'btn btn-success btn-block margin-bottom']) ?>
+            <?= Html::a('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Generar Estado de Pago', ['create', 'id'=>$ordentrabajo->OT_ID], ['class' => 'btn btn-success btn-block margin-bottom btn-flat']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Proyecto</h3>
+                <h3 class="box-title">Orden de Trabajo</h3>
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li><?= Html::a('<i class="fa fa-eye"></i> Detalles', ['proyecto/view', 'id'=>$proyecto->PRO_ID]) ?></li>
-                    <li><?= Html::a('<i class="fa fa-tasks"></i> Ordenes de Trabajos', ['orden-trabajo/indexpro', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-tasks"></i> Actividades', ['orden-trabajo/index-actividades', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li class="active"><a href="#"><i class="fa fa-file-excel-o"></i> Estado de Pagos</a></li>
-                    <li><?= Html::a('<i class="fa fa-inbox"></i> Reportes de Avances', ['reportes-avances/index', 'id'=>$proyecto->PRO_ID]) ?></li>
-                    <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['gastos-generales/index', 'id'=>$proyecto->PRO_ID]) ?></li>
-                    <li><?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Materiales', ['materiales/materiales-pro', 'id'=>$proyecto->PRO_ID]) ?></li>
-                    <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['proyecto/informes-pro', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-inbox"></i> Reportes de Avances', ['orden-trabajo/index-reportes-avances', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['orden-trabajo/index-gastos-generales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Materiales', ['orden-trabajo/index-materiales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-bar-chart"></i> Gráfico', ['orden-trabajo/grafico-ot', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['proyecto/informes-pro', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
                 </ul>
             </div>
         </div>

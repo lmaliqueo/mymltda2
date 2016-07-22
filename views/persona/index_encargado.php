@@ -9,6 +9,8 @@ use yii\bootstrap\Modal;
 use app\models\ManodeobraTrabajan;
 use app\models\Actividades;
 use app\models\ContratoObrero;
+use app\models\UsuariosControla;
+use app\models\Usuario;
 use app\models\SueldoObrero;
 
 /* @var $this yii\web\View */
@@ -27,17 +29,10 @@ $this->params['breadcrumbs'][] = $this->title;
   <?php /*    <h1><?= Html::encode($this->title) ?></h1>
   echo $this->render('_search', ['model' => $searchModel]);*/ ?>
 
-        <?php if($cargo==4){ ?>
-            <h1>Mano de Obra</h1>
-            <p>            
-                <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Registrar obrero', ['value'=>Url::to('index.php?r=persona/create-obrero'),'class'=> 'btn btn-success','id'=>'modalButton']) ?>
-            </p>
-        <?php }elseif($cargo==3){ ?>
-            <h1>Encargado de Construcción</h1>
-            <p>
-                <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Registrar Encargado', ['value'=>Url::to('index.php?r=persona/create-encargado'),'class'=> 'btn btn-success','id'=>'modalButton']) ?>
-            </p>
-        <?php } ?>
+    <h1>Encargado de Obras</h1>
+    <p>
+        <?= Html::button('Registrar Encargado', ['value'=>Url::to('index.php?r=persona/create-encargado'),'class'=> 'btn btn-success btn-flat','id'=>'modalButton']) ?>
+    </p>
 
 
 <?php 
@@ -75,13 +70,31 @@ $this->params['breadcrumbs'][] = $this->title;
             //'PE_APELLIDOMAT',
             'PE_TELEFONO',
 
+            [
+                'label'=>'Proyecto',
+                'format'=>'raw',
+                'value' => function($data){
+                    $usuario = Usuario::find()->where(['PE_RUT'=>$data->PE_RUT])->one();
+                    if ($usuario!=NULL) {
+                        $controla = UsuariosControla::find()->where(['US_ID'=>$usuario->US_ID])->orderBy(['USCON_ID'=>SORT_DESC])->one();
+                        if ($controla!=NULL) {
+                            return $controla->pRO->PRO_NOMBRE;
+                        }else{
+                            return '<span class="not-set">No asignado</span>';
+                        }
+                    }else{
+                        return '<span class="not-set">Sin cuenta</span>';
+                    }
+                }
+            ],
+
+
             ['class' => 'yii\grid\ActionColumn',
-                'template'=>'{update} {delete}',
+                'template'=>'{prestamo} {pedido} {proyecto}',
                 'buttons' => [
-                    'update' => function ($url,$model) {
-                        return Html::a(
-                            '<span class="glyphicon glyphicon-pencil"></span>',
-                            '#',['class'=>'modalUpdate', 'idact'=>$model->PE_RUT, 'title'=>'Actualizar']);
+                    'prestamo' => function ($url,$model) {
+                        return Html::button(
+                            'Ver Proyecto' ,['value'=>Url::to('index.php?r=persona/create-encargado'), 'class'=>'modalUpdate btn btn-flat btn-primary btn-sm', 'idact'=>$model->PE_RUT, 'title'=>'Actualizar']);
                     },
                     'delete' => function ($url,$model) {
                         return Html::a(

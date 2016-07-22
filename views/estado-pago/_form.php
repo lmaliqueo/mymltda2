@@ -60,7 +60,7 @@ use yii\widgets\ActiveForm;
         </div>
      </div>
 <br>
-    <table class="table table-condensed">
+    <table class="table table-condensed table-bordered">
         <thead>
         <tr class="bg-light-blue">
             <th>Items</th>

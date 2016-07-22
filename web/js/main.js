@@ -46,6 +46,11 @@ $(function() {
      .load($(this).attr('value'));
    });
 
+    $('.modalViewTn').click(function() {
+        $('#modal-view-tn').modal('show')
+        .find('.modalContent')
+        .load($(this).attr('value'));
+    });
 
 });
 

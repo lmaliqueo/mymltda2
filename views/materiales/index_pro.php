@@ -11,8 +11,8 @@ use app\models\StockMateriales;
 /* @var $searchModel app\models\MaterialesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $proyecto->PRO_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => $proyecto->PRO_NOMBRE, 'url' => ['proyecto/view', 'id'=>$proyecto->PRO_ID]];
+$this->title = $ordentrabajo->OT_NOMBRE;
+$this->params['breadcrumbs'][] = ['label' => $ordentrabajo->OT_NOMBRE, 'url' => ['ordentrabajo/index']];
 $this->params['breadcrumbs'][] = 'Materiales';
 ?>
 <div class="materiales-index">
@@ -51,25 +51,25 @@ $this->params['breadcrumbs'][] = 'Materiales';
 
 <div class="row">
     <div class="col-md-3">
-        <?= Html::a('Ingresar Orden de Compra',['ingresar-adquisiciones','id'=>$proyecto->PRO_ID],['class'=>'btn btn-flat btn-primary btn-block margin-bottom']) ?>
-        <?= Html::a('Ingresar Orden de Despacho',['crear-despacho-mat','id'=>$proyecto->PRO_ID],['class'=>'btn btn-flat btn-success btn-block margin-bottom']) ?>
+        <?= Html::a('Ingresar Orden de Compra',['materiales/ingresar-adquisiciones','id'=>$ordentrabajo->PRO_ID],['class'=>'btn btn-flat btn-primary btn-block margin-bottom']) ?>
+        <?= Html::a('Ingresar Orden de Despacho',['materiales/crear-despacho-mat','id'=>$ordentrabajo->PRO_ID],['class'=>'btn btn-flat btn-success btn-block margin-bottom']) ?>
         <div class="otbutton">
         </div>
 
         <div class="box box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Proyecto</h3>
+                <h3 class="box-title">Orden de Trabajo</h3>
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li><?= Html::a('<i class="fa fa-eye"></i> Detalles', ['proyecto/view', 'id'=>$proyecto->PRO_ID]) ?></li>
                     <?php /*<li class="view" id="<?php echo $model->PRO_ID; ?>"><a href="#"><i class="fa fa-tasks"></i> <span style="padding-left:5px">InformaciÃ³n</span></a></li>*/ ?>
-                    <li><?= Html::a('<i class="fa fa-tasks"></i> Ordenes de Trabajos', ['orden-trabajo/indexpro', 'id'=>$proyecto->PRO_ID]) ?></li>
-                    <li><?= Html::a('<i class="fa fa-file-excel-o"></i> Estados de Pagos', ['estado-pago/index', 'id'=>$proyecto->PRO_ID]) ?></li>
-                    <li><?= Html::a('<i class="fa fa-inbox"></i> Reportes de Avances', ['reportes-avances/index', 'id'=>$proyecto->PRO_ID]) ?></li>
-                    <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['gastos-generales/index', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-tasks"></i> Actividades', ['orden-trabajo/index-actividades', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-file-excel-o"></i> Estados de Pagos', ['orden-trabajo/index-estado-pago', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-inbox"></i> Reportes de Avances', ['orden-trabajo/index-reportes-avances', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['orden-trabajo/index-gastos-generales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li class="active"><a href="#"><i class="glyphicon glyphicon-list-alt"></i> Materiales</a></li>
-                    <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['proyecto/informes-pro', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-bar-chart"></i> Gráfico', ['orden-trabajo/grafico-ot', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['proyecto/informes-pro', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
                 </ul>
             </div>
         </div>
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = 'Materiales';
 
             <dic class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                    <li class="active"><?= Html::a('Stock',['materiales-pro', 'id'=>$proyecto->PRO_ID]) ?></li>
+                    <li class="active"><?= Html::a('Stock',['orden-trabajo/index-materiales', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
                     <li><a href="asd" data-toggle="tab" aria-expanded="false" id="bodega">Bodega</a></li>
                     <?php /*<li><a href="" data-toggle="tab" aria-expanded="false" id="adquisicion">Adquisiciones</a></li>*/ ?>
                     <li><a href="" data-toggle="tab" aria-expanded="false" id="movimientos">Movimientos</a></li>
@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = 'Materiales';
                 <div class="tab-content">
                     <br>
                     <div id="contenido">
-                        <?= $this->render('index_info', [
+                        <?= $this->render('../materiales/index_info', [
                                             'dataProvider' => $dataProvider,
                                             'searchModel' => $searchModel,
                         ]) ?>
@@ -111,28 +111,28 @@ $this->params['breadcrumbs'][] = 'Materiales';
 <?php 
 $script = <<< JS
     $('#adquisicion').click(function(){
-        var id= $proyecto->PRO_ID;
+        var id= $ordentrabajo->PRO_ID;
         $.get('index.php?r=materiales/adquisicion-pro',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
     });
     $('#movimientos').click(function(){
-        var id= $proyecto->PRO_ID;
+        var id= $ordentrabajo->PRO_ID;
         $.get('index.php?r=materiales/movimientos-pro',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
     });
     $('#bodega').click(function(){
-        var id= $proyecto->PRO_ID;
+        var id= $ordentrabajo->PRO_ID;
         $.get('index.php?r=materiales/bodega-pro',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
     });
     $('#pedidos').click(function(){
-        var id= $proyecto->PRO_ID;
+        var id= $ordentrabajo->PRO_ID;
         $.get('index.php?r=materiales/pedidos-pro',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
@@ -146,14 +146,14 @@ $script = <<< JS
         })
     });
     $('#orden-compra').click(function(){
-        var id= $proyecto->PRO_ID;
+        var id= $ordentrabajo->PRO_ID;
         $.get('index.php?r=materiales/index-oc',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
     });
     $('#orden-despacho').click(function(){
-        var id= $proyecto->PRO_ID;
+        var id= $ordentrabajo->PRO_ID;
         $.get('index.php?r=materiales/index-od',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);

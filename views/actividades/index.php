@@ -66,12 +66,9 @@ $this->params['breadcrumbs'][] = 'Actividades';*/
                                 'attribute'=>'AC_NOMBRE',
                                 'format'=>'raw',
                                 'value' => function($data){
-                                    return Html::a('<i class="fa fa-eye"></i> '.$data->AC_NOMBRE, '#', ['class'=>'modalView text-muted', 'idact'=>$data->AC_ID, 'title'=>'Ver Actividad']);
+                                    return Html::a($data->AC_NOMBRE.'<i class="fa fa-eye pull-right"></i> ', '#', ['class'=>'modalView text-muted', 'idact'=>$data->AC_ID, 'title'=>'Ver Actividad']);
                                 }
                             ],
-                            'AC_FECHA_INICIO:date',
-                            'AC_FECHA_TERMINO:date',
-                            'AC_ESTADO',
                             [
                                 //'label'=>'N',
                                 'attribute'=>'AC_ESTADO',
@@ -86,25 +83,39 @@ $this->params['breadcrumbs'][] = 'Actividades';*/
                                     }
                                 }
                             ],
-                            'AC_COSTO_TOTAL',
+                            'AC_FECHA_INICIO:date',
+                            'AC_FECHA_TERMINO:date',
+                            //'AC_ESTADO',
+                            //'AC_COSTO_TOTAL',
+                            [
+                                'attribute'=>'AC_COSTO_TOTAL',
+                                'value' => function($data){
+                                    return '$ '.$data->AC_COSTO_TOTAL;
+                                }
+                            ],
 
                             ['class' => 'yii\grid\ActionColumn',
                                 'template'=>'{update} {delete}',
                                 'buttons' => [
                                     'update' => function ($url,$model) {
-                                        return Html::a(
-                                            '<span class="glyphicon glyphicon-pencil"></span>',
-                                            '#',['class'=>'modalUpdate', 'idact'=>$model->AC_ID, 'title'=>'Actualizar']);
+                                        return Html::button(
+                                            'Actualizar', [
+                                                'value'=>Url::to(['actividades/update','id'=>$model->AC_ID]),
+                                                'class'=>'btn btn-sm btn-flat btn-primary modalAct',
+                                                'title'=>'Actualizar'
+                                        ]);
                                     },
                                     'delete' => function ($url,$model) {
-                                        return Html::a(
-                                            '<span class="glyphicon glyphicon-remove"></span>',
-                                            ['delete', 'id'=>$model->AC_ID],['class'=>'text-red', 'title'=>'Eliminar', 
+                                        if ($model->AC_ESTADO=='Pendiente') {
+                                            return Html::a(
+                                                'Eliminar',
+                                                ['delete', 'id'=>$model->AC_ID],['class'=>'btn btn-danger btn-flat btn-sm', 'title'=>'Eliminar', 
                                                     'data' => [
-                                                    'confirm' => '¿Esta seguro de borrar a este Encargado?',
-                                                    'method' => 'post',
-                                                ],
-                                            ]);
+                                                        'confirm' => '¿Esta seguro de Eliminar esta actividad?',
+                                                        'method' => 'post',
+                                                    ],
+                                                ]);
+                                        }
                                     },
                                 ],
                             ],
@@ -118,6 +129,14 @@ $this->params['breadcrumbs'][] = 'Actividades';*/
 
 <?php 
 $script = <<< JS
+
+
+    $('.modalAct').click(function() {
+        $('#modalUp').modal('show')
+        .find('.modalContentUpdate')
+        .load($(this).attr('value'));
+    });
+
 
     $(document).on('click','.modalUpdate',function(){
         var id = $(this).attr('idact');

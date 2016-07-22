@@ -149,23 +149,22 @@ class MaterialesController extends Controller
 
     public function actionMaterialesPro($id)
     {
-        $proyecto = Proyecto::findOne($id);
-        $array_ot = OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$proyecto->PRO_ID])->asArray()->all();
-        $stock = StockMateriales::find()->where(['OT_ID'=>$array_ot])->all();
+        $ordentrabajo = OrdenTrabajo::findOne($id);
+        $stock = StockMateriales::find()->where(['OT_ID'=>$id])->all();
 
 
 
         $searchModel = new StockMaterialesSearch();
         $dataProvider = new ActiveDataProvider([
             'query' => StockMateriales::find()->
-                where(['OT_ID'=>$array_ot]),
+                where(['OT_ID'=>$id]),
             'pagination' => [
                 'pageSize' => 20,
             ],
         ]);
 
         return $this->render('index_pro', [
-            'proyecto' => $proyecto,
+            'ordentrabajo' => $ordentrabajo,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -276,11 +275,150 @@ class MaterialesController extends Controller
         ]);
     }
 
+    public function actionIndexPedidos()
+    {
+        $array_ot = OrdenTrabajo::find()->select('OT_ID')->asArray()->all();
+        $array_stock = StockMateriales::find()->select('SM_ID')->where(['OT_ID'=>$array_ot])->asArray()->all();
+        $pedidos = PedidoAdjunta::find()->where(['SM_ID'=>$array_stock])->all();
+        return $this->renderAjax('index_pedidos', [
+            'pedidos'=>$pedidos,
+        ]);
+    }
+
 
 
 /*########################################################################################################################*/
 /*###################################################### ORDEN-COMPRA ######################################################*/
 /*########################################################################################################################*/
+
+
+    public function actionOrdenCompraIndex()
+    {
+        $ordenes_compra = OrdenCompra::find()->all();
+        $envio=[];
+        if ($ordenes_compra!=NULL) {
+            foreach ($ordenes_compra as $count => $compra) {
+                $bodega = MatOrcAdquirido::find()->where(['ORC_ID'=>$compra->ORC_ID])->one();
+                if ($bodega->BO_ID != NULL) {
+                    $envio[] = $bodega->bO->BO_NOMBRE;
+                }else{
+                    $envio[] = 'Obra';
+                }
+            }
+        }
+
+
+
+        return $this->render('index_ordencompra', [
+            'ordenes_compra'=>$ordenes_compra,
+            'envio'=>$envio,
+        ]);        
+    }
+
+    public function actionIngresarOrdenCompra()
+    {
+        $ordenes_trabajos = OrdenTrabajo::find()->where(['not in','OT_ESTADO', 'Finalizado'])->all();
+        $stock = new StockMateriales();
+        $model = new BoMatAlmacena();
+        $adquisiciones= [new MatOrcAdquirido];
+
+        $cant_materiales = Materiales::find()->count();
+
+/*------------------------------------------ORDEN_COMPRA---------------------------------------*/
+        $orden_compra= new OrdenCompra();
+        $orden_compra->ORC_COSTO_TOTAL=0;
+        $orden_compra->ORC_FECHA_PEDIDO = date('Y-m-d');
+        $orden_compra->ORC_ESTADO = 'Pendiente';
+        $costo_total=0;
+/*------------------------------------------ORDEN_COMPRA---------------------------------------*/
+
+        //$model->AD_FECHA= date('Y-m-d');
+        if ($model->load(Yii::$app->request->post()) and $orden_compra->load(Yii::$app->request->post())) {
+            //$model->save();
+            $adquisiciones = Model::createMultiple(MatOrcAdquirido::classname());
+            Model::loadMultiple($adquisiciones, Yii::$app->request->post());
+
+
+            // validate all models
+            //$valid = $model->validate();
+            $valid = Model::validateMultiple($adquisiciones);
+            $valid = true;
+
+            if ($valid) {
+                //$model->save();
+                $transaction = \Yii::$app->db->beginTransaction();
+                $orden_compra->save();
+                try {
+                    if ($flag = $orden_compra->save(false)) {
+                        foreach ($adquisiciones as $adquisicion) {
+
+
+
+                            /*------------------------------------------STOCK---------------------------------------*/
+
+                            $stock_exist= StockMateriales::find()->where(['OT_ID'=>$orden_compra->OT_ID])->andWhere(['MA_ID'=>$adquisicion->MA_ID])->one();
+                            if($stock_exist!=NULL){
+                                $adquisicion->SM_ID = $stock_exist->SM_ID;
+                            }else{
+                                $stock_new = new StockMateriales();
+                                $stock_new->MA_ID=$adquisicion->MA_ID;
+                                $stock_new->OT_ID = $orden_compra->OT_ID;
+                                $stock_new->SM_CANTIDAD= 0;
+                                $stock_new->save();
+                                $adquisicion->SM_ID = $stock_new->SM_ID;
+                                //return $adquisicion->SM_ID.''.$stock_new->SM_ID;
+                            }
+
+                            /*------------------------------------------STOCK---------------------------------------*/
+
+                            /*------------------------------------------ADQUISICION---------------------------------------*/
+
+                            $adquisicion->BO_ID= $model->BO_ID;
+                            $adquisicion->AD_FECHA = date('Y-m-d');
+                            $adquisicion->ORC_ID = $orden_compra->ORC_ID;
+                            $material = Materiales::findOne($adquisicion->MA_ID);
+                            $adquisicion->AD_COSTO_TOTAL= $adquisicion->AD_CANTIDAD * $material->MA_COSTOUNIDAD;
+                            $costo_total = $costo_total + $adquisicion->AD_COSTO_TOTAL;
+                            /*------------------------------------------ADQUISICION---------------------------------------*/
+
+                            if (! ($flag = $adquisicion->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $orden_compra1 = OrdenCompra::findOne($orden_compra->ORC_ID);
+
+
+                        $array_ot = OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$orden_compra1->ot->PRO_ID])->asArray()->all();
+                        $array_stock = StockMateriales::find()->select('SM_ID')->where(['OT_ID'=>$array_ot])->asArray()->all();
+                        $array_adq = MatOrcAdquirido::find()->select('ORC_ID')->where(['SM_ID'=>$array_stock])->asArray()->all();
+                        $numero_orc = OrdenCompra::find()->where(['ORC_ID'=>$array_adq])->count();
+
+                        $orden_compra1->ORC_NUMERO_ORDEN = $numero_orc+1;
+
+
+
+                        $orden_compra1->ORC_COSTO_TOTAL=$costo_total;
+                        $orden_compra1->save();
+                        $transaction->commit();
+                        return $this->redirect(['materiales-pro', 'id' => $proyecto->PRO_ID]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
+        }else{
+            return $this->render('multi_adq', [
+                'ordenes_trabajos' => $ordenes_trabajos,
+                'model' => $model,
+                'cant_materiales' => $cant_materiales,
+                'orden_compra' => $orden_compra,
+                'adquisiciones' => (empty($adquisiciones)) ? [new MatOrcAdquirido] : $adquisiciones
+            ]);
+        }
+    }
 
 
     public function actionIngresarAdquisiciones($id)
@@ -312,7 +450,6 @@ class MaterialesController extends Controller
             $adquisiciones = Model::createMultiple(MatOrcAdquirido::classname());
             Model::loadMultiple($adquisiciones, Yii::$app->request->post());
 
-            $orden_compra->save();
 
             // validate all models
             //$valid = $model->validate();
@@ -322,6 +459,7 @@ class MaterialesController extends Controller
             if ($valid) {
                 //$model->save();
                 $transaction = \Yii::$app->db->beginTransaction();
+                $orden_compra->save();
                 try {
                     if ($flag = $orden_compra->save(false)) {
                         foreach ($adquisiciones as $adquisicion) {
@@ -332,10 +470,6 @@ class MaterialesController extends Controller
 
                             $stock_exist= StockMateriales::find()->where(['OT_ID'=>$orden_compra->OT_ID])->andWhere(['MA_ID'=>$adquisicion->MA_ID])->one();
                             if($stock_exist!=NULL){
-                                if ($model->BO_ID==NULL) {
-                                    $stock_exist->SM_CANTIDAD = $stock_exist->SM_CANTIDAD + $adquisicion->AD_CANTIDAD;
-                                    $stock_exist->save();
-                                }
                                 $adquisicion->SM_ID = $stock_exist->SM_ID;
                             }else{
                                 $stock_new = new StockMateriales();
@@ -357,7 +491,6 @@ class MaterialesController extends Controller
                             $material = Materiales::findOne($adquisicion->MA_ID);
                             $adquisicion->AD_COSTO_TOTAL= $adquisicion->AD_CANTIDAD * $material->MA_COSTOUNIDAD;
                             $costo_total = $costo_total + $adquisicion->AD_COSTO_TOTAL;
-                            //return $adquisicion->SM_ID;
                             /*------------------------------------------ADQUISICION---------------------------------------*/
 
                             if (! ($flag = $adquisicion->save(false))) {
@@ -433,7 +566,7 @@ class MaterialesController extends Controller
     public function actionAnularOrdenCompra($id)
     {
         $orden_compra = OrdenCompra::findOne($id);
-        $proyecto = Proyecto::findOne($orden_compra->sM->oT->PRO_ID);
+        $proyecto = Proyecto::findOne($orden_compra->oT->PRO_ID);
         $orden_compra->ORC_ESTADO = 'Denegado';
         $orden_compra->save();
         return $this->redirect(['materiales-pro', 'id' => $proyecto->PRO_ID]);
@@ -449,8 +582,8 @@ class MaterialesController extends Controller
         $ordenes_compra = OrdenCompra::find()->where(['ORC_ID'=>$array_compras])->all();
 
         foreach ($ordenes_compra as $count => $compra) {
-            $bodega = MatOrcAdquirido::find()->select('BO_ID')->where(['ORC_ID'=>$compra->ORC_ID])->one();
-            if ($bodega != NULL) {
+            $bodega = MatOrcAdquirido::find()->where(['ORC_ID'=>$compra->ORC_ID])->one();
+            if ($bodega->BO_ID != NULL) {
                 $envio[] = $bodega->bO->BO_NOMBRE;
             }else{
                 $envio[] = 'Obra';
@@ -470,7 +603,7 @@ class MaterialesController extends Controller
         $orden_compra = OrdenCompra::findOne($id);
         $compras = MatOrcAdquirido::find()->where(['ORC_ID'=>$id])->all();
         $bodega = MatOrcAdquirido::find()->where(['ORC_ID'=>$orden_compra->ORC_ID])->one();
-        if($bodega!=NULL){
+        if($bodega->BO_ID!=NULL){
             $envio=$bodega->bO->BO_NOMBRE;
         }else{
             $envio = 'Obra';
@@ -490,6 +623,92 @@ class MaterialesController extends Controller
 /*########################################################################################################################*/
 /*###################################################### ORDEN-DESPACHO ######################################################*/
 /*########################################################################################################################*/
+
+    public function actionOrdenDespachoIndex()
+    {
+        $array_ot = OrdenTrabajo::find()->select('OT_ID')->asArray()->all();
+        $ordenes_despacho = OrdenDespacho::find()->where(['OT_ID'=>$array_ot])->all();
+
+        return $this->render('index_ordendespacho', [
+            'ordenes_despacho'=>$ordenes_despacho,
+        ]);
+    }
+
+
+    public function actionCrearOrdenDespacho($id)
+    {
+        $orden_despacho= new OrdenDespacho();
+        $despachos=[new OdMatEspecifica];
+        $ordenes_trabajos = OrdenTrabajo::find()->where(['not in','OT_ESTADO', 'Finalizado'])->all();
+
+        $model = new BoMatAlmacena();
+
+        $array_ot = OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$id])->asArray()->all();
+        $array_alm = BoMatAlmacena::find()->select('AL_ID')->where(['OT_ID'=>$array_ot])->asArray()->all();
+        $array_despachos= OdMatEspecifica::find()->select('OD_ID')->where(['AL_ID'=>$array_alm])->asArray()->all();
+
+
+        $cant_almacenados= BoMatAlmacena::find()->where(['OT_ID'=>$array_ot])->count();
+        $materiales= BoMatAlmacena::find()->where(['OT_ID'=>$array_ot])->all();
+
+
+        $cantidad_od= OrdenDespacho::find()->where(['OD_ID'=>$array_alm])->count();
+
+        $orden_despacho->OD_FECHA_EMISION= date('Y-m-d');
+        $orden_despacho->OD_NUMERO_ORDEN = $cantidad_od+1;
+        $orden_despacho->OD_ESTADO = 'Pendiente';
+
+        $almacenados= new BoMatAlmacena();
+
+        if ($orden_despacho->load(Yii::$app->request->post())) {
+            $despachos = Model::createMultiple(OdMatEspecifica::classname());
+            Model::loadMultiple($despachos, Yii::$app->request->post());
+
+
+            $orden_despacho->save();
+            $valid = $orden_despacho->validate();
+            $valid = Model::validateMultiple($despachos) && $valid;
+            $valid=true;
+
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $orden_despacho->save(false)) {
+                        foreach ($despachos as $despacho) {
+
+
+                            /*---------------------------------------------------DESPACHO---------------------------------------------------*/
+                            $despacho->OD_ID = $orden_despacho->OD_ID;
+                            if (! ($flag = $despacho->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                            /*---------------------------------------------------DESPACHO---------------------------------------------------*/
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['materiales-pro', 'id' => $proyecto->PRO_ID]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+
+            }
+
+
+        }else{
+            return $this->render('_form_despacho', [
+                'ordenes_trabajos' => $ordenes_trabajos,
+                'orden_despacho' => $orden_despacho,
+                'almacenados' => $almacenados,
+                'materiales' => $materiales,
+                'cant_almacenados' => $cant_almacenados,
+                'despachos' => (empty($despachos)) ? [new OdMatEspecifica] : $despachos
+            ]);
+        }
+    }
+
 
     public function actionCrearDespachoMat($id)
     {
@@ -545,7 +764,7 @@ class MaterialesController extends Controller
                     }
                     if ($flag) {
                         $transaction->commit();
-                        return $this->redirect(['view_orden_desp', 'id' => $orden_despacho->OD_ID]);
+                        return $this->redirect(['materiales-pro', 'id' => $proyecto->PRO_ID]);
                     }
                 } catch (Exception $e) {
                     $transaction->rollBack();
@@ -674,4 +893,27 @@ class MaterialesController extends Controller
         ];
         echo Json::encode($datos);
     }
+
+    public function actionGetPro($id)
+    {
+        $orden_trabajo = OrdenTrabajo::findOne($id);
+        $array_ot = OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$orden_trabajo->PRO_ID])->asArray()->all();
+        $array_stock = StockMateriales::find()->select('SM_ID')->where(['OT_ID'=>$array_ot])->asArray()->all();
+        $array_adq = MatOrcAdquirido::find()->select('ORC_ID')->where(['SM_ID'=>$array_stock])->asArray()->all();
+        $numero_orc = OrdenCompra::find()->where(['ORC_ID'=>$array_adq])->count();
+
+        $datos = [
+            'nombre'=>$orden_trabajo->pRO->PRO_NOMBRE,
+            'ciudad'=>$orden_trabajo->pRO->cOM->COM_NOMBRE,
+            'direccion'=>$orden_trabajo->pRO->PRO_DIRECCIOM,
+            'numero_orden'=>($numero_orc + 1),
+        ];
+        echo Json::encode($datos);
+    }
+
+    public function actionGetMatDespacho($id)
+    {
+        $OrdenTrabajo = OrdenTrabajo::findOne($id);
+    }
+
 }

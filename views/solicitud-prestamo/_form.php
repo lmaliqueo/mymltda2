@@ -30,19 +30,20 @@ use yii\helpers\ArrayHelper;
 
         <?= $form->field($model, 'SPRE_DESCRIPCION')->textarea(['rows' => 6]) ?>
 
-    <table class="table talbe-bordered no-margin bg-blue">
-        <tr>
-            <th>Cantidad</th>
-            <th>Herramientas</th>
-            <th></th>
-        </tr>
-    </table>
+    </div>
 
+</div>
+
+<div class="box">
+    <div class="box-header">
+        <h4 class="box-title">Herramientas</h4>
+    </div>
+    <div class="box-body">
          <?php DynamicFormWidget::begin([
             'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
             'widgetBody' => '.container-items', // required: css class selector
             'widgetItem' => '.item', // required: css class
-            'limit' => 10, // the maximum times, an element can be cloned (default 999)
+            'limit' => $cant_he, // the maximum times, an element can be cloned (default 999)
             'min' => 1, // 0 or 1 (default 1)
             'insertButton' => '.add-item', // css class
             'deleteButton' => '.remove-item', // css class
@@ -53,92 +54,119 @@ use yii\helpers\ArrayHelper;
                 'SOLI_CANTIDAD',
             ],
         ]); ?>
-    <div class="container-items">
-            <?php foreach ($prestamo as $i => $prest) { ?>
-        <table class="table item table-bordered no-margin">
-            <tr>
-                <td>
-                    <?= $form->field($prest, "[{$i}]SOLI_CANTIDAD")->textInput(['maxlength' => true])->label(false) ?>
-                </td>
-                <td>
-                    <?= $form->field($prest, "[{$i}]HE_ID")->dropDownList(
-                    ArrayHelper::map(Herramientas::find()->all(),'HE_ID','HE_NOMBRE'),
-                    ['prompt'=>'Selecciona una herramienta']
-                    )->label(false) ?>
-                </td>
-                <td><button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
-                    <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
-                </td>
+        <table class="table table-bordered no-margin">
+            <tr class="success">
+                <th style="width:20%">Cantidad</th>
+                <th style="width:10%">ID</th>
+                <th style="width:36%">Descripción</th>
+                <th style="width:28%">Tipo Herramienta</th>
+                <th><button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button></th>
             </tr>
         </table>
-            <?php } ?>
+        <div class="container-items">
+                <?php foreach ($prestamo as $i => $prest) { ?>
+            <table class="table item table-bordered no-margin">
+                <tr>
+                    <td style="width:20%">
+                        <?= $form->field($prest, "[{$i}]SOLI_CANTIDAD")->textInput(['type'=>'number', 'maxlength' => true, 'class'=>'input-group-sm form-control'])->label(false) ?>
+                    </td>
+                    <td style="width:10%"></td>
+                    <td style="width:36%">
+                        <?= $form->field($prest, "[{$i}]HE_ID")->dropDownList(
+                        ArrayHelper::map(Herramientas::find()->all(),'HE_ID','HE_NOMBRE'),
+                        ['prompt'=>'Selecciona una herramienta', 'class'=>'idhe form-control input-group-sm']
+                        )->label(false) ?>
+                    </td>
+                    <td style="width:28%"></td>
+                    <td>
+                        <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+                    </td>
+                </tr>
+            </table>
+                <?php } ?>
+        </div>
+        <?php DynamicFormWidget::end(); ?>
     </div>
-            <?php DynamicFormWidget::end(); ?>
-    </div>
-
 </div>
 
-<?php /*
 
-    <div class="panel panel-default">
-        <div class="panel-heading"><h4><i class="glyphicon glyphicon-envelope"></i> Herramientas</h4></div>
-        <div class="panel-body">
-             <?php DynamicFormWidget::begin([
-                'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
-                'widgetBody' => '.container-items', // required: css class selector
-                'widgetItem' => '.item', // required: css class
-                'limit' => 10, // the maximum times, an element can be cloned (default 999)
-                'min' => 1, // 0 or 1 (default 1)
-                'insertButton' => '.add-item', // css class
-                'deleteButton' => '.remove-item', // css class
-                'model' => $prestamo[0],
-                'formId' => 'dynamic-form',
-                'formFields' => [
-                    'MA_ID',
-                    'CONS_CANTMATERIAL',
-                ],
-            ]); ?>
 
-            <div class="container-items"><!-- widgetContainer -->
-            <?php foreach ($prestamo as $i => $prestamo): ?>
-                <div class="item panel panel-default"><!-- widgetBody -->
-                    <div class="panel-heading">
-                        <h3 class="panel-title pull-left">Herramienta</h3>
-                        <div class="pull-right">
-                            <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
-                            <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="panel-body">
-                        <?php
-                            // necessary for update action.
-                            if (! $prestamo->isNewRecord) {
-                                echo Html::activeHiddenInput($prestamo, "[{$i}]id");
-                            }
-                        ?>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <?= $form->field($prestamo, "[{$i}]SOLI_CANTIDAD")->textInput(['maxlength' => true])->label(false) ?>
-                            </div>
-                            <div class="col-sm-6">
-                                <?= $form->field($prestamo, "[{$i}]HE_ID")->dropDownList(
-                                ArrayHelper::map(Herramientas::find()->all(),'HE_ID','HE_NOMBRE'),
-                                ['prompt'=>'Selecciona una herramienta']
-                                )->label(false) ?>
-                            </div>
-                        </div><!-- .row -->
-                    </div>
-                </div>
-            <?php endforeach; ?>
-            </div>
-            <?php DynamicFormWidget::end(); ?>
-        </div>
-    </div>*/ ?>
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Crear' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? 'Generar' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
 
 </div>
+
+
+<?php 
+$script = <<< JS
+$(function(){
+
+    $(document).on('change', '.idhe', function(e) {
+        e.preventDefault()  
+
+        var herramientaID = $(this).val();
+        var array_char = $(this).attr('name');
+
+        var cont = array_char.match(/\d/g);
+        cont = cont.join("");
+        var array_he = $('.idhe').text();
+
+        var tipo_he = $(this).parent().parent().parent().children()[3];
+        var codigo_he = $(this).parent().parent().parent().children()[1];
+
+
+
+        if(herramientaID!=''){
+            $.get('index.php?r=solicitud-prestamo/get-cantidad',{ id : herramientaID }, function(data){
+                var data = $.parseJSON(data);
+                document.getElementById("sprehesolicita-"+cont+"-soli_cantidad").value=1;
+                document.getElementById("sprehesolicita-"+cont+"-soli_cantidad").setAttribute('max',data.max)
+                $(tipo_he).text(data.tipo)
+                $(codigo_he).text(data.id)
+            })
+        }else{
+            document.getElementById("sprehesolicita-"+cont+"-soli_cantidad").value=0;
+            $(tipo_he).text('')
+       }
+    });
+    $(document).on('change', '.cant_mat', function(e) {
+        e.preventDefault()  
+
+        var cant = $(this).val();
+        var array_char = $(this).attr('name');
+
+
+        var cont = array_char.match(/\d/g);
+        cont = cont.join("");
+
+        var id_mat=$('#matorcadquirido-'+cont+'-ma_id').val();
+
+        if(cant!=''){
+            $.get('index.php?r=mat-prov-adquirido/get-costo',{ id : id_mat }, function(data){
+                var data = $.parseJSON(data);
+                document.getElementById("matorcadquirido-"+cont+"-ad_costo_total").value=data.MA_COSTOUNIDAD * cant;
+            })
+
+        }else{
+            document.getElementById("matorcadquirido-"+cont+"-ad_costo_total").value=0;
+       }
+    });
+    $(document).on('change', '#bomatalmacena-bo_id', function(e) {
+        var contenido = $(this).val();
+        if (contenido != '') {
+            $('#destino_mat').empty();
+            $('#destino_mat').append('Bodega');
+        }else{
+            $('#destino_mat').empty();
+            $('#destino_mat').append('Construcción');
+        }
+    });
+});
+
+
+JS;
+$this->registerJs($script);
+?>
