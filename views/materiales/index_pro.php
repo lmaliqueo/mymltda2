@@ -11,8 +11,14 @@ use app\models\StockMateriales;
 /* @var $searchModel app\models\MaterialesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $ordentrabajo->OT_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => $ordentrabajo->OT_NOMBRE, 'url' => ['ordentrabajo/index']];
+$this->title = 'Materiales';
+$this->params['breadcrumbs'][] = ['label' => 'Ordenes de Trabajos', 'url' => ['orden-trabajo/index']];
+$this->params['breadcrumbs'][] = [
+                    'label' => $ordentrabajo->OT_NOMBRE,
+                    //'url' => ['orden-trabajo/index'],
+                    'style'=> 'color:white',
+                    'template' => "<button class='btn btn-flat btn-sm' style='background-color : #333D43; color:white; float:right; margin-left: 4px;'>{link}</button>\n"
+                ];
 $this->params['breadcrumbs'][] = 'Materiales';
 ?>
 <div class="materiales-index">
@@ -55,7 +61,6 @@ $this->params['breadcrumbs'][] = 'Materiales';
         <?= Html::a('Ingresar Orden de Despacho',['materiales/crear-despacho-mat','id'=>$ordentrabajo->PRO_ID],['class'=>'btn btn-flat btn-success btn-block margin-bottom']) ?>
         <div class="otbutton">
         </div>
-
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Orden de Trabajo</h3>
@@ -68,7 +73,7 @@ $this->params['breadcrumbs'][] = 'Materiales';
                     <li><?= Html::a('<i class="fa fa-inbox"></i> Reportes de Avances', ['orden-trabajo/index-reportes-avances', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['orden-trabajo/index-gastos-generales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li class="active"><a href="#"><i class="glyphicon glyphicon-list-alt"></i> Materiales</a></li>
-                    <li><?= Html::a('<i class="fa fa-bar-chart"></i> Gráfico', ['orden-trabajo/grafico-ot', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-line-chart"></i> Gráfico', ['orden-trabajo/grafico-ot', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['proyecto/informes-pro', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
                 </ul>
             </div>

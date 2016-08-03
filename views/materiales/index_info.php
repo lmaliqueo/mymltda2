@@ -53,22 +53,22 @@ use app\models\StockMateriales;
                                     'model' => $model,
                                 ]);
                         },
-                    ],*/
+                    ],
 
                     [
                         'label'=>'Orden de Trabajo',
                         'attribute'=>'OT_ID',
                         'value'=>'oT.OT_NOMBRE',
+                    ],*/
+                    'MA_ID',
+                    [
+                        'label'=>'Descripción',
+                        'attribute'=>'MA_ID',
+                        'format'=>'raw',
+                        'value' => function($data){
+                            return Html::a($data->mA->MA_NOMBRE, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['materiales/view','id'=>$data->MA_ID])]);
+                        }
                     ],
-            [
-                'label'=>'Material',
-                'attribute'=>'MA_ID',
-                'format'=>'raw',
-                'value' => function($data){
-                    return Html::a($data->mA->MA_NOMBRE, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['materiales/view','id'=>$data->MA_ID])]);
-                }
-            ],
-                    //'MA_ID',
                     //'MA_NOMBRE',
                     [
                         'label'=>'Tipo',

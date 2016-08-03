@@ -13,6 +13,7 @@ use Yii;
  * @property string $RA_FECHA
  * @property string $RA_DESCRIPCION
  *
+ * @property AsignaAcumula[] $asignaAcumulas 
  * @property OrdenTrabajo $oT
  */
 class ReportesAvances extends \yii\db\ActiveRecord
@@ -31,11 +32,12 @@ class ReportesAvances extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            //[['OT_ID'], 'required'],
+            [['OT_ID', 'RA_TITULO'], 'required'],
             [['OT_ID'], 'integer'],
             [['RA_FECHA'], 'safe'],
             [['RA_DESCRIPCION'], 'string'],
-            [['RA_TITULO'], 'string', 'max' => 50]
+            [['RA_TITULO'], 'string', 'max' => 50],
+            [['OT_ID'], 'exist', 'skipOnError' => true, 'targetClass' => OrdenTrabajo::className(), 'targetAttribute' => ['OT_ID' => 'OT_ID']],
         ];
     }
 
@@ -51,6 +53,15 @@ class ReportesAvances extends \yii\db\ActiveRecord
             'RA_FECHA' => 'Fecha',
             'RA_DESCRIPCION' => 'Descripción',
         ];
+    }
+
+ 
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+    public function getAsignaAcumulas() 
+    { 
+        return $this->hasMany(AsignaAcumula::className(), ['RA_ID' => 'RA_ID']); 
     }
 
     /**

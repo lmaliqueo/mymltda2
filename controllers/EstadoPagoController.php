@@ -43,8 +43,8 @@ class EstadoPagoController extends Controller
     public function actionIndex($id)
     {
         $ordentrabajo= OrdenTrabajo::findOne($id);
-        $otid= OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$ordentrabajo->PRO_ID])->asArray()->all();
-        $acid= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$otid])->asArray()->all();
+        //$otid= OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$ordentrabajo->PRO_ID])->asArray()->all();
+        $acid= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$id])->asArray()->all();
         $asid= ActSactAsigna::find()->select('AS_ID')->where(['AC_ID'=>$acid])->asArray()->all();
         $epid= AsignaTiene::find()->select('EP_ID')->where(['AS_ID'=>$asid])->asArray()->all();
         $searchModel = new EstadoPagoSearch();
@@ -90,10 +90,10 @@ class EstadoPagoController extends Controller
     {
         $model = new EstadoPago();
 
-        $proyecto= Proyecto::findOne($id);
-        $otid= OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$id])->asArray()->all();
-        $actividades= Actividades::find()->where(['OT_ID'=>$otid])->andWhere(['not in','AC_ESTADO','Finalizado'])->all();
-        $acid= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$otid])->andWhere(['not in','AC_ESTADO','Finalizado'])->asArray()->all();
+        $ordentrabajo= OrdenTrabajo::findOne($id);
+        //$otid= OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$id])->asArray()->all();
+        $actividades= Actividades::find()->where(['OT_ID'=>$id])->andWhere(['not in','AC_ESTADO','Finalizado'])->all();
+        $acid= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$id])->andWhere(['not in','AC_ESTADO','Finalizado'])->asArray()->all();
         $asignados= ActSactAsigna::find()->where(['AC_ID'=>$acid])->all();
         
         $arrayasig= ActSactAsigna::find()->select('AS_ID')->where(['AC_ID'=>$acid])->asArray()->all();
@@ -162,7 +162,7 @@ class EstadoPagoController extends Controller
                 'arreglo' => $arreglo,
                 'asignados' => $asignados,
                 'actividades' => $actividades,
-                'proyecto' => $proyecto,
+                'ordentrabajo' => $ordentrabajo,
             ]);
         }
     }

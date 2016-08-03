@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\Bodegas;
 use app\models\BodegasSearch;
+use app\models\Proyecto;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -120,5 +121,13 @@ class BodegasController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionInformeInvent()
+    {
+        $proyectos = Proyecto::find()->where(['not in','PRO_ESTADO', 'Finalizado'])->all();
+        return $this->render('informe_inventario', [
+            'proyectos' => $proyectos,
+        ]);
     }
 }

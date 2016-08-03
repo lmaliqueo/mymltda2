@@ -8,9 +8,8 @@ use Yii;
  * This is the model class for table "dh_he_retiran".
  *
  * @property integer $RET_ID
- * @property integer $HE_ID
+ * @property string $HE_ID
  * @property integer $DH_ID
- * @property integer $RET_CANTIDAD_SALIDA
  *
  * @property DespachoHerramientas $dH
  * @property Herramientas $hE
@@ -32,7 +31,8 @@ class DhHeRetiran extends \yii\db\ActiveRecord
     {
         return [
             [['HE_ID', 'DH_ID'], 'required'],
-            [['HE_ID', 'DH_ID', 'RET_CANTIDAD_SALIDA'], 'integer'],
+            [['DH_ID'], 'integer'],
+            [['HE_ID'], 'string', 'max' => 10],
             [['DH_ID'], 'exist', 'skipOnError' => true, 'targetClass' => DespachoHerramientas::className(), 'targetAttribute' => ['DH_ID' => 'DH_ID']],
             [['HE_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Herramientas::className(), 'targetAttribute' => ['HE_ID' => 'HE_ID']],
         ];
@@ -47,7 +47,6 @@ class DhHeRetiran extends \yii\db\ActiveRecord
             'RET_ID' => 'Ret  ID',
             'HE_ID' => 'He  ID',
             'DH_ID' => 'Dh  ID',
-            'RET_CANTIDAD_SALIDA' => 'Ret  Cantidad  Salida',
         ];
     }
 

@@ -7,9 +7,15 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\EstadoPagoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $ordentrabajo->OT_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => 'Estados de Pagos', 'url' => ['ordentrabajo/index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Estado de Pagos';
+$this->params['breadcrumbs'][] = ['label' => 'Ordenes de Trabajos', 'url' => ['orden-trabajo/index']];
+$this->params['breadcrumbs'][] = [
+                    'label' => $ordentrabajo->OT_NOMBRE,
+                    //'url' => ['orden-trabajo/index'],
+                    'style'=> 'color:white',
+                    'template' => "<button class='btn btn-flat btn-sm' style='background-color : #333D43; color:white; float:right; margin-left: 4px;'>{link}</button>\n"
+                ];
+$this->params['breadcrumbs'][] = 'Estado de pago';
 ?>
 <div class="estado-pago-index">
 
@@ -23,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="row">
     <div class="col-md-3">
-            <?= Html::a('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Generar Estado de Pago', ['create', 'id'=>$ordentrabajo->OT_ID], ['class' => 'btn btn-success btn-block margin-bottom btn-flat']) ?>
+            <?= Html::a('Generar Estado de Pago', ['estado-pago/create', 'id'=>$ordentrabajo->OT_ID], ['class' => 'btn btn-primary btn-block margin-bottom btn-flat']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Orden de Trabajo</h3>
@@ -35,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <li><?= Html::a('<i class="fa fa-inbox"></i> Reportes de Avances', ['orden-trabajo/index-reportes-avances', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['orden-trabajo/index-gastos-generales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Materiales', ['orden-trabajo/index-materiales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
-                    <li><?= Html::a('<i class="fa fa-bar-chart"></i> Gráfico', ['orden-trabajo/grafico-ot', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-line-chart"></i> Gráfico', ['orden-trabajo/grafico-ot', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['proyecto/informes-pro', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
                 </ul>
             </div>
@@ -54,14 +60,39 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
-                    'EP_ID',
-                    'EP_NUMEROEP',
-                    'EP_FECHA',
+                    //'EP_ID',
+                    //'EP_NUMEROEP',
+                    [
+                        //'label'=>'Total EP',
+                        'attribute'=>'EP_NUMEROEP',
+                        'format'=>'raw',
+                        'value' => function($data){
+                            return 'EP-0'.$data->EP_NUMEROEP;
+                        }
+                    ],
+                    'EP_FECHA:date',
                     'EP_PERIODO',
-                    'EP_TOTALEP',
+                    //'EP_TOTALEP',
+                    [
+                        'label'=>'Total EP',
+                        'attribute'=>'EP_TOTALEP',
+                        'format'=>'raw',
+                        'value' => function($data){
+                            return '$ '.$data->EP_TOTALEP;
+                        }
+                    ],
                     // 'EP_FACTURA',
 
-                    ['class' => 'yii\grid\ActionColumn'],
+                    //['class' => 'yii\grid\ActionColumn'],
+                    ['class' => 'yii\grid\ActionColumn',
+                        'template'=>'{ver}',
+                        'buttons' => [
+                            'ver' => function ($url,$model) {
+                                return Html::a('<i class="fa fa-eye"></i> Ver EP', ['estado-pago/view','id'=>$model->EP_ID], ['class'=>'btn btn-flat btn-default text-blue btn-sm orden', 'idot'=>$model->EP_ID]);
+                            },
+                        ],
+                    ],
+
                 ],
             ]); ?>
         </div>

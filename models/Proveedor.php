@@ -10,14 +10,12 @@ use Yii;
  * @property integer $PROV_ID
  * @property string $PROV_NOMBRE
  * @property string $PROV_CIUDAD
- * @property string $PROV_CALLE
+ * @property string $PROV_DIRECCION
  * @property string $PROV_RAZONSOCIAL
- * @property string $PROV_MUNICIPIO
- * @property integer $PROV_CODIGOPOSTAL
- * @property integer $PROV_FAX
  * @property string $PROV_EMAIL
  * @property integer $PROV_CONTACTO
  *
+ * @property Herramientas[] $herramientas
  * @property OrdenCompra[] $ordenCompras
  */
 class Proveedor extends \yii\db\ActiveRecord
@@ -36,9 +34,10 @@ class Proveedor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['PROV_CODIGOPOSTAL', 'PROV_FAX', 'PROV_CONTACTO'], 'integer'],
-            [['PROV_NOMBRE', 'PROV_CALLE', 'PROV_RAZONSOCIAL', 'PROV_MUNICIPIO', 'PROV_EMAIL'], 'string', 'max' => 50],
-            [['PROV_CIUDAD'], 'string', 'max' => 30]
+            [['PROV_CONTACTO'], 'integer'],
+            [['PROV_NOMBRE', 'PROV_RAZONSOCIAL', 'PROV_EMAIL'], 'string', 'max' => 50],
+            [['PROV_CIUDAD'], 'string', 'max' => 30],
+            [['PROV_DIRECCION'], 'string', 'max' => 100],
         ];
     }
 
@@ -48,17 +47,22 @@ class Proveedor extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'PROV_ID' => 'ID',
-            'PROV_NOMBRE' => 'Proveedor',
-            'PROV_CIUDAD' => 'Ciudad',
-            'PROV_CALLE' => 'Calle',
-            'PROV_RAZONSOCIAL' => 'Razon Social',
-            'PROV_MUNICIPIO' => 'Municipio',
-            'PROV_CODIGOPOSTAL' => 'Codigo Postal',
-            'PROV_FAX' => 'Fax',
-            'PROV_EMAIL' => 'Email',
-            'PROV_CONTACTO' => 'Contacto',
+            'PROV_ID' => 'Prov  ID',
+            'PROV_NOMBRE' => 'Prov  Nombre',
+            'PROV_CIUDAD' => 'Prov  Ciudad',
+            'PROV_DIRECCION' => 'Prov  Direccion',
+            'PROV_RAZONSOCIAL' => 'Prov  Razonsocial',
+            'PROV_EMAIL' => 'Prov  Email',
+            'PROV_CONTACTO' => 'Prov  Contacto',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHerramientas()
+    {
+        return $this->hasMany(Herramientas::className(), ['PROV_ID' => 'PROV_ID']);
     }
 
     /**

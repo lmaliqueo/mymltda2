@@ -12,42 +12,40 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="herramientas-view">
 
-
-
-
-    <div class="box">
-        <div class="box-header">
-            <h4 class="box-title"><?= $model->HE_NOMBRE ?></h4>
-        </div>
-        <div class="box-body no-padding">
-            <table class="table table-bordered">
-                <tr>
-                    <th>ID</th>
-                    <td><?= $model->HE_ID ?></td>
-                    <th>Cantidad</th>
-                    <td><?= $model->HE_CANT ?></td>
-                </tr>
-                <tr>
-                    <th>Almacenado</th>
-                    <td><?= $model->bO->BO_NOMBRE ?></td>
-                    <th>Costo Asociado</th>
-                    <td>$ <?= $model->HE_COSTOUNIDAD ?></td>
-                </tr>
-            </table>
-            <table class="table table-bordered">
-                <tr>
-                    <th colspan="<?php echo (2*$cant_estado); ?>" class="bg-gray">Cantidad</th>
-                </tr>
-                <tr>
-                    <?php foreach ($estado_he as $estado) { ?>
-                        <th><?= $estado->eH->EH_NOMBREESTADO ?>:</th>
-                        <td class="active"><?= $estado->HT_CANTHEESTADO ?></td>
-                    <?php } ?>
-                </tr>
-            </table>
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <h3 class="no-margin">  
+            <?= $model->HE_ID ?>
+            <span class="pull-right">
+                <?= Html::a('<i class="fa fa-pencil"></i> Actualizar', ['update', 'id' => $model->HE_ID], ['class' => 'btn bg-light-blue btn-flat']) ?>
+            </span>
+        </h3>
+    </div>
+    <div class="box-body">
+        <div class="box box-primary">
+            <div class="box-body">
+                <?= DetailView::widget([
+                    'model' => $model,
+                    'attributes' => [
+                        //'HE_ID',
+                        'HE_DESCRIPCION',
+                        'pROV.PROV_NOMBRE',
+                        'bO.BO_NOMBRE',
+                        'tH.TH_NOMBRE',
+                        'HE_ESTADO',
+                        'HE_COSTOUNIDAD',
+                    ],
+                ]) ?>
+            </div>
         </div>
     </div>
+</div>
 
+
+
+
+
+<?php /*
     <p>
         <?= Html::a('Borrar', ['delete', 'id' => $model->HE_ID], [
             'class' => 'btn btn-danger',
@@ -57,7 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]) ?>
     </p>
-
+*/ ?>
 </div>
 
 

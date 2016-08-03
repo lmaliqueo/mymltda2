@@ -10,6 +10,7 @@ use Yii;
  * @property integer $TH_ID
  * @property string $TH_NOMBRE
  * @property string $TH_DESCRIPCION
+ * @property integer $TH_CANTIDAD 
  *
  * @property Herramientas[] $herramientas
  * @property SactHeOcupan[] $sactHeOcupans
@@ -30,6 +31,7 @@ class TipoHerramienta extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['TH_CANTIDAD'], 'integer'], 
             [['TH_NOMBRE'], 'string', 'max' => 30],
             [['TH_DESCRIPCION'], 'string', 'max' => 50],
         ];
@@ -42,8 +44,9 @@ class TipoHerramienta extends \yii\db\ActiveRecord
     {
         return [
             'TH_ID' => 'Th  ID',
-            'TH_NOMBRE' => 'Th  Nombre',
+            'TH_NOMBRE' => 'Tipo herramienta',
             'TH_DESCRIPCION' => 'Th  Descripcion',
+            'TH_CANTIDAD' => 'Cantidad', 
         ];
     }
 

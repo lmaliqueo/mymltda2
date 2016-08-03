@@ -15,25 +15,27 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'MA_ID') ?>
+    <div class="row">
+        <div class="col-md-4">
+            <?= $form->field($model, 'MA_ID') ?>
+        </div>
+        <div class="col-md-8">
+            <?= $form->field($model, 'TMA_ID') ?>
+        </div>
+    </div>
 
-    <?= $form->field($model, 'TMA_ID') ?>
 
     <?= $form->field($model, 'MA_NOMBRE') ?>
 
-    <?= $form->field($model, 'MA_CANTIDADTOTAL') ?>
-
-    <?= $form->field($model, 'MA_UNIDAD') ?>
+    <?php // $form->field($model, 'MA_UNIDAD') ?>
 
     <?php // echo $form->field($model, 'MA_MEDIDA') ?>
 
-    <?php // echo $form->field($model, 'MA_TIPOMATERIALES') ?>
-
-    <?php // echo $form->field($model, 'MA_COSTOUNIDAD') ?>
+    <?php //echo $form->field($model, 'MA_COSTOUNIDAD') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
+        <?php // Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

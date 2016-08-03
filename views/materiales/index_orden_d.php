@@ -26,9 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
  ?>
 
 <table class="table table-hover table-bordered">
-    <tr class="bg-gray">
+    <tr class="bg-light-blue">
         <th>N°</th>
-        <th>Orden de Trabajo</th>
         <th>Fecha Pedido</th>
         <th>Fecha Recepción</th>
         <th>Estado</th>
@@ -38,7 +37,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php foreach ($ordenes_despacho as $count => $despacho) { ?>
         <tr>
             <td><?= $despacho->OD_NUMERO_ORDEN ?></td>
-            <td><?= $despacho->oT->OT_NOMBRE ?></td>
             <td class="text-center"><?= $despacho->OD_FECHA_EMISION ?></td>
             <td class="text-center"><?php if ($despacho->OD_FECHA_RECEPCION!=NULL) {
                 echo $despacho->OD_FECHA_RECEPCION;

@@ -99,17 +99,17 @@ $this->params['breadcrumbs'][] = 'Actividades';*/
                                 'buttons' => [
                                     'update' => function ($url,$model) {
                                         return Html::button(
-                                            'Actualizar', [
+                                            '<i class="fa fa-pencil"></i> Actualizar', [
                                                 'value'=>Url::to(['actividades/update','id'=>$model->AC_ID]),
-                                                'class'=>'btn btn-sm btn-flat btn-primary modalAct',
+                                                'class'=>'btn btn-sm btn-flat btn-default text-blue modalAct',
                                                 'title'=>'Actualizar'
                                         ]);
                                     },
                                     'delete' => function ($url,$model) {
                                         if ($model->AC_ESTADO=='Pendiente') {
                                             return Html::a(
-                                                'Eliminar',
-                                                ['delete', 'id'=>$model->AC_ID],['class'=>'btn btn-danger btn-flat btn-sm', 'title'=>'Eliminar', 
+                                                '<i class="fa fa-close"></i> Eliminar',
+                                                ['delete', 'id'=>$model->AC_ID],['class'=>'btn btn-default text-red btn-flat btn-sm', 'title'=>'Eliminar', 
                                                     'data' => [
                                                         'confirm' => '¿Esta seguro de Eliminar esta actividad?',
                                                         'method' => 'post',

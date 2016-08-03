@@ -18,8 +18,8 @@ class OrdenTrabajoSearch extends OrdenTrabajo
     public function rules()
     {
         return [
-            [['OT_ID', 'PRO_ID', 'OT_COSTO_TOTAL'], 'integer'],
-            [['OT_NOMBRE', 'OT_TIPO', 'OT_FECHA_INICIO', 'OT_FECHA_TERMINO', 'OT_ESTADO', 'OT_INFORME'], 'safe'],
+            [['OT_ID', 'OT_COSTO_TOTAL'], 'integer'],
+            [['PRO_ID', 'OT_NOMBRE', 'OT_TIPO', 'OT_FECHA_INICIO', 'OT_FECHA_TERMINO', 'OT_ESTADO', 'OT_INFORME'], 'safe'],
         ];
     }
 
@@ -55,15 +55,17 @@ class OrdenTrabajoSearch extends OrdenTrabajo
             return $dataProvider;
         }
 
+        $query->joinWith('pRO');
         $query->andFilterWhere([
             'OT_ID' => $this->OT_ID,
-            'PRO_ID' => $this->PRO_ID,
+            //'PRO_ID' => $this->PRO_ID,
             'OT_FECHA_INICIO' => $this->OT_FECHA_INICIO,
             'OT_FECHA_TERMINO' => $this->OT_FECHA_TERMINO,
             'OT_COSTO_TOTAL' => $this->OT_COSTO_TOTAL,
         ]);
 
-        $query->andFilterWhere(['like', 'OT_NOMBRE', $this->OT_NOMBRE])
+        $query->andFilterWhere(['like', 'proyecto.PRO_NOMBRE', $this->PRO_ID])
+            ->andFilterWhere(['like', 'OT_NOMBRE', $this->OT_NOMBRE])
             ->andFilterWhere(['like', 'OT_TIPO', $this->OT_TIPO])
             ->andFilterWhere(['like', 'OT_ESTADO', $this->OT_ESTADO])
             ->andFilterWhere(['like', 'OT_INFORME', $this->OT_INFORME]);

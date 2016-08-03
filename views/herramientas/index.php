@@ -5,6 +5,7 @@ use kartik\grid\GridView;
 use app\models\HerramientaTiene;
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\HerramientasSearch */
@@ -48,10 +49,10 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li class="active"><a href="#">Lista herramientas</a></li>
-                    <li><?= Html::a('Despacho de herramientas', ['herramientas/despachos-index']) ?></li>
-                    <li><?= Html::a('Retorno de herramientas', ['herramientas/retorno-index']) ?></li>
-                    <li><?= Html::a('Solicitud de Prestamo', ['solicitud-prestamo/index']) ?></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right"></i> Lista herramientas</a></li>
+                    <li><?= Html::a('<i class="fa fa-angle-right"></i> Despacho de herramientas', ['herramientas/despachos-index']) ?></li>
+                    <li><?= Html::a('<i class="fa fa-angle-right"></i> Devolución de herramientas', ['herramientas/retorno-index']) ?></li>
+                    <li><?= Html::a('<i class="fa fa-angle-right"></i> Solicitud de Prestamo', ['solicitud-prestamo/index']) ?></li>
                 </ul>
             </div>
         </div>
@@ -62,50 +63,112 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="col-md-9">
         <div class="box box-primary">
-            <div class="box-body no-padding">
+            <div class="box-header with-border">
+                <h4 class="box-title">
+                    Lista herramientas
+                </h4>
+                <div class="box-tools pull-right">
+                    <div class="has-feedback">
+                        <?php 
+                        $model=$searchModel;
+                        $form = ActiveForm::begin([
+                            'action' => ['index'],
+                            'method' => 'get',
+                        ]); ?>
+
+                        <?= $form->field($model, 'HE_ID')
+                                    ->textInput(['class' => 'form-control input-sm',
+                                                'placeholder'=>'Buscar Herramienta',
+                                                ])
+                                    ->label(false) ?>
+
+                        <?php ActiveForm::end(); ?>
+                        
+                        <?php /*<input type="text" class="form-control input-sm" placeholder="Buscar herramienta">
+                        <span class="fa fa-search form-control-feedback">
+                        </span>*/ ?>
+                    </div>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="box box-solid collapsed-box">
+                    <div class="box-header with-border">
+                        <h5 class="no-margin text-blue" style="height: 15px;"><span class="glyphicon glyphicon-search"></span> Busqueda Avanzada</h5>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: none;">
+                        <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+                    </div>
+                </div>
+
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     //'filterModel' => $searchModel,
                     'summary'=>'',
                     'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
-                        //'HE_NOMBRE',
-            [
-                'label'=>'Descripción',
-                'attribute'=>'HE_NOMBRE',
-                'format'=>'raw',
-                'value' => function($data){
-                    return Html::a($data->HE_NOMBRE, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['herramientas/view','id'=>$data->HE_ID])]);
-                }
-            ],
+                        'HE_ID',
+                        'HE_DESCRIPCION',
+                        /*
+                        [
+                            'label'=>'Descripción',
+                            'attribute'=>'HE_DESCRIPCION',
+                            'format'=>'raw',
+                            'value' => function($data){
+                                return Html::a($data->HE_DESCRIPCION, '#', ['class'=>'modalView text-muted', 'value'=>Url::to(['herramientas/view','id'=>$data->HE_ID])]);
+                            }
+                        ],*/
                         [
                             'attribute'=>'TH_ID',
                             'value'=>'tH.TH_NOMBRE',
                         ],
                         
                         [
+                            'label'=>'Ubicación',
                             'attribute'=>'BO_ID',
-                            'value'=>'bO.BO_NOMBRE',
+                            //'value'=>'bO.BO_NOMBRE',
+                            'value' => function($data){
+                                if ($data->HE_ESTADO == 'Libre') {
+                                    return $data->bO->BO_NOMBRE;
+                                }elseif($data->HE_ESTADO == 'Utilizando'){
+                                    return 'Construcción';                                        
+                                }
+                            }
                         ],
-                        'HE_CANT',
-                        'HE_COSTOUNIDAD',
+                        //'HE_ESTADO',
+                            [
+                                'attribute'=>'HE_ESTADO',
+                                'format'=>'raw',
+                                'value' => function($data){
+                                    if ($data->HE_ESTADO == 'Libre') {
+                                        return '<span class="label label-success">'.$data->HE_ESTADO.'</span>';
+                                    }elseif($data->HE_ESTADO == 'Utilizando'){
+                                        return '<span class="label label-warning">'.$data->HE_ESTADO.'</span>';                                        
+                                    }
+                                }
+                            ],
+                        //'HE_COSTOUNIDAD',
 
                         ['class' => 'yii\grid\ActionColumn',
                             'template'=>'{ver} {actualizar}',
                             'buttons'=>[
                                     'ver'=> function ($url,$model) {
                                         return Html::button(
-                                            'Ver Herramienta', [
+                                            '<i class="fa fa-eye"></i> Ver', [
                                                 'value'=>Url::to(['view','id'=>$model->HE_ID]),
-                                                'class'=>'btn btn-sm btn-flat btn-warning modalView',
+                                                'class'=>'btn btn-sm btn-flat btn-default text-blue modalView',
                                                 'title'=>'Actualizar'
                                         ]);
                                     },
                                     'actualizar'=> function ($url,$model) {
                                         return Html::button(
-                                            'Actualizar', [
+                                            '<i class="fa fa-pencil"></i> Actualizar', [
                                                 'value'=>Url::to(['update','id'=>$model->HE_ID]),
-                                                'class'=>'btn btn-sm btn-flat btn-primary modalAct',
+                                                'class'=>'btn btn-sm btn-flat btn-default text-blue modalAct',
                                                 'title'=>'Actualizar'
                                         ]);
                                     },

@@ -46,9 +46,9 @@ class DespachoHerramientas extends \yii\db\ActiveRecord
     {
         return [
             'DH_ID' => 'Dh  ID',
-            'OT_ID' => 'Ot  ID',
-            'DH_FECHA_SALIDA' => 'Dh  Fecha  Salida',
-            'DH_ESTADO' => 'Dh  Estado',
+            'OT_ID' => 'Orden de Trabajo',
+            'DH_FECHA_SALIDA' => 'Fecha salida',
+            'DH_ESTADO' => 'Estado',
         ];
     }
 

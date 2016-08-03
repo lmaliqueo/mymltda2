@@ -9,6 +9,7 @@ use yii\helpers\Html;
 <aside class="main-sidebar">
 
     <section class="sidebar" style="height: auto;">
+        <?php /*
         <br>
         <!-- Sidebar user panel -->
         <div class="user-panel">
@@ -23,6 +24,7 @@ use yii\helpers\Html;
             </div>
         </div>
         <br>
+        */ ?>
         <!-- search form -->
         <?php /*
         <form action="#" method="get" class="sidebar-form">
@@ -47,6 +49,7 @@ use yii\helpers\Html;
                         'items' => [
                             ['label' => 'Materiales', 'icon' => 'fa fa-circle-o', 'url' => ['/materiales'],],
                             ['label' => 'Herramientas', 'icon' => 'fa fa-circle-o', 'url' => ['/herramientas'],],
+                            ['label' => 'Informe Inventario', 'icon' => 'fa fa-circle-o', 'url' => ['/bodegas/informe-invent'],],
 
                         ],
                     ],
@@ -73,7 +76,7 @@ use yii\helpers\Html;
                         ],
                     ],*/
                     ['label' => 'Sub-Actividades', 'icon' => 'glyphicon glyphicon-inbox', 'url' => ['/subactividades']],
-                    ['label' => 'Proveedores', 'icon' => 'fa fa-truck', 'url' => ['/proveedores']],
+                    ['label' => 'Proveedores', 'icon' => 'fa fa-truck', 'url' => ['/proveedor']],
                     /*
                     ['label' => 'Base de Datos', 'icon' => 'fa fa-database', 'url' => '#',
                         'items' => [

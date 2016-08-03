@@ -17,7 +17,10 @@ use Yii;
  *
  * @property Actividades $aC
  * @property Subactividades $sACT
+ * @property AsignaAcumula[] $asignaAcumulas 
  * @property AsignaTiene[] $asignaTienes
+ * @property HerramientaAsignado[] $herramientaAsignados 
+ * @property MaterialAsignado[] $materialAsignados 
  */
 class ActSactAsigna extends \yii\db\ActiveRecord
 {
@@ -81,17 +84,33 @@ class ActSactAsigna extends \yii\db\ActiveRecord
     {
         return $this->hasMany(AsignaTiene::className(), ['AS_ID' => 'AS_ID']);
     }
+
+
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+
+    public function getAsignaAcumulas() 
+    { 
+        return $this->hasMany(AsignaAcumula::className(), ['AS_ID' => 'AS_ID']); 
+    } 
+ 
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+
     
     public function getHerramientaAsignados() 
-   { 
+    { 
        return $this->hasMany(HerramientaAsignado::className(), ['AS_ID' => 'AS_ID']); 
-   } 
+    } 
  
-   /** 
-    * @return \yii\db\ActiveQuery 
-    */ 
-   public function getMaterialAsignados() 
-   { 
-       return $this->hasMany(MaterialAsignado::className(), ['AS_ID' => 'AS_ID']); 
-   } 
+    /** 
+     * @return \yii\db\ActiveQuery 
+     */ 
+
+    public function getMaterialAsignados() 
+    { 
+        return $this->hasMany(MaterialAsignado::className(), ['AS_ID' => 'AS_ID']); 
+    } 
 }

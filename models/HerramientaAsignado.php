@@ -8,9 +8,8 @@ use Yii;
  * This is the model class for table "herramienta_asignado".
  *
  * @property integer $HAS_ID
- * @property integer $HE_ID
+ * @property string $HE_ID
  * @property integer $AS_ID
- * @property integer $HAS_CANTIDAD
  *
  * @property Herramientas $hE
  * @property ActSactAsigna $aS
@@ -31,7 +30,9 @@ class HerramientaAsignado extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['HE_ID', 'AS_ID', 'HAS_CANTIDAD'], 'integer'],
+            [['HE_ID', 'AS_ID'], 'required'],
+            [['AS_ID'], 'integer'],
+            [['HE_ID'], 'string', 'max' => 10],
             [['HE_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Herramientas::className(), 'targetAttribute' => ['HE_ID' => 'HE_ID']],
             [['AS_ID'], 'exist', 'skipOnError' => true, 'targetClass' => ActSactAsigna::className(), 'targetAttribute' => ['AS_ID' => 'AS_ID']],
         ];
@@ -46,7 +47,6 @@ class HerramientaAsignado extends \yii\db\ActiveRecord
             'HAS_ID' => 'Has  ID',
             'HE_ID' => 'He  ID',
             'AS_ID' => 'As  ID',
-            'HAS_CANTIDAD' => 'Has  Cantidad',
         ];
     }
 
@@ -66,3 +66,4 @@ class HerramientaAsignado extends \yii\db\ActiveRecord
         return $this->hasOne(ActSactAsigna::className(), ['AS_ID' => 'AS_ID']);
     }
 }
+

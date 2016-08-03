@@ -410,7 +410,7 @@ class MaterialesController extends Controller
                 }
             }
         }else{
-            return $this->render('multi_adq', [
+            return $this->render('_form_compra', [
                 'ordenes_trabajos' => $ordenes_trabajos,
                 'model' => $model,
                 'cant_materiales' => $cant_materiales,
@@ -580,7 +580,7 @@ class MaterialesController extends Controller
         $array_compras = MatOrcAdquirido::find()->select('ORC_ID')->where(['SM_ID'=>$array_stock])->asArray()->all();
 
         $ordenes_compra = OrdenCompra::find()->where(['ORC_ID'=>$array_compras])->all();
-
+        $envio=null;
         foreach ($ordenes_compra as $count => $compra) {
             $bodega = MatOrcAdquirido::find()->where(['ORC_ID'=>$compra->ORC_ID])->one();
             if ($bodega->BO_ID != NULL) {
@@ -633,6 +633,83 @@ class MaterialesController extends Controller
             'ordenes_despacho'=>$ordenes_despacho,
         ]);
     }
+
+    public function actionIngresarOrdenDespacho($id)
+    {
+        $orden_despacho= new OrdenDespacho();
+        $despachos=[new OdMatEspecifica];
+        $ordenes_trabajos = OrdenTrabajo::find()->where(['not in','OT_ESTADO', 'Finalizado'])->all();
+
+        $model = new BoMatAlmacena();
+
+        $array_ot = OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$id])->asArray()->all();
+        $array_alm = BoMatAlmacena::find()->select('AL_ID')->where(['OT_ID'=>$array_ot])->asArray()->all();
+        $array_despachos= OdMatEspecifica::find()->select('OD_ID')->where(['AL_ID'=>$array_alm])->asArray()->all();
+
+
+        $cant_almacenados= BoMatAlmacena::find()->where(['OT_ID'=>$array_ot])->count();
+        $materiales= BoMatAlmacena::find()->where(['OT_ID'=>$array_ot])->all();
+
+
+        $cantidad_od= OrdenDespacho::find()->where(['OD_ID'=>$array_alm])->count();
+
+        $orden_despacho->OD_FECHA_EMISION= date('Y-m-d');
+        $orden_despacho->OD_NUMERO_ORDEN = $cantidad_od+1;
+        $orden_despacho->OD_ESTADO = 'Pendiente';
+
+        $almacenados= new BoMatAlmacena();
+
+        if ($orden_despacho->load(Yii::$app->request->post())) {
+            $despachos = Model::createMultiple(OdMatEspecifica::classname());
+            Model::loadMultiple($despachos, Yii::$app->request->post());
+
+
+            $orden_despacho->save();
+            $valid = $orden_despacho->validate();
+            $valid = Model::validateMultiple($despachos) && $valid;
+            $valid=true;
+
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $orden_despacho->save(false)) {
+                        foreach ($despachos as $despacho) {
+
+
+                            /*---------------------------------------------------DESPACHO---------------------------------------------------*/
+                            $despacho->OD_ID = $orden_despacho->OD_ID;
+                            if (! ($flag = $despacho->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                            /*---------------------------------------------------DESPACHO---------------------------------------------------*/
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['materiales-pro', 'id' => $proyecto->PRO_ID]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+
+            }
+
+
+        }else{
+            return $this->render('_form_despacho', [
+                'ordenes_trabajos' => $ordenes_trabajos,
+                'orden_despacho' => $orden_despacho,
+                'almacenados' => $almacenados,
+                'materiales' => $materiales,
+                'cant_almacenados' => $cant_almacenados,
+                'despachos' => (empty($despachos)) ? [new OdMatEspecifica] : $despachos
+            ]);
+        }
+    }
+
+
+
 
 
     public function actionCrearOrdenDespacho($id)
@@ -916,4 +993,16 @@ class MaterialesController extends Controller
         $OrdenTrabajo = OrdenTrabajo::findOne($id);
     }
 
+    public function actionGetOt($id){
+
+        $ordentrabajo = OrdenTrabajo::findOne($id);
+        $cant_oc = OrdenCompra::find()->where(['OT_ID'=>$id])->count();
+        $datos = [
+            'numero_orden'=>($cant_oc + 1),
+            'proyecto'=>$ordentrabajo->pRO->PRO_NOMBRE,
+            'direccion'=>$ordentrabajo->pRO->PRO_DIRECCION,
+            'ciudad'=>$ordentrabajo->pRO->cOM->COM_NOMBRE,
+        ];
+        echo Json::encode($datos);
+    }
 }

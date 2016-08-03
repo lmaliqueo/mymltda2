@@ -18,82 +18,102 @@ use yii\helpers\ArrayHelper;
     <?php $form = ActiveForm::begin(['id' => 'dynamic-form']); ?>
 
 
-<div class="box">
-    <div class="box-body">
-        <?= $form->field($model, 'PE_RUT')->dropDownList(
-        ArrayHelper::map(Persona::find()->all(),'PE_RUT','PE_NOMBRES'),
-        ['prompt'=>'Selecciona una persona']
-        ) ?>
-
-
-        <?= $form->field($model, 'SPRE_TITULO')->textInput(['maxlength' => true]) ?>
-
-        <?= $form->field($model, 'SPRE_DESCRIPCION')->textarea(['rows' => 6]) ?>
-
-    </div>
-
-</div>
-
-<div class="box">
-    <div class="box-header">
-        <h4 class="box-title">Herramientas</h4>
+<div class="box box-solid">
+    <div class="box-header with-border">
+        <h3 class="no-margin">
+            Crear Solicitud de Préstamo
+            <span class="pull-right">
+                <?= Html::submitButton($model->isNewRecord ? 'Guardar Solicitud' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success btn-flat' : 'btn btn-primary btn-flat']) ?>
+            </span> 
+        </h3>
     </div>
     <div class="box-body">
-         <?php DynamicFormWidget::begin([
-            'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
-            'widgetBody' => '.container-items', // required: css class selector
-            'widgetItem' => '.item', // required: css class
-            'limit' => $cant_he, // the maximum times, an element can be cloned (default 999)
-            'min' => 1, // 0 or 1 (default 1)
-            'insertButton' => '.add-item', // css class
-            'deleteButton' => '.remove-item', // css class
-            'model' => $prestamo[0],
-            'formId' => 'dynamic-form',
-            'formFields' => [
-                'HE_ID',
-                'SOLI_CANTIDAD',
-            ],
-        ]); ?>
-        <table class="table table-bordered no-margin">
-            <tr class="success">
-                <th style="width:20%">Cantidad</th>
-                <th style="width:10%">ID</th>
-                <th style="width:36%">Descripción</th>
-                <th style="width:28%">Tipo Herramienta</th>
-                <th><button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button></th>
-            </tr>
-        </table>
-        <div class="container-items">
-                <?php foreach ($prestamo as $i => $prest) { ?>
-            <table class="table item table-bordered no-margin">
-                <tr>
-                    <td style="width:20%">
-                        <?= $form->field($prest, "[{$i}]SOLI_CANTIDAD")->textInput(['type'=>'number', 'maxlength' => true, 'class'=>'input-group-sm form-control'])->label(false) ?>
-                    </td>
-                    <td style="width:10%"></td>
-                    <td style="width:36%">
-                        <?= $form->field($prest, "[{$i}]HE_ID")->dropDownList(
-                        ArrayHelper::map(Herramientas::find()->all(),'HE_ID','HE_NOMBRE'),
-                        ['prompt'=>'Selecciona una herramienta', 'class'=>'idhe form-control input-group-sm']
-                        )->label(false) ?>
-                    </td>
-                    <td style="width:28%"></td>
-                    <td>
-                        <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
-                    </td>
-                </tr>
-            </table>
-                <?php } ?>
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h4 class="box-title">
+                    Datos solicitud
+                </h4>
+            </div>
+            <div class="box-body">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <?= $form->field($model, 'SPRE_TITULO')->textInput(['maxlength' => true]) ?>
+                        <?= $form->field($model, 'SPRE_DESCRIPCION')->textarea(['rows' => 6]) ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?php /* $form->field($model, 'PE_RUT')->dropDownList(
+                        ArrayHelper::map(Persona::find()->all(),'PE_RUT','PE_NOMBRES'),
+                        ['prompt'=>'Selecciona una persona']
+                        )->label('Encargado de construcción')*/ ?>
+                    </div>
+                </div>
+
+
+
+            </div>
         </div>
-        <?php DynamicFormWidget::end(); ?>
+
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h4 class="box-title">Herramientas</h4>
+            </div>
+            <div class="box-body">
+                 <?php DynamicFormWidget::begin([
+                    'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
+                    'widgetBody' => '.container-items', // required: css class selector
+                    'widgetItem' => '.item', // required: css class
+                    'limit' => $cant_he, // the maximum times, an element can be cloned (default 999)
+                    'min' => 1, // 0 or 1 (default 1)
+                    'insertButton' => '.add-item', // css class
+                    'deleteButton' => '.remove-item', // css class
+                    'model' => $prestamo[0],
+                    'formId' => 'dynamic-form',
+                    'formFields' => [
+                        'HE_ID',
+                        'SOLI_CANTIDAD',
+                    ],
+                ]); ?>
+                <table class="table table-bordered no-margin">
+                    <tr class="success">
+                        <th style="width:5%">Item</th>
+                        <th style="width:10%">Código</th>
+                        <th style="width:50%">Descripción</th>
+                        <th style="width:28%">Tipo Herramienta</th>
+                        <th><button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button></th>
+                    </tr>
+                </table>
+                <div class="container-items">
+                        <?php foreach ($prestamo as $i => $prest) { ?>
+                    <table class="table item table-bordered no-margin">
+                        <tr>
+                            <td style="width:5%"></td>
+                            <td style="width:10%"></td>
+                            <td style="width:50%">
+                                <?= $form->field($prest, "[{$i}]HE_ID")->dropDownList(
+                                ArrayHelper::map(Herramientas::find()->all(),'HE_ID','HE_DESCRIPCION'),
+                                ['prompt'=>'Selecciona una herramienta', 'class'=>'idhe form-control input-group-sm']
+                                )->label(false) ?>
+                            </td>
+                            <td style="width:28%"></td>
+                            <td>
+                                <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+                            </td>
+                        </tr>
+                    </table>
+                        <?php } ?>
+                </div>
+                <?php DynamicFormWidget::end(); ?>
+            </div>
+        </div>
+
     </div>
+
 </div>
 
 
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Generar' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+
 
     <?php ActiveForm::end(); ?>
 

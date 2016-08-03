@@ -15,17 +15,23 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'OT_ID') ?>
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($model, 'PRO_ID')->textInput(['class'=>'input-sm form-control']) ?>
 
-    <?= $form->field($model, 'PRO_ID') ?>
+        <?= $form->field($model, 'OT_FECHA_INICIO')->textInput(['class'=>'input-sm form-control']) ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'OT_NOMBRE')->textInput(['class'=>'input-sm form-control'])->label('Nombre OT') ?>
 
-    <?= $form->field($model, 'OT_NOMBRE') ?>
+        <?= $form->field($model, 'OT_FECHA_TERMINO')->textInput(['class'=>'input-sm form-control']) ?>
+    </div>
+</div>
+    <?php // $form->field($model, 'OT_ID') ?>
 
-    <?= $form->field($model, 'OT_TIPO') ?>
 
-    <?= $form->field($model, 'OT_FECHA_INICIO') ?>
+    <?php // $form->field($model, 'OT_TIPO') ?>
 
-    <?php // echo $form->field($model, 'OT_FECHA_TERMINO') ?>
 
     <?php // echo $form->field($model, 'OT_ESTADO') ?>
 
@@ -34,8 +40,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'OT_INFORME') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
+        <?php // Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

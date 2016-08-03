@@ -69,7 +69,7 @@ class ProyectoSearch extends Proyecto
             'PRO_DIRECCION' => $this->PRO_DIRECCION,
         ]);
 
-        $query->andFilterWhere(['like', 'empresa-cliente.EMP_RUT', $this->EMP_RUT])
+        $query->andFilterWhere(['like', 'empresa_cliente.EMP_RAZON', $this->EMP_RUT])
             ->andFilterWhere(['like', 'PRO_NOMBRE', $this->PRO_NOMBRE])
             ->andFilterWhere(['like', 'PRO_OBSERVACIONES', $this->PRO_OBSERVACIONES])
             ->andFilterWhere(['like', 'PRO_DESCRIPCION', $this->PRO_DESCRIPCION])

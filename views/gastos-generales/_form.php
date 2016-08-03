@@ -12,12 +12,18 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+<div class="row">
+    <div class="col-md-6">
+	    <?= $form->field($model, 'GG_TIPO')->textInput(['maxlength' => true]) ?>
+    </div>
+    <div class="col-md-6">
+	    <?= $form->field($model, 'GG_COSTO')->textInput(['type'=>'number', 'template'=>'  <span class="input-group-addon">$</span> {input} {error}']) ?>
+    </div>
+</div>
 
-    <?= $form->field($model, 'GG_TIPO')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'GG_DESCRIPCION')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'GG_COSTO')->textInput() ?>
 
 
     <div class="form-group">

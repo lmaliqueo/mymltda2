@@ -38,7 +38,8 @@ class Materiales extends \yii\db\ActiveRecord
     {
         return [
             [['TMA_ID','MA_ID'], 'required'],
-            [['MA_ID','TMA_ID', 'MA_COSTOUNIDAD'], 'integer'],
+            [['TMA_ID', 'MA_COSTOUNIDAD'], 'integer'],
+            [['MA_ID'], 'string', 'max' => 10],
             [['MA_NOMBRE', 'MA_UNIDAD'], 'string', 'max' => 50],
             [['TMA_ID'], 'exist', 'skipOnError' => true, 'targetClass' => TipoMaterial::className(), 'targetAttribute' => ['TMA_ID' => 'TMA_ID']],
         ];

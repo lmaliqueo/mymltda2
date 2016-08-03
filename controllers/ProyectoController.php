@@ -59,8 +59,11 @@ class ProyectoController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $encargados = UsuariosControla::find()->all();
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'encargados' => $encargados,
         ]);
     }
 

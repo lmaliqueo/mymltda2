@@ -7,18 +7,20 @@ use Yii;
 /**
  * This is the model class for table "herramientas".
  *
- * @property integer $HE_ID
+ * @property string $HE_ID
+ * @property integer $PROV_ID 
  * @property integer $BO_ID
- * @property string $HE_NOMBRE
- * @property integer $HE_CANT
+ * @property integer $TH_ID
+ * @property string $HE_DESCRIPCION
+ * @property string $HE_ESTADO
  * @property integer $HE_COSTOUNIDAD
  *
+ * @property DhHeRetiran[] $dhHeRetirans
  * @property HerramientaAsignado[] $herramientaAsignados 
- * @property HerramientaTiene[] $herramientaTienes
  * @property Bodegas $bO
+ * @property Proveedor $pROV 
  * @property TipoHerramienta $tH
  * @property RhHeReingresan[] $rhHeReingresans
- * @property DhHeRetiran[] $dhHeRetirans
  * @property SpreHeSolicita[] $spreHeSolicitas
  */
 class Herramientas extends \yii\db\ActiveRecord
@@ -37,11 +39,14 @@ class Herramientas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-           [['BO_ID', 'TH_ID'], 'required'],
-           [['BO_ID', 'TH_ID', 'HE_CANT', 'HE_COSTOUNIDAD'], 'integer'],
-           [['HE_NOMBRE'], 'string', 'max' => 50],
-           [['BO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Bodegas::className(), 'targetAttribute' => ['BO_ID' => 'BO_ID']],
-           [['TH_ID'], 'exist', 'skipOnError' => true, 'targetClass' => TipoHerramienta::className(), 'targetAttribute' => ['TH_ID' => 'TH_ID']],
+            [['HE_ID', 'PROV_ID', 'BO_ID', 'TH_ID'], 'required'],
+            [['PROV_ID', 'BO_ID', 'TH_ID', 'HE_COSTOUNIDAD'], 'integer'],
+            [['HE_ID'], 'string', 'max' => 10],
+            [['HE_DESCRIPCION'], 'string', 'max' => 50],
+            [['HE_ESTADO'], 'string', 'max' => 20],
+            [['BO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Bodegas::className(), 'targetAttribute' => ['BO_ID' => 'BO_ID']],
+            [['PROV_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Proveedor::className(), 'targetAttribute' => ['PROV_ID' => 'PROV_ID']], 
+            [['TH_ID'], 'exist', 'skipOnError' => true, 'targetClass' => TipoHerramienta::className(), 'targetAttribute' => ['TH_ID' => 'TH_ID']],
         ];
     }
 
@@ -51,11 +56,12 @@ class Herramientas extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'HE_ID' => 'ID',
+            'HE_ID' => 'Código',
+            'PROV_ID' => 'Proveedor',
             'BO_ID' => 'Bodega',
-            'TH_ID' => 'Tipo de Herramienta',
-            'HE_NOMBRE' => 'Descripción',
-            'HE_CANT' => 'Cantidad',
+            'TH_ID' => 'Tipo',
+            'HE_DESCRIPCION' => 'Descripción',
+            'HE_ESTADO' => 'Estado',
             'HE_COSTOUNIDAD' => 'Costo Asociado',
         ];
     }
@@ -64,21 +70,24 @@ class Herramientas extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
 
-
     public function getHerramientaAsignados() 
     { 
        return $this->hasMany(HerramientaAsignado::className(), ['HE_ID' => 'HE_ID']); 
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
 
-    public function getHerramientaTienes()
+    public function getPROV()
     {
-        return $this->hasMany(HerramientaTiene::className(), ['HE_ID' => 'HE_ID']);
+        return $this->hasOne(Proveedor::className(), ['PROV_ID' => 'PROV_ID']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
+
     public function getBO()
     {
         return $this->hasOne(Bodegas::className(), ['BO_ID' => 'BO_ID']);

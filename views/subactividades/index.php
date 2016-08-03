@@ -14,38 +14,45 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+<br>
     <p>
-        <?= Html::a('Create Subactividades', ['crear'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Subactividad', ['crear'], ['class' => 'btn btn-success btn-flat']) ?>
     </p>
 
-<div class="box box-primary">
-    <div class="box-body">
-        <?= GridView::widget([
-            'dataProvider' => $dataProvider,
-            'filterModel' => $searchModel,
-            'columns' => [
-                ['class' => 'yii\grid\SerialColumn'],
+    <div class="box box-primary">
+        <div class="box-body no-padding">
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                //'filterModel' => $searchModel,
+                'summary'=>'',
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
 
-                'SACT_ID',
-                'SACT_NOMBRE',
-                'SACT_DESCRIPCION:ntext',
-                'SACT_COSTO',
-                // 'SACT_CANTIDAD',
-                // 'SACT_CANTIDADMANODEOBRA',
+                    'SACT_ID',
+                    'SACT_NOMBRE',
+                    'SACT_DESCRIPCION:ntext',
+                    // 'SACT_COSTO',
+                    // 'SACT_CANTIDAD',
+                    // 'SACT_CANTIDADMANODEOBRA',
 
-                ['class' => 'yii\grid\ActionColumn',
-                    'template' => '{recursos} {view} {update} {delete}',
-                    'buttons' => [
-                        'recursos' => function ($url, $model, $key) { // <--- here you can override or create template for a button of a given name
-                             return Html::a('<span class="glyphicon glyphicon glyphicon-list-alt" aria-hidden="true"></span>', ['asignar', 'id' => $model->SACT_ID]);
-                        },
+                    ['class' => 'yii\grid\ActionColumn',
+                        'template' => '{ver} {recursos} {actualizar}',
+                        'buttons' => [
+                            'ver' => function ($url, $model, $key) { // <--- here you can override or create template for a button of a given name
+                                 return Html::a('Ver', ['asignar', 'id' => $model->SACT_ID], ['class'=>'btn btn-flat btn-default btn-sm text-blue']);
+                            },
+                            'recursos' => function ($url, $model, $key) { // <--- here you can override or create template for a button of a given name
+                                 return Html::a('Asignar Recursos', ['asignar', 'id' => $model->SACT_ID], ['class'=>'btn btn-flat btn-default btn-sm text-blue']);
+                            },
+                            'actualizar' => function ($url, $model, $key) { // <--- here you can override or create template for a button of a given name
+                                 return Html::a('Actualizar', ['asignar', 'id' => $model->SACT_ID], ['class'=>'btn btn-flat btn-default btn-sm text-blue']);
+                            },
+                        ],
                     ],
                 ],
-            ],
-        ]); ?>
+            ]); ?>
 
+        </div>
     </div>
-</div>
 
 </div>

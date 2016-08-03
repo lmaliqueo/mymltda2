@@ -28,7 +28,7 @@ class Provincia extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['PROVI_NOMBRE'], 'string', 'max' => 50]
+            [['PROVI_NOMBRE'], 'string', 'max' => 50],
         ];
     }
 
@@ -38,8 +38,8 @@ class Provincia extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'PROVI_ID' => 'ID',
-            'PROVI_NOMBRE' => 'Provincia',
+            'PROVI_ID' => 'Provi  ID',
+            'PROVI_NOMBRE' => 'Provi  Nombre',
         ];
     }
 

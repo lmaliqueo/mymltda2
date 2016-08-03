@@ -15,24 +15,25 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'PRO_ID') ?>
 
-    <?= $form->field($model, 'LI_ID') ?>
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($model, 'PRO_NOMBRE')->textInput(['class'=>'input-sm form-control']) ?>
+        <?= $form->field($model, 'PRO_ESTADO')->textInput(['class'=>'input-sm form-control']) ?>
 
-    <?= $form->field($model, 'SPRO_ID') ?>
+        <?php // $form->field($model, 'PRO_FECHA_INICIO') ?>
 
-    <?= $form->field($model, 'PRO_NOMBRE') ?>
 
-    <?= $form->field($model, 'PRO_FECHACONTRATO') ?>
 
-    <?php // echo $form->field($model, 'PRO_DETALLESCONTRATO') ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'EMP_RUT')->textInput(['class'=>'input-sm form-control']) ?>
+        <?= $form->field($model, 'COM_ID')->textInput(['class'=>'input-sm form-control']) ?>
+        <?php // $form->field($model, 'PRO_FECHA_FINAL') ?>
+    </div>
+</div>
 
-    <?php // echo $form->field($model, 'PRO_FECHAINICIOPROPUESTO') ?>
-
-    <?php // echo $form->field($model, 'PRO_FECHATERMINOPROPUESTO') ?>
-
-    <?php // echo $form->field($model, 'PRO_TIPOCONTRATO') ?>
-
+    <?php // $form->field($model, 'PRO_ID') ?>
     <?php // echo $form->field($model, 'PRO_MONTOESTIMADO') ?>
 
     <?php // echo $form->field($model, 'PRO_JUSTIFICACIONMONTO') ?>
@@ -45,17 +46,13 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'PRO_COSTO_TOTAL') ?>
 
-    <?php // echo $form->field($model, 'PRO_FECHA_INICIO') ?>
-
-    <?php // echo $form->field($model, 'PRO_FECHA_FINAL') ?>
 
     <?php // echo $form->field($model, 'PRO_INFORME') ?>
 
-    <?php // echo $form->field($model, 'PRO_ESTADO') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
+        <?php // Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

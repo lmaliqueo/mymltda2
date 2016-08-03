@@ -7,8 +7,14 @@ use miloschuman\highcharts\Highcharts;
 /* @var $searchModel app\models\ActividadesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $ordentrabajo->OT_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => 'Orden de Trabajo', 'url' => ['orden-trabajo/index']];
+$this->title = 'Graficos';
+$this->params['breadcrumbs'][] = ['label' => 'Ordenes de Trabajos', 'url' => ['orden-trabajo/index']];
+$this->params['breadcrumbs'][] = [
+                    'label' => $ordentrabajo->OT_NOMBRE,
+                    //'url' => ['orden-trabajo/index'],
+                    'style'=> 'color:white',
+                    'template' => "<button class='btn btn-flat btn-sm' style='background-color : #333D43; color:white; float:right; margin-left: 4px;'>{link}</button>\n"
+                ];
 $this->params['breadcrumbs'][] = 'Gráfico';
 ?>
 
@@ -61,7 +67,7 @@ foreach ($estado_pago as $ep) {
                         <li><?= Html::a('<i class="fa fa-inbox"></i> Reportes de Avances', ['orden-trabajo/index-reportes-avances', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                         <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['orden-trabajo/index-gastos-generales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                         <li><?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Materiales', ['orden-trabajo/index-materiales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
-                        <li class="active"><a href="#"><i class="fa fa-bar-chart"></i> Gráfico</a></li>
+                        <li class="active"><a href="#"><i class="fa fa-line-chart"></i> Gráfico</a></li>
                         <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['proyecto/informes-pro', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
                     </ul>
                 </div>

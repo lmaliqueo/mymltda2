@@ -10,9 +10,20 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\ActividadesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $ordentrabajo->OT_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => 'Ordenes de Trabajos', 'url' => ['orden-trabajo/index']];
-$this->params['breadcrumbs'][] = $ordentrabajo->OT_NOMBRE;
+$this->title = 'Actividades';
+$this->params['breadcrumbs'][] = [
+                    'label' => 'Ordenes de Trabajos',
+                    'url' => ['orden-trabajo/index'],
+                    //'style'=> 'color:333D43',
+                    //'template' => "<li>{link}</li>\n"
+                ];
+$this->params['breadcrumbs'][] = [
+                    'label' => $ordentrabajo->OT_NOMBRE,
+                    //'url' => ['orden-trabajo/index'],
+                    'style'=> 'color:white',
+                    'template' => "<button class='btn btn-flat btn-sm' style='background-color : #333D43; color:white; float:right; margin-left: 4px;'>{link}</button>\n"
+                ];
+$this->params['breadcrumbs'][] = 'Actividades';
 ?>
 <div class="orden-trabajo-index">
 <?php /*

@@ -9,9 +9,14 @@ use yii\bootstrap\Modal;
 /* @var $searchModel app\models\GastosGeneralesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = $ordentrabajo->OT_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => 'Orden de Trabajo', 'url' => ['proyecto/index']];
-$this->params['breadcrumbs'][] = ['label' => $ordentrabajo->OT_NOMBRE, 'url' => ['orden-trabajo/index']];
+$this->title = 'Gastos Generales';
+$this->params['breadcrumbs'][] = ['label' => 'Ordenes de Trabajos', 'url' => ['orden-trabajo/index']];
+$this->params['breadcrumbs'][] = [
+                    'label' => $ordentrabajo->OT_NOMBRE,
+                    //'url' => ['orden-trabajo/index'],
+                    'style'=> 'color:white',
+                    'template' => "<button class='btn btn-flat btn-sm' style='background-color : #333D43; color:white; float:right; margin-left: 4px;'>{link}</button>\n"
+                ];
 $this->params['breadcrumbs'][] = 'Gastos Generales';
 ?>
 <div class="gastos-generales-index">
@@ -34,7 +39,7 @@ $this->params['breadcrumbs'][] = 'Gastos Generales';
 
 <div class="row">
     <div class="col-md-3">
-            <?= Html::button('Crear Gastos Generales', ['value'=>Url::to(['gastos-generales/create','id'=>$ordentrabajo->OT_ID]),'class'=> 'btn btn-success btn-block btn-flat margin-bottom','id'=>'modalButton']) ?>
+            <?= Html::button('Crear Gastos Generales', ['value'=>Url::to(['gastos-generales/create','id'=>$ordentrabajo->OT_ID]),'class'=> 'btn btn-primary btn-block btn-flat margin-bottom','id'=>'modalButton']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Orden de Trabajo</h3>
@@ -46,7 +51,7 @@ $this->params['breadcrumbs'][] = 'Gastos Generales';
                     <li><?= Html::a('<i class="fa fa-inbox"></i> Reportes de Avances', ['orden-trabajo/index-reportes-avances', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li class="active"><a href="#"><i class="glyphicon glyphicon-usd"></i> Gastos Generales</a></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Materiales', ['orden-trabajo/index-materiales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
-                    <li><?= Html::a('<i class="fa fa-bar-chart"></i> Gráfico', ['orden-trabajo/grafico-ot', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-line-chart"></i> Gráfico', ['orden-trabajo/grafico-ot', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['proyecto/informes-pro', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
                 </ul>
             </div>

@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $SOLI_ID
  * @property integer $SPRE_ID
- * @property integer $HE_ID
+ * @property string $HE_ID
  * @property integer $SOLI_CANTIDAD
  *
  * @property SolicitudPrestamo $sPRE
@@ -31,8 +31,11 @@ class SpreHeSolicita extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['HE_ID'], 'required'],
-            [['SPRE_ID', 'HE_ID', 'SOLI_CANTIDAD'], 'integer']
+            [['SPRE_ID'], 'required'],
+            [['SPRE_ID'], 'integer'],
+            [['HE_ID'], 'string', 'max' => 10],
+            [['SPRE_ID'], 'exist', 'skipOnError' => true, 'targetClass' => SolicitudPrestamo::className(), 'targetAttribute' => ['SPRE_ID' => 'SPRE_ID']],
+            [['HE_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Herramientas::className(), 'targetAttribute' => ['HE_ID' => 'HE_ID']],
         ];
     }
 
@@ -45,7 +48,6 @@ class SpreHeSolicita extends \yii\db\ActiveRecord
             'SOLI_ID' => 'ID',
             'SPRE_ID' => 'Solicitud',
             'HE_ID' => 'Herramienta',
-            'SOLI_CANTIDAD' => 'Cantidad',
         ];
     }
 

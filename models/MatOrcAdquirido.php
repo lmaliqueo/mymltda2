@@ -9,7 +9,7 @@ use Yii;
  *
  * @property integer $AD_ID
  * @property integer $ORC_ID
- * @property integer $MA_ID
+ * @property string $MA_ID
  * @property integer $BO_ID
  * @property integer $SM_ID
  * @property integer $AD_CANTIDAD
@@ -38,7 +38,8 @@ class MatOrcAdquirido extends \yii\db\ActiveRecord
     {
         return [
             [['MA_ID'], 'required', 'message'=>'Este campo no debe estar vacío'],
-            [['ORC_ID', 'MA_ID', 'BO_ID', 'SM_ID', 'AD_CANTIDAD', 'AD_COSTO_TOTAL'], 'integer'],
+            [['ORC_ID', 'BO_ID', 'SM_ID', 'AD_CANTIDAD', 'AD_COSTO_TOTAL'], 'integer'],
+            [['MA_ID'], 'string', 'max' => 10], 
             [['AD_FECHA'], 'safe'],
             [['ORC_ID'], 'exist', 'skipOnError' => true, 'targetClass' => OrdenCompra::className(), 'targetAttribute' => ['ORC_ID' => 'ORC_ID']],
             [['MA_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Materiales::className(), 'targetAttribute' => ['MA_ID' => 'MA_ID']],

@@ -71,8 +71,6 @@ class SolicitudPrestamoController extends Controller
         $cant_he = Herramientas::find()->count();
             $model->SPRE_FECHA= date('Y-m-d');
             $model->SPRE_ESTADO='Pendiente';
-            $libre= EstadoHerramientas::find()->where('EH_NOMBREESTADO=:x',[':x'=>'Libre'])->one();
-            $prestados= EstadoHerramientas::find()->where('EH_NOMBREESTADO=:x',[':x'=>'Prestados'])->one();
         if ($model->load(Yii::$app->request->post())) {
             //$model->save();
             $prestamo = Model::createMultiple(SpreHeSolicita::classname());
@@ -85,8 +83,8 @@ class SolicitudPrestamoController extends Controller
             $valid = Model::validateMultiple($prestamo) && $valid;
 
             if ($valid) {
-                $model->save();
                 $transaction = \Yii::$app->db->beginTransaction();
+                $model->save();
                 try {
                     if ($flag = $model->save(false)) {
                         foreach ($prestamo as $prestamo) {
@@ -182,7 +180,7 @@ class SolicitudPrestamoController extends Controller
             $prestamos= SpreHeSolicita::find()->where(['SPRE_ID'=>$id])->all();
 
             foreach ($prestamos as $prestamo) {
-            
+            /*
                 $tiene= HerramientaTiene::find()->where('HE_ID=:x AND EH_ID=:y',[':x'=>$prestamo->HE_ID, ':y'=>3])->one();
 
                 if($tiene==NULL){
@@ -195,7 +193,10 @@ class SolicitudPrestamoController extends Controller
                 $tienelibre= HerramientaTiene::find()->where('HE_ID=:x AND EH_ID=:y',[':x'=>$prestamo->HE_ID, ':y'=>1])->one();
                 $tienelibre->HT_CANTHEESTADO=$tienelibre->HT_CANTHEESTADO-$prestamo->SOLI_CANTIDAD;
                 $tiene->save();
-                $tienelibre->save();
+                $tienelibre->save();*/
+                $herramienta = Herramientas::findOne($prestamos->HE_ID);
+                $herramienta->HE_ESTADO = 'Prestado';
+                $herramienta->save();
             }
             $model->SPRE_ESTADO='Aprobado';
             $model->save();

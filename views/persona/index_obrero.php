@@ -51,8 +51,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <br>
 
-    <?= Html::button('<span class="glyphicon glyphicon glyphicon-plus" aria-hidden="true"></span> Registrar obrero',
-                         ['value'=>Url::to('index.php?r=persona/create-obrero'),'class'=> 'btn btn-success btn-flat margin-bottom modalView']) ?>
+    <?= Html::button('Registrar obrero',
+                         ['value'=>Url::to('index.php?r=persona/create-obrero'),'class'=> 'btn btn-success btn-flat modalView margin-bottom']) ?>
+
 <div class="box box-primary">
 
     <?= GridView::widget([
@@ -145,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'contrato' => function ($url,$model) {
                         $contrato = ContratoObrero::find()->where(['PE_RUT'=>$model->PE_RUT])->one();
                         if($contrato!=NULL){
-                            return Html::button('Ver Contrato', ['value'=>Url::to(['persona/ver-contrato-ob', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-warning btn-flat btn-sm modalViewTn',]);
+                            return Html::button('<i class="fa fa-eye"></i> Ver Contrato', ['value'=>Url::to(['persona/ver-contrato-ob', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-default btn-flat btn-sm modalViewTn text-blue',]);
                         }else{
                             return Html::button('Ingresar Contrato', ['value'=>Url::to(['persona/crear-contrato-ob', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-success btn-flat btn-sm modalViewTn',]);
                         }
@@ -153,14 +154,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     'trabajos' => function ($url,$model) {
                         $contrato = ContratoObrero::find()->where(['PE_RUT'=>$model->PE_RUT])->one();
                         if($contrato!=NULL){
-                            return Html::button('Proyecto', ['value'=>Url::to(['ver-proyecto', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-primary btn-flat btn-sm modalViewTn',]);
+                            return Html::button('<i class="fa fa-calendar"></i> Ver Actividades', ['value'=>Url::to(['ver-proyecto', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-default btn-flat btn-sm modalViewTn text-blue',]);
                         }
                     },
                 ],
             ],
         ],
     ]); ?>
-
+      
 </div>
 </div>
 

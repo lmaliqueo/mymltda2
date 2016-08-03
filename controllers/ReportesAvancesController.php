@@ -7,10 +7,15 @@ use app\models\ReportesAvances;
 use app\models\ReportesAvancesSearch;
 use app\models\Proyecto;
 use app\models\OrdenTrabajo;
+use app\models\Actividades;
+use app\models\ActSactAsigna;
+use app\models\AsignaAcumula;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use yii\data\Exception;
+use yii\base\Model;
 
 /**
  * ReportesAvancesController implements the CRUD actions for ReportesAvances model.
@@ -76,14 +81,60 @@ class ReportesAvancesController extends Controller
         $model->RA_FECHA=date('Y-m-d');
         $model->OT_ID=$id;
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->save();
-            return $this->actionIndex($id);
+
+        $array_act = Actividades::find()->select('AC_ID')->where(['OT_ID'=>$id])->andWhere(['AC_ESTADO' => 'En proceso'])->asArray()->all();
+        $subact = ActSactAsigna::find()->where(['AC_ID'=>$array_act])->all();
+
+        $arreglo = [new AsignaAcumula];
+
+        foreach ($subact as $asi) {
+            $acumula = new AsignaAcumula();
+            $acumula->AS_ID = $asi->AS_ID;
+            $acumula->AA_CANTIDAD = 0;
+            $arreglo[]=$acumula;
+        }
+
+        if (Model::loadMultiple($arreglo, Yii::$app->request->post()) && $model->load(Yii::$app->request->post()) ) {
+
+                $transaction = Yii::$app->db->beginTransaction();
+
+
+                try {
+                    $model->save();
+                    foreach ($arreglo as $acumulado) {
+                        $acumulado->RA_ID = $model->RA_ID;
+                        if ($acumulado->AA_CANTIDAD != 0) {
+                            $item = ActSactAsigna::findOne($acumulado->AS_ID);
+                            $item->AS_CANTIDADACTUAL = $item->AS_CANTIDADACTUAL + $acumulado->AA_CANTIDAD;
+                            $item->save();
+                        }
+                        $acumulado->save();
+                        //if (! ($flag = $acumulado->save())) {
+                        //    $transaction->rollBack();
+                        //    break;
+                        //}
+                    }
+                    $transaction->commit();
+                    Yii::app()->user->setFlash('success', "El reporte de avances se ingreso correctamente");
+                    return $this->actionIndex($id);
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                    Yii::app()->user->setFlash('success', "El reporte de avances se ingreso correctamente");
+                    $this->refresh();
+                }
+            
+//            return $this->redirect(['view', 'id' => $model->EP_ID]);
         } else {
-            return $this->renderAjax('_form', [
+            return $this->render('_form', [
                 'model' => $model,
+                'arreglo' => $arreglo,
+                'subact' => $subact,
             ]);
         }
+
+
+
+
     }
 
     /**

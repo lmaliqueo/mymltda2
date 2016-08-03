@@ -10,7 +10,13 @@ use yii\helpers\Url;
 /* @var $searchModel app\models\HerramientasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Herramientas';
+$this->title = 'Despacho Herramientas';
+$this->params['breadcrumbs'][] = [
+                    'label' => 'Herramientas',
+                    'url' => ['herramientas/index'],
+                    //'style'=> 'color:333D43',
+                    //'template' => "<li>{link}</li>\n"
+                ];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="herramientas-index">
@@ -41,17 +47,17 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="row">
     <div class="col-md-3">
-            <?= Html::button('Ingresar Despacho', ['value'=>Url::to(['herramientas/create']),'class'=> 'btn btn-success btn-block btn-flat margin-bottom','id'=>'modalButton']) ?>
+            <?= Html::a('Ingresar Despacho', ['herramientas/crear-despachos'], ['class'=> 'btn btn-primary btn-block btn-flat margin-bottom']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Operaciones</h3>
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li><?= Html::a('Lista herramientas', ['herramientas/index']) ?></li>
-                    <li class="active"><a href="#">Despacho de herramientas</a></li>
-                    <li><?= Html::a('Retorno de herramientas', ['herramientas/retorno-index']) ?></li>
-                    <li><?= Html::a('Solicitud de Prestamo', ['solicitud-prestamo/index']) ?></li>
+                    <li><?= Html::a('<i class="fa fa-angle-right"></i> Lista herramientas', ['herramientas/index']) ?></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right"></i> Despacho de herramientas</a></li>
+                    <li><?= Html::a('<i class="fa fa-angle-right"></i> Devolución de herramientas', ['herramientas/retorno-index']) ?></li>
+                    <li><?= Html::a('<i class="fa fa-angle-right"></i> Solicitud de Prestamo', ['solicitud-prestamo/index']) ?></li>
                 </ul>
             </div>
         </div>
@@ -62,12 +68,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="col-md-9">
         <div class="box box-primary">
-            <div class="box-body no-padding">
+            <div class="box-header with-border">
+                <h4 class="box-title">
+                    Despachos
+                </h4>
+            </div>
+            <div class="box-body">
 
                 <table class="table table-bordered">
-                    <tr class="bg-blue">
+                    <tr class="bg-light-blue">
                         <th>ID</th>
                         <th>Orden de Trabajo</th>
+                        <th>Encargado Responsable</th>
                         <th>Fecha Despacho</th>
                         <th>Estado</th>
                         <th></th>
@@ -76,6 +88,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         <tr>
                             <td><?= $despacho->DH_ID ?></td>
                             <td><?= $despacho->oT->OT_NOMBRE ?></td>
+                            <td></td>
                             <td><?= $despacho->DH_FECHA_SALIDA ?></td>
                             <td><?= $despacho->DH_ESTADO ?></td>
 

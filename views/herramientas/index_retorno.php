@@ -10,12 +10,18 @@ use yii\helpers\Url;
 /* @var $searchModel app\models\HerramientasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Herramientas';
+$this->title = 'Devolución Herramientas';
+$this->params['breadcrumbs'][] = [
+                    'label' => 'Herramientas',
+                    'url' => ['materiales/index'],
+                    //'style'=> 'color:333D43',
+                    //'template' => "<li>{link}</li>\n"
+                ];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="herramientas-index">
 
-    <h1>Retorno de Herramientas</h1>
+    <h1>Devolución de Herramientas</h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <?php 
@@ -41,17 +47,17 @@ $this->params['breadcrumbs'][] = $this->title;
 <br>
 <div class="row">
     <div class="col-md-3">
-            <?= Html::button('Ingresar Retorno de herramientas', ['value'=>Url::to(['herramientas/create']),'class'=> 'btn btn-success btn-block btn-flat margin-bottom','id'=>'modalButton']) ?>
+            <?= Html::a('Ingresar Devolución', ['herramientas/crear-devolucion'], ['class'=> 'btn btn-primary btn-block btn-flat margin-bottom']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Operaciones</h3>
             </div>
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
-                    <li><?= Html::a('Lista herramientas', ['herramientas/index']) ?></li>
-                    <li><?= Html::a('Despacho de herramientas', ['herramientas/despachos-index']) ?></li>
-                    <li class="active"><a href="#">Retorno de herramientas</a></li>
-                    <li><?= Html::a('Solicitud de Prestamo', ['solicitud-prestamo/index']) ?></li>
+                    <li><?= Html::a('<i class="fa fa-angle-right"></i> Lista herramientas', ['herramientas/index']) ?></li>
+                    <li><?= Html::a('<i class="fa fa-angle-right"></i> Despacho de herramientas', ['herramientas/despachos-index']) ?></li>
+                    <li class="active"><a href="#"><i class="fa fa-angle-right"></i> Devolución de herramientas</a></li>
+                    <li><?= Html::a('<i class="fa fa-angle-right"></i> Solicitud de Prestamo', ['solicitud-prestamo/index']) ?></li>
                 </ul>
             </div>
         </div>
@@ -61,23 +67,30 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
     <div class="col-md-9">
-        <div class="box">
-            <div class="box-body no-padding">
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h4 class="box-title">
+                    Devoluciones
+                </h4>
+            </div>
+            <div class="box-body">
 
                 <table class="table table-bordered">
-                    <tr class="bg-gray">
+                    <tr class="bg-light-blue">
                         <th>ID</th>
                         <th>Orden de Trabajo</th>
-                        <th>Fecha Despacho</th>
+                        <th>Encargado Responsable</th>
+                        <th>Fecha Devolución</th>
                         <th>Estado</th>
                         <th></th>
                     </tr>
                     <?php foreach ($retorno_he as $retorno) { ?>
                         <tr>
-                            <td><?= $retorno->DH_ID ?></td>
+                            <td><?= $retorno->RH_ID ?></td>
                             <td><?= $retorno->oT->OT_NOMBRE ?></td>
-                            <td><?= $retorno->DH_FECHA_SALIDA ?></td>
-                            <td><?= $retorno->DH_ESTADO ?></td>
+                            <td></td>
+                            <td><?= $retorno->RH_FECHA_RETORNO ?></td>
+                            <td><?= $retorno->RH_ESTADO ?></td>
 
                         </tr>
                     <?php } ?>

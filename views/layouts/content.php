@@ -9,10 +9,10 @@ use dmstr\widgets\Alert;
             <h1><?= $this->blocks['content-header'] ?></h1>
         <?php } else { ?>
             <h3><small>
-                <?php
+                <?php /*
                 if ($this->title !== null) {
                     echo \yii\helpers\Html::encode($this->title);
-                } /*else {
+                } else {
                     echo \yii\helpers\Inflector::camel2words(
                         \yii\helpers\Inflector::id2camel($this->context->module->id)
                     );
@@ -20,13 +20,14 @@ use dmstr\widgets\Alert;
                 }*/ ?>
             </small></h3>
         <?php } ?>
-
+<br>
         <?=
         Breadcrumbs::widget(
             [
                 'homeLink' => [ 
                       'label' => Yii::t('yii', 'Inicio'),
                       'url' => Yii::$app->homeUrl,
+                      //'style'=>'color:white'
                  ],
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]

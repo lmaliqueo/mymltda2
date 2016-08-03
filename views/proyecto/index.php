@@ -8,7 +8,7 @@ use dosamigos\datepicker\DatePicker;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ProyectoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-
+$this->title = 'Proyectos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="proyecto-index">
@@ -16,9 +16,31 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1>Proyectos</h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 <br>
-    <p>
-        <?= Html::a('Crear Proyecto', ['create'], ['class' => 'btn btn-success btn-flat']) ?>
-    </p>
+
+<div class="row">
+    <div class="col-md-3">
+        <?= Html::a('Crear Proyecto', ['create'], ['class' => 'btn btn-success btn-flat btn-block margin-bottom']) ?>
+    </div>
+    <div class="col-md-9">
+        <div class="box box-solid collapsed-box">
+            <div class="box-header with-border">
+                <h5 class="no-margin text-blue" style="height: 15px;"><span class="glyphicon glyphicon-search"></span> <strong>Buscar</strong></h5>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="box-body" style="display: none;">
+                <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 <div class="box box-primary">
 
     <?= GridView::widget([
@@ -72,10 +94,13 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'PRO_INFORME',
 
             ['class' => 'yii\grid\ActionColumn',
-                'template'=>'{ver}',
+                'template'=>'{ver} {modificar}',
                 'buttons' => [
                     'ver' => function ($url,$model) {
-                        return Html::a('Ver Proyecto', ['view', 'id'=>$model->PRO_ID],['class'=>'btn btn-warning btn-flat btn-sm']);
+                        return Html::a('<i class="fa fa-eye"></i> Ver', ['view', 'id'=>$model->PRO_ID],['class'=>'btn btn-default text-blue btn-flat btn-sm']);
+                    },
+                    'modificar' => function ($url,$model) {
+                        return Html::a('<i class="fa fa-pencil"></i> Modificar', ['view', 'id'=>$model->PRO_ID],['class'=>'btn btn-default text-blue btn-flat btn-sm']);
                     },
                 ],
             ],

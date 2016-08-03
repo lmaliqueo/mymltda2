@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "material_asignado".
  *
  * @property integer $MAS_ID
- * @property integer $MA_ID
+ * @property string $MA_ID
  * @property integer $AS_ID
  * @property integer $MAS_CANTIDAD
  *
@@ -31,7 +31,9 @@ class MaterialAsignado extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['MA_ID', 'AS_ID', 'MAS_CANTIDAD'], 'integer'],
+            [['MA_ID', 'AS_ID'], 'required'],
+            [['AS_ID', 'MAS_CANTIDAD'], 'integer'],
+            [['MA_ID'], 'string', 'max' => 10],
             [['MA_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Materiales::className(), 'targetAttribute' => ['MA_ID' => 'MA_ID']],
             [['AS_ID'], 'exist', 'skipOnError' => true, 'targetClass' => ActSactAsigna::className(), 'targetAttribute' => ['AS_ID' => 'AS_ID']],
         ];

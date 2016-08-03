@@ -8,8 +8,14 @@ use yii\bootstrap\Modal;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ReportesAvancesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-$this->title = $ordentrabajo->OT_NOMBRE;
-$this->params['breadcrumbs'][] = ['label' => 'Proyectos', 'url' => ['index']];
+$this->title = 'Reportes de Avances';
+$this->params['breadcrumbs'][] = ['label' => 'Ordenes de Trabajos', 'url' => ['orden-trabajo/index']];
+$this->params['breadcrumbs'][] = [
+                    'label' => $ordentrabajo->OT_NOMBRE,
+                    //'url' => ['orden-trabajo/index'],
+                    'style'=> 'color:white',
+                    'template' => "<button class='btn btn-flat btn-sm' style='background-color : #333D43; color:white; float:right; margin-left: 4px;'>{link}</button>\n"
+                ];
 $this->params['breadcrumbs'][] = 'Reportes de avances';
 
 ?>
@@ -44,7 +50,7 @@ $this->params['breadcrumbs'][] = 'Reportes de avances';
 
 <div class="row">
     <div class="col-md-3">
-            <?= Html::button('Ingresar Reporte de avances', ['value'=>Url::to(['reportes-avances/create','id' => $ordentrabajo->PRO_ID]), 'class' => 'btn btn-success btn-block btn-flat margin-bottom','id'=>'modalButton']) ?>
+            <?= Html::a('Ingresar Reporte de avances', ['reportes-avances/create','id' => $ordentrabajo->PRO_ID], ['class' => 'btn btn-primary btn-block btn-flat margin-bottom',]) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Orden de Trabajo</h3>
@@ -57,7 +63,7 @@ $this->params['breadcrumbs'][] = 'Reportes de avances';
                     <li class="active"><a href="#"><i class="fa fa-inbox"></i> Reportes de Avances</a></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-usd"></i> Gastos Generales', ['orden-trabajo/index-gastos-generales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-list-alt"></i> Materiales', ['orden-trabajo/index-materiales', 'id'=>$ordentrabajo->OT_ID]) ?></li>
-                    <li><?= Html::a('<i class="fa fa-bar-chart"></i> Gráfico', ['orden-trabajo/grafico-ot', 'id'=>$ordentrabajo->OT_ID]) ?></li>
+                    <li><?= Html::a('<i class="fa fa-line-chart"></i> Gráfico', ['orden-trabajo/grafico-ot', 'id'=>$ordentrabajo->OT_ID]) ?></li>
                     <li><?= Html::a('<i class="glyphicon glyphicon-file"></i> Informes', ['proyecto/informes-pro', 'id'=>$ordentrabajo->PRO_ID]) ?></li>
                 </ul>
             </div>
@@ -87,7 +93,7 @@ $this->params['breadcrumbs'][] = 'Reportes de avances';
                             'template'=>'{ver}',
                             'buttons' => [
                                 'ver' => function ($url,$model) {
-                                    return Html::button('Ver Reporte', ['value'=>Url::to(['view-modal','id'=>$model->RA_ID]), 'class'=>'btn btn-warning btn-flat btn-sm modalViewTn']);
+                                    return Html::button('<i class="fa fa-eye"></i> Ver Reporte', ['value'=>Url::to(['view-modal','id'=>$model->RA_ID]), 'class'=>'btn btn-default text-blue btn-flat btn-sm modalViewTn']);
                                 },
                             ],
                         ],

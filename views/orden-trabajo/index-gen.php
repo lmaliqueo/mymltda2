@@ -10,12 +10,11 @@ use kartik\grid\GridView;
 /* @var $searchModel app\models\OrdenTrabajoTrabajo */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title='Ordenes de Trabajos';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="orden-trabajo-index">
-
-    <?php  //echo $this->render('_search', ['model' => $searchModel]); ?>
-
-
+    <h1>Orden de Trabajo</h1>
+    
 <?php 
     Modal::begin([
             'header'=>'<h4>Orden de Trabajo</h4>',
@@ -25,15 +24,39 @@ $this->title='Ordenes de Trabajos';
     echo "<div class='modalContent'></div>";
     Modal::end();
  ?>
+<?php 
+    Modal::begin([
+            'header'=>'<h4>Orden de Trabajo</h4>',
+            'id'=>'modal-view',
+            'size'=>'modal-lg',
+        ]);
+    echo "<div class='modalContent'></div>";
+    Modal::end();
+ ?>
 
-        <h1>Ordenes de Trabajos</h1>
-        <br>
+<br>
 
-<p>
-        <?= Html::button('Generar Orden de Trabajo', ['value'=>Url::to(['orden-trabajo/crear-ot']),'class'=> 'btn btn-success btn-flat','id'=>'modalButton']) ?>
-</p>
-
-
+        <div class="row">
+            <div class="col-md-3">
+                <?= Html::button('Generar Orden de Trabajo', ['value'=>Url::to(['orden-trabajo/crear-ot']),'class'=> 'btn btn-success margin-bottom btn-flat btn-block','id'=>'modalButton']) ?>
+            </div>
+            <div class="col-md-9">
+                <div class="box box-solid collapsed-box">
+                    <div class="box-header with-border">
+                        <h5 class="no-margin text-blue" style="height: 15px;"><span class="glyphicon glyphicon-search"></span> Buscar</h5>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="display: none;">
+                        <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
         <div class="box box-primary">
             <div class="box-body no-padding">
                 <?= GridView::widget([
@@ -65,13 +88,13 @@ $this->title='Ordenes de Trabajos';
                         //'pRO.PRO_NOMBRE',
 
                 [
-                    'label'=>'OT',
+                    'label'=>'Orden de Trabajo',
                     'attribute'=>'OT_NOMBRE',
-                    'format'=>'raw',
+                    /*'format'=>'raw',
                     'value' => function($data){
                         //return Html::a($data->OT_NOMBRE, ['orden-trabajo/index-act','id'=>$data->OT_ID], ['class'=>'text-muted orden', 'idot'=>$data->OT_ID]);
                         return '<strong>'.$data->OT_NOMBRE.'</strong>';
-                    }
+                    }*/
                 ],
                 [
                     //'label'=>'N',
@@ -103,11 +126,11 @@ $this->title='Ordenes de Trabajos';
                             'template'=>'{ver} {actualizar}',
                             'buttons' => [
                                 'ver' => function ($url,$model) {
-                                    return Html::a('Ver Orden de Trabajo', ['orden-trabajo/index-actividades','id'=>$model->OT_ID], ['class'=>'btn btn-flat btn-warning btn-sm orden', 'idot'=>$model->OT_ID]);
+                                    return Html::a('<i class="fa fa-eye"></i> Ver OT', ['orden-trabajo/index-actividades','id'=>$model->OT_ID], ['class'=>'btn btn-flat btn-default text-blue btn-sm orden', 'idot'=>$model->OT_ID]);
                                 },
                                 'actualizar' => function ($url,$model) {
                                     if ($model->OT_ESTADO!='Finalizado') {
-                                        return Html::button('Actualizar', ['value'=>Url::to(['update','id'=>$model->OT_ID]), 'class'=>'btn btn-flat btn-primary btn-sm orden', 'id'=>'modalButton']);
+                                        return Html::button('<i class="fa fa-pencil"></i> Modificar', ['value'=>Url::to(['update','id'=>$model->OT_ID]), 'class'=>'btn btn-flat btn-default text-blue btn-sm orden modalView']);
                                     }
                                 },
                             ],

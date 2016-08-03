@@ -16,8 +16,32 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <h3><?= $model->SACT_NOMBRE ?></h3>
-    <br>
+
+
+
+<div class="box box-solid">
+	<div class="box-body">
+		<div class="box box-primary">
+			<div class="box-body">
+				<div class="col-md-6">
+				    <?= $form->field($model, 'SACT_NOMBRE')->textInput(['maxlength' => true]) ?>
+
+				    <?= $form->field($model, 'SACT_DESCRIPCION')->textarea(['rows' => 6]) ?>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="box-footer">
+	</div>
+</div>
+
+
+
+
+
+
+
     <div class="form-group">
         <?= Html::submitButton('Asignar', ['class' => 'btn btn-success']) ?>
     </div>

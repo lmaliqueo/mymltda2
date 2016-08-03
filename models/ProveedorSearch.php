@@ -18,8 +18,8 @@ class ProveedorSearch extends Proveedor
     public function rules()
     {
         return [
-            [['PROV_ID', 'PROV_CODIGOPOSTAL', 'PROV_FAX', 'PROV_CONTACTO'], 'integer'],
-            [['PROV_NOMBRE', 'PROV_CIUDAD', 'PROV_CALLE', 'PROV_RAZONSOCIAL', 'PROV_MUNICIPIO', 'PROV_EMAIL'], 'safe'],
+            [['PROV_ID', 'PROV_CONTACTO'], 'integer'],
+            [['PROV_NOMBRE', 'PROV_CIUDAD', 'PROV_DIRECCION', 'PROV_RAZONSOCIAL', 'PROV_EMAIL'], 'safe'],
         ];
     }
 
@@ -57,16 +57,13 @@ class ProveedorSearch extends Proveedor
 
         $query->andFilterWhere([
             'PROV_ID' => $this->PROV_ID,
-            'PROV_CODIGOPOSTAL' => $this->PROV_CODIGOPOSTAL,
-            'PROV_FAX' => $this->PROV_FAX,
             'PROV_CONTACTO' => $this->PROV_CONTACTO,
         ]);
 
         $query->andFilterWhere(['like', 'PROV_NOMBRE', $this->PROV_NOMBRE])
             ->andFilterWhere(['like', 'PROV_CIUDAD', $this->PROV_CIUDAD])
-            ->andFilterWhere(['like', 'PROV_CALLE', $this->PROV_CALLE])
+            ->andFilterWhere(['like', 'PROV_DIRECCION', $this->PROV_DIRECCION])
             ->andFilterWhere(['like', 'PROV_RAZONSOCIAL', $this->PROV_RAZONSOCIAL])
-            ->andFilterWhere(['like', 'PROV_MUNICIPIO', $this->PROV_MUNICIPIO])
             ->andFilterWhere(['like', 'PROV_EMAIL', $this->PROV_EMAIL]);
 
         return $dataProvider;

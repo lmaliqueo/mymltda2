@@ -18,8 +18,8 @@ class HerramientasSearch extends Herramientas
     public function rules()
     {
         return [
-            [['HE_ID', 'HE_CANT', 'HE_COSTOUNIDAD'], 'integer'],
-            [['BO_ID', 'TH_ID', 'HE_NOMBRE'], 'safe'],
+            [['HE_ID', 'BO_ID', 'TH_ID', 'PROV_ID', 'HE_DESCRIPCION', 'HE_ESTADO'], 'safe'],
+            [['HE_COSTOUNIDAD'], 'integer'],
         ];
     }
 
@@ -58,16 +58,20 @@ class HerramientasSearch extends Herramientas
         }
         $query->joinWith('tH');
         $query->joinWith('bO');
+        $query->joinWith('pROV');
         // grid filtering conditions
         $query->andFilterWhere([
-            'HE_ID' => $this->HE_ID,
-            'HE_CANT' => $this->HE_CANT,
+            //'HE_ID' => $this->HE_ID,
+            //'HE_ESTADO' => $this->HE_ESTADO,
             'HE_COSTOUNIDAD' => $this->HE_COSTOUNIDAD,
         ]);
 
-        $query->andFilterWhere(['like', 'HE_NOMBRE', $this->HE_NOMBRE]);
+        $query->andFilterWhere(['like', 'HE_ID', $this->HE_ID])
+            ->andFilterWhere(['like', 'HE_DESCRIPCION', $this->HE_DESCRIPCION])
+            ->andFilterWhere(['like', 'HE_ESTADO', $this->HE_ESTADO]);
         $query->andFilterWhere(['like', 'tipo_herramienta.TH_NOMBRE', $this->TH_ID]);
         $query->andFilterWhere(['like', 'bodegas.BO_NOMBRE', $this->BO_ID]);
+        $query->andFilterWhere(['like', 'proveedor.PROV_NOMBRE', $this->PROV_ID]);
 
         return $dataProvider;
     }

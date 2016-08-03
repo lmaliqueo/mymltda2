@@ -15,59 +15,72 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="actividades-view">
 
 
-    <div class="box box-primary">
-        <div class="box-header with-border">
-            <h3 class="box-title text-blue"><strong><?= $model->AC_NOMBRE ?></strong></h3>
-            <div class="box-tools">
-                <span class="badge bg-blue no-margin"><h5 class="no-margin"><strong><?= $model->AC_ESTADO ?></strong></h5></span>
+
+    <div class="page-header">
+        <h3 class="">
+            <?= $model->AC_NOMBRE ?>
+        </h3>
+    </div>
+        <div class="box box-primary">
+            <div class="box-body">
+
+                       <?= DetailView::widget([
+                            'model' => $model,
+                            'attributes' => [
+                                'AC_ID',
+                                //'oT.OT_NOMBRE',
+                                'AC_FECHA_INICIO:date',
+                                'AC_FECHA_TERMINO:date',
+                                'AC_COSTO_TOTAL',
+                                'AC_ESTADO',
+                            ],
+                        ]) ?>
             </div>
         </div>
-        <div class="box-body">
-            <div class="row">
-                <div class="col-md-4">
-                   <?= DetailView::widget([
-                        'model' => $model,
-                        'attributes' => [
-                            'AC_ID',
-                            //'oT.OT_NOMBRE',
-                            'AC_FECHA_INICIO:date',
-                            'AC_FECHA_TERMINO:date',
-                            'AC_COSTO_TOTAL',
-                        ],
-                    ]) ?>
-                </div>
-                <div class="col-md-8">
-                            <h4 class="box-title text-center"><strong>Subactividades</strong></h4>
-
-                            <?php foreach ($subact as $asignado) {
-                            $promedio= ($asignado->AS_CANTIDADACTUAL*100)/$asignado->AS_CANTIDAD; ?>
-                                <div class="col-md-9">
-                                    <div class="progress-group">
-                                            <span class="progress-text"><?= $asignado->sACT->SACT_NOMBRE ?></span>
-                                            <span class="progress-number"><b><?= $asignado->AS_CANTIDADACTUAL ?></b>/<?= $asignado->AS_CANTIDAD ?></span>
-                                            <div class="progress sm">
-                                                <?php if ($asignado->AS_CANTIDADACTUAL==$asignado->AS_CANTIDAD) { ?>
-                                                    <div class="progress-bar progress-bar-success" style="width:<?php echo $promedio; ?>%"></div>                        
-                                                <?php }else{ ?>
-                                                    <div class="progress-bar progress-bar-primary" style="width:<?php echo $promedio; ?>%"></div>
-                                                <?php } ?>            
-                                            </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <?php if($asignado->AS_CANTIDADACTUAL!=$asignado->AS_CANTIDAD){ ?>
-                                       <h4 class="text-blue"><b>$ <?= $asignado->AS_COSTOACTUAL ?></b>/<?= $asignado->AS_COSTOTOTAL ?></h4>
-                                    <?php }else{ ?>
-                                       <h4 class="text-green"><b>$ <?= $asignado->AS_COSTOACTUAL ?></b>/<?= $asignado->AS_COSTOTOTAL ?></h4>
-                                    <?php } ?>
-                                </div>
-
-                            <?php } ?>
-
-                </div>
-            </div>  
+<br>
+        <div class="page-header">
+            <h3 class="box-title">
+                Subactividades
+                <span class="pull-right">
+                    <?= Html::a('<i class="fa fa-edit"></i> Asignar Sub-actividades', ['act-sact-asigna/create', 'id' => $model->AC_ID], ['class' => 'btn btn-flat bg-light-blue', 'style'=>'border-with:1px; border-color:#3C8DBC;']) ?>
+                </span>
+            </h3>
         </div>
-        <div class="box-footer">
+        <div class="box box-primary">
+            <div class="box-body">
+
+                <table class="table table-bordered">
+                    <tr class="bg-light-blue">
+                        <th>Sub-actividad</th>
+                        <th>Progreso</th>
+                        <th>%</th>
+                        <th>Contratada</th>
+                        <th>Actual</th>
+                        <th>Costo Actual</th>
+                    </tr>
+                    <?php foreach ($subact as $asignado) {
+                    $promedio= ($asignado->AS_CANTIDADACTUAL*100)/$asignado->AS_CANTIDAD; ?>
+                        <tr>    
+                            <td><?= $asignado->sACT->SACT_NOMBRE ?></td>
+                            <td><div class="progress progress-xs"><div class="progress-bar progress-bar-primary" style="width: <?php echo $promedio; ?>%"></div></div></td>
+                            <td><span class="badge bg-light-blue"><?php echo $promedio; ?>%</span> </td>
+                            <td><?= $asignado->AS_CANTIDAD ?></td>
+                            <td><?= $asignado->AS_CANTIDADACTUAL ?></td>
+                            <td>$ <?= $asignado->AS_COSTOACTUAL ?></td>
+                        </tr>
+                    <?php } ?>
+                </table>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+        <div class="box box-solid">
             <?php if($obreros!=NULL){ ?>
                 <table class="table">
                     <tr class="bg-blue">
@@ -91,9 +104,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 </table>
             <?php } ?>
         </div>
-    </div>
 
     
-                    <?= Html::a('Asignar Sub-actividades', ['act-sact-asigna/create', 'id' => $model->AC_ID], ['class' => 'btn btn-flat btn-primary']) ?>
-                    <?= Html::a('Asignar Obrero', ['asignar-obreros', 'id' => $model->AC_ID], ['class' => 'btn btn-flat btn-warning']) ?>
+                    <?php // Html::a('Asignar Obrero', ['asignar-obreros', 'id' => $model->AC_ID], ['class' => 'btn btn-flat btn-warning']) ?>
 </div>

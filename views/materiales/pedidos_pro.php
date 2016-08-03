@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
  ?>
 
 <table class="table table-bordered">
-    <tr class="danger">
+    <tr class="bg-light-blue">
         <th>Orden de Trabajo</th>
         <th>Material</th>
         <th>Cantidad</th>

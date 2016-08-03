@@ -48,7 +48,7 @@ class RetornoHerramientas extends \yii\db\ActiveRecord
     {
         return [
             'RH_ID' => 'Rh  ID',
-            'OT_ID' => 'Ot  ID',
+            'OT_ID' => 'Orden de Trabajo',
             'RH_FECHA_RETORNO' => 'Rh  Fecha  Retorno',
             'RH_DESCRIPCION' => 'Rh  Descripcion',
             'RH_ESTADO' => 'Rh  Estado',

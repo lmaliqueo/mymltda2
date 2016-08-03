@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use app\models\Bodegas;
+use app\models\Proveedor;
 use app\models\TipoHerramienta;
 use kartik\select2\Select2;
 
@@ -17,15 +18,15 @@ use kartik\select2\Select2;
     <?php $form = ActiveForm::begin(); ?>
 
 
-<div class="row">
-    <div class="col-md-7">
-        <?= $form->field($model, 'HE_NOMBRE')->textInput(['maxlength' => true]) ?>
+<div class="row pull-center">
+    <div class="col-md-4">
+        <?= $form->field($model, 'HE_ID')->textInput(['maxlength' => true, 'disabled'=> $model->isNewRecord ? false : true]) ?> 
     </div>
-    <div class="col-md-5">
+    <div class="col-md-8">
         <?= $form->field($model, 'TH_ID')->widget(Select2::classname(), [
             'data' => ArrayHelper::map(TipoHerramienta::find()->all(),'TH_ID','TH_NOMBRE'),
             'language' => 'es',
-            'options' => ['placeholder' => 'Selecionar tipo de herramienta'],
+            'options' => ['placeholder' => 'Selecionar tipo de herramienta',  'disabled'=> $model->isNewRecord ? false : true, 'id'=>$model->isNewRecord ? 'tipo_new' : 'tipo_exist'],
             'pluginOptions' => [
                 'allowClear' => true
             ],
@@ -33,29 +34,30 @@ use kartik\select2\Select2;
         ?>
     </div>
 </div>
+        <?= $form->field($model, 'HE_DESCRIPCION')->textInput(['maxlength' => true]) ?>
 
-    
-    <?= $form->field($model, 'BO_ID')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(Bodegas::find()->all(),'BO_ID','BO_NOMBRE'),
-        'language' => 'es',
-        'options' => ['placeholder' => 'Selecionar Bodega'],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-    ]);
-    ?>
-
-
-
-
-<div class="row">
-    <div class="col-md-2">
-        <?= $form->field($model, 'HE_CANT')->textInput(['type'=>'number']) ?>
-    </div>
-    <div class="col-md-10">
+        
+        <?= $form->field($model, 'PROV_ID')->widget(Select2::classname(), [
+            'data' => ArrayHelper::map(Proveedor::find()->all(),'PROV_ID','PROV_NOMBRE'),
+            'language' => 'es',
+            'options' => ['placeholder' => 'Selecionar Proveedor', 'id'=>$model->isNewRecord ? 'prov_new' : 'prov_exist'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]);
+        ?>
+        <?= $form->field($model, 'BO_ID')->widget(Select2::classname(), [
+            'data' => ArrayHelper::map(Bodegas::find()->all(),'BO_ID','BO_NOMBRE'),
+            'language' => 'es',
+            'options' => ['placeholder' => 'Selecionar Bodega', 'id'=>$model->isNewRecord ? 'bo_new' : 'bo_exist'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ]);
+        ?>
         <?= $form->field($model, 'HE_COSTOUNIDAD')->textInput() ?>
-    </div>
-</div>
+
+
 
 
 

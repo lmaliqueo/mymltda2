@@ -15,19 +15,28 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'HE_ID') ?>
+<div class="row">
+    <div class="col-md-6">
+        <?= $form->field($model, 'HE_ID') ?>
+        <?= $form->field($model, 'HE_DESCRIPCION') ?>
+        <?= $form->field($model, 'BO_ID') ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'TH_ID') ?>
+        <?= $form->field($model, 'HE_ESTADO') ?>
+        <?= $form->field($model, 'PROV_ID') ?>
+    </div>
+</div>
 
-    <?= $form->field($model, 'BO_ID') ?>
 
-    <?= $form->field($model, 'HE_NOMBRE') ?>
 
-    <?= $form->field($model, 'HE_CANT') ?>
 
-    <?= $form->field($model, 'HE_COSTOUNIDAD') ?>
+
+    <?php // $form->field($model, 'HE_COSTOUNIDAD') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Buscar', ['class' => 'btn btn-primary']) ?>
+        <?php // Html::resetButton('Quitar Filtro', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
