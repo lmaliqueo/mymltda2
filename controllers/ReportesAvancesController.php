@@ -119,7 +119,7 @@ class ReportesAvancesController extends Controller
                     return $this->actionIndex($id);
                 } catch (Exception $e) {
                     $transaction->rollBack();
-                    Yii::app()->user->setFlash('success', "El reporte de avances se ingreso correctamente");
+                    Yii::app()->user->setFlash('error', "No se logró guardar el reporte ingresado");
                     $this->refresh();
                 }
             

@@ -16,26 +16,36 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Usuario', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Registrar Usuario', ['create'], ['class' => 'btn btn-flat btn-success']) ?>
     </p>
+<div class="box box-primary">
+    <div class="box-body">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+        'summary'=>'',
+            'filterModel' => $searchModel,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-    'summary'=>'',
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+                'US_ID',
+                'PE_RUT',
+                'US_USERNAME',
+                'US_PASSWORD',
+                'US_EMAIL:email',
+                // 'US_TIPO',
+                // 'US_DESCRIPCION',
 
-            'US_ID',
-            'PE_RUT',
-            'US_USSERNAME',
-            'US_PASSWORD',
-            'US_EMAIL:email',
-            // 'US_TIPO',
-            // 'US_DESCRIPCION',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
+                ['class' => 'yii\grid\ActionColumn',
+                    'template'=>'{view} {update} {delete}',
+                    /*'buttons' => [
+                        'asignar' => function ($url,$model) {
+                            return Html::a('<i class="fa fa-pencil"></i> Asignar rol', ['activar-rol', 'id'=>$model->US_ID],['class'=>'btn btn-default text-blue btn-flat btn-sm']);
+                        },
+                    ],*/
+                ],
+            ],
+        ]); ?>
+    </div>
+</div>
 
 </div>

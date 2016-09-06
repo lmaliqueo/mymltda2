@@ -18,7 +18,7 @@ use Yii;
  * @property Persona $pERUT
  * @property UsuariosControla[] $usuariosControlas
  */
-class Usuario extends \yii\db\ActiveRecord
+class Usuario extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
     /**
      * @inheritdoc
@@ -36,7 +36,7 @@ class Usuario extends \yii\db\ActiveRecord
         return [
             [['PE_RUT'], 'required'],
             [['PE_RUT'], 'string', 'max' => 12],
-            [['US_USSERNAME', 'US_PASSWORD', 'US_EMAIL', 'US_DESCRIPCION'], 'string', 'max' => 50],
+            [['US_USERNAME', 'US_PASSWORD', 'US_EMAIL', 'US_DESCRIPCION', 'US_AUTHKEY'], 'string', 'max' => 50],
             [['US_TIPO'], 'string', 'max' => 20]
         ];
     }
@@ -49,11 +49,12 @@ class Usuario extends \yii\db\ActiveRecord
         return [
             'US_ID' => 'ID',
             'PE_RUT' => 'Persona',
-            'US_USSERNAME' => 'Ussername',
+            'US_USERNAME' => 'Usuario',
             'US_PASSWORD' => 'Password',
             'US_EMAIL' => 'Email',
             'US_TIPO' => 'Tipo',
             'US_DESCRIPCION' => 'Descripción',
+            'US_AUTHKEY' => 'Us  Authkey',
         ];
     }
 
@@ -72,4 +73,45 @@ class Usuario extends \yii\db\ActiveRecord
     {
         return $this->hasMany(UsuariosControla::className(), ['US_ID' => 'US_ID']);
     }
+
+
+
+
+
+    public static function findIdentity($id){
+        return static::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null){
+        throw new NotSupportedException();//I don't implement this method because I don't have any access token column in my database
+    }
+
+    public function getId(){
+        return $this->US_ID;
+    }
+
+    public function getAuthKey(){
+        return $this->US_AUTHKEY;//Here I return a value of my authKey column
+    }
+
+    public function validateAuthKey($authKey){
+        return $this->US_AUTHKEY === $authKey;
+    }
+    public static function findByUsername($username){
+        return self::findOne(['US_USERNAME'=>$username]);
+    }
+
+    public function validatePassword($password){
+        if ($this->US_PASSWORD === $this->hashPassword($password)) {
+            return $this->US_PASSWORD === $this->hashPassword($password);
+        }else{
+            return $this->US_PASSWORD === $password;
+        }
+    }
+
+    public function hashPassword($password)
+    {
+        return md5($password);
+    }
+
 }

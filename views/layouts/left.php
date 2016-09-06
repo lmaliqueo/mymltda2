@@ -67,14 +67,18 @@ use yii\helpers\Html;
                             ['label' => 'Herramientas', 'icon' => 'fa fa-circle-o', 'url' => ['/herramientas'],],
 
                         ],
-                    ],
+                    ],*/
                     ['label' => 'Usuarios', 'icon' => 'fa fa-user', 'url' => '#',
                         'items' => [
                             ['label' => 'Cuentas', 'icon' => 'fa fa-circle-o', 'url' => ['/usuario'],],
-                            ['label' => 'Administrar', 'icon' => 'fa fa-circle-o', 'url' => '#',],
+                            ['label' => 'Administrar', 'icon' => 'fa fa-circle-o', 'url' => ['/admin/assignment'],],
+                            ['label' => 'Roles', 'icon' => 'fa fa-circle-o', 'url' => ['/admin/role'],],
+                            ['label' => 'Rutas', 'icon' => 'fa fa-circle-o', 'url' => ['/admin/route'],],
+                            ['label' => 'Reglas', 'icon' => 'fa fa-circle-o', 'url' => ['/admin/rule'],],
+                            ['label' => 'Permisos', 'icon' => 'fa fa-circle-o', 'url' => ['/admin/permission'],],
 
                         ],
-                    ],*/
+                    ],
                     ['label' => 'Sub-Actividades', 'icon' => 'glyphicon glyphicon-inbox', 'url' => ['/subactividades']],
                     ['label' => 'Proveedores', 'icon' => 'fa fa-truck', 'url' => ['/proveedor']],
                     /*
@@ -87,8 +91,7 @@ use yii\helpers\Html;
                             ['label' => 'Personas', 'icon' => 'fa fa-circle-o', 'url' => ['/persona/index'],],
                         ],
                     ],*/
-                    ['label' => 'Cerrar Sesión', 'icon' => 'fa fa-circle-o text-red', 'url' => '#',],
-
+                    ['label' => 'Cerrar Sesión', 'icon' => 'fa fa-circle-o text-red', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post'],],
                 ],
             ]
         ) ?>

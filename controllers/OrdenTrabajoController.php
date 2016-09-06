@@ -415,4 +415,12 @@ class OrdenTrabajoController extends Controller
        
 
     }
+
+    public function actionOtEncargado()
+    {
+        $proyectos = UsuarioControla::find()->select('PRO_ID')->where(['US_ID'=>Yii::$app->user->id])->andWhere(['not in', 'PRO_ESTADO', 'Finaizado'])->asArray()->all();
+        $ordenes_trabajos= Proyecto::find()->where(['PRO_ID'=>$proyectos])->all();
+
+    }
+
 }

@@ -7,11 +7,6 @@ $config = [
     'name'=>'<b>MyM</b>Ltda',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'modules' => [
-       'gridview' =>  [
-            'class' => '\kartik\grid\Module',
-        ],
-    ],
 
     'components' => [
         'request' => [
@@ -23,8 +18,8 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'class' => 'cruge\core\CrugeAuth',
-            'client' => 'ActiveRecordClient',
+            'identityClass' => 'app\models\Usuario',
+            //'client' => 'ActiveRecordClient',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -61,8 +56,43 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
+        'authManager' => [
+            'class'=>'yii\rbac\DbManager',
+        ],
     ],
     'params' => $params,
+    'modules' => [
+       'gridview' =>  [
+            'class' => '\kartik\grid\Module',
+        ],
+        'admin' => [
+            'class' => 'mdm\admin\Module', 
+            'controllerMap' => [
+                'assignment' => [
+                    'class' => 'mdm\admin\controllers\AssignmentController',
+                    'userClassName' => 'app\models\Usuario',
+                    'idField' => 'user_id'
+                ],
+                'other' => [
+                    'class' => 'path\to\OtherController', // add another controller
+                ],
+            ],
+            'menus' => [
+                'assignment' => [
+                    'label' => 'Grand Access' // change label
+                ],
+                'route' => null, // disable menu route 
+            ]
+        ],  
+    ],
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            'site/login', 
+            'site/logout', 
+            'site/error',
+        ]
+    ],
 ];
 
 if (YII_ENV_DEV) {

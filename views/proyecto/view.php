@@ -26,6 +26,16 @@ $this->params['breadcrumbs'][] = $this->title;
     Modal::end();
  ?>
 
+<?php 
+    Modal::begin([
+            'header'=>'<h4>Proyecto</h4>',
+            'id'=>'modal-view',
+            'size'=>'modal-tn',
+        ]);
+    echo "<div class='modalContent'></div>";
+    Modal::end();
+ ?>
+
 <br>
 
 
@@ -37,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h3 class="no-margin">
             <?= $model->PRO_NOMBRE ?>
             <span class="pull-right">
-                <?= Html::button('<i class="fa fa-pencil"></i> Modificar', ['value'=>Url::to(['proyecto/asignar-encargado','id' => $model->PRO_ID]), 'class' => 'btn bg-light-blue btn-block btn-flat modalView']) ?>
+                <?= Html::button('<i class="fa fa-pencil"></i> Modificar', ['value'=>Url::to(['proyecto/update','id' => $model->PRO_ID]), 'class' => 'btn bg-light-blue btn-block btn-flat modalView']) ?>
             </span>
         </h3>
     </div>

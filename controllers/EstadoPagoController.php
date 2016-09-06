@@ -155,6 +155,7 @@ class EstadoPagoController extends Controller
                 }
 
             }
+            Yii::app()->user->setFlash('success', "El estado de pago se generó correctamente");
             return $this->redirect(['view', 'id' => $model->EP_ID]);
         } else {
             return $this->render('create', [

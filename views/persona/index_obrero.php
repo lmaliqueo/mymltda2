@@ -119,13 +119,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'header'=>'Sueldo',
-                'format'=>'raw',
+                'format'=>'integer',
                 'value' => function($data){
                     $contrato = ContratoObrero::find()->where(['PE_RUT'=>$data->PE_RUT])->orderBy(['COO_ID'=>SORT_DESC])->one();
                     if ($contrato!=NULL) {
                         $sueldo = SueldoObrero::find()->where(['COO_ID'=>$contrato->COO_ID])->orderBy(['SU_ID'=>SORT_DESC])->one();
                         if ($sueldo!=NULL) {
-                            return '$ '.$sueldo->SU_CANTIDAD;
+                            return $sueldo->SU_CANTIDAD;
                         }else{
                             return '<span class="not-set">Sin Sueldo<span>';
                         }

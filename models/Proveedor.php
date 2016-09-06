@@ -47,13 +47,13 @@ class Proveedor extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'PROV_ID' => 'Prov  ID',
-            'PROV_NOMBRE' => 'Prov  Nombre',
-            'PROV_CIUDAD' => 'Prov  Ciudad',
-            'PROV_DIRECCION' => 'Prov  Direccion',
-            'PROV_RAZONSOCIAL' => 'Prov  Razonsocial',
-            'PROV_EMAIL' => 'Prov  Email',
-            'PROV_CONTACTO' => 'Prov  Contacto',
+            'PROV_ID' => 'ID',
+            'PROV_NOMBRE' => 'Nombre',
+            'PROV_CIUDAD' => 'Ciudad',
+            'PROV_DIRECCION' => 'Direccion',
+            'PROV_RAZONSOCIAL' => 'Razonsocial',
+            'PROV_EMAIL' => 'Email',
+            'PROV_CONTACTO' => 'Contacto',
         ];
     }
 

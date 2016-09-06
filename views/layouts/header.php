@@ -232,7 +232,12 @@ use yii\helpers\Html;
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                                     <?= Html::img('img/user-default.png', ['class'=>'user-image', 'alt'=>'User Image']) ?>
 
-                        <span class="hidden-xs">Luis Maliqueo</span>
+                        <span class="hidden-xs"><?php
+                            if (!Yii::$app->user->isGuest) {
+                                echo Yii::$app->user->identity->pERUT->PE_NOMBRES.' '.Yii::$app->user->identity->pERUT->PE_APELLIDOPAT.' '.Yii::$app->user->identity->pERUT->PE_APELLIDOMAT;
+                            }
+                        
+                        ?></span>
                     </a>
                     <?php /**/ ?>
                     <ul class="dropdown-menu">
@@ -241,6 +246,11 @@ use yii\helpers\Html;
                         <!-- Menu Footer-->
                         <li class="user-footer bg-gray">
                             <div class="pull-right">
+                                <?= Html::a(
+                                    'Ver Perfil',
+                                    ['/usuario/ver-perfil'],
+                                    ['data-method' => 'post', 'class' => 'btn btn-primary btn-flat']
+                                ) ?>
                                 <?= Html::a(
                                     'Cerrar Sesión',
                                     ['/site/logout'],
