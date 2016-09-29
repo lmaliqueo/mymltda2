@@ -9,6 +9,7 @@ use app\models\ManodeobraTrabajan;
 use app\models\Actividades;
 use app\models\Cargo;
 use app\models\ActSactAsigna;
+use app\models\SactObRequiere;
 use app\models\ContratoObrero;
 use app\models\SueldoObrero;
 use app\models\OrdenTrabajo;
@@ -199,8 +200,63 @@ class PersonaController extends Controller
         }
     }
 
-    public function actionAsignarAct($id, $proyecto)
+    
+    //public function actionAsignarAct($id, $proyecto)
+    public function actionAsignarAct($id)
     {
+
+
+    	$contrato = ContratoObrero::find()->where(['COO_ESTADO'=>'Activo', 'PE_RUT'=>$id])->one();
+    	if ($contrato != NULL) {
+
+			$ordenes = OrdenTrabajo::find()->where(['PRO_ID'=>$contrato->PRO_ID])->all();
+
+			$array_ordenes = OrdenTrabajo::find()->select('OT_ID')->where(['PRO_ID'=>$contrato->PRO_ID])->asArray()->all();
+
+
+			$items_tipo_ob = SactObRequiere::find()->select('SACT_ID')->where(['TOB_ID'=>$contrato->TOB_ID])->asArray()->all();
+
+			$act_item = ActSactAsigna::find()->select('AC_ID')->where(['SACT_ID'=>$items_tipo_ob])->asArray()->all();
+
+
+
+
+
+			$actividades = Actividades::find()->where(['OT_ID'=>$array_ordenes])->andWhere(['AC_ID'=>$act_item])->all();
+
+			$array_act = Actividades::find()->select('AC_ID')->where(['OT_ID'=>$array_ordenes])->asArray()->all();
+
+			$act_asignados = ManodeobraTrabajan::find()->where(['AC_ID'=>$array_act, 'PE_RUT'=>$contrato->PE_RUT])->all();
+
+
+
+
+/*asdsssssasdasdasdasdasdasdsadasdasdasdasdasdasdasdasdsadasd*/
+
+
+			if ($act_asignados != NULL) {
+				$array_asignados = ManodeobraTrabajan::find()->select('AC_ID')->where(['AC_ID'=>$array_act, 'PE_RUT'=>$contrato->PE_RUT])->asArray()->all();
+				$free_act = Actividades::find()->where(['AC_ID'=>$array_asignados])->all();
+			}else{
+                $free_act = $actividades;
+            }
+
+
+
+            return $this->render('asignar', [
+                'model' => $model,
+                'ordenes' => $ordenes,
+                'orden' => $orden,
+                'asignados' => $asignados,
+                'contrato' => $contrato,
+                'sueldo' => $sueldo,
+            ]);
+    	}
+
+
+
+
+
         $obrero= Persona::findOne($id);
         $contrato= ContratoObrero::find()->where(['PE_RUT'=>$id, 'PRO_ID'=>$proyecto])->orderBy(['COO_FECHA'=>SORT_DESC])->one();
         $model= new ManodeobraTrabajan();
@@ -263,11 +319,11 @@ class PersonaController extends Controller
             $act->id = $actividad->AC_ID;
             $act->title = $actividad->AC_NOMBRE;
             $act->start = $actividad->AC_FECHA_INICIO;
-            $act->className = 'btn hola';
+            $act->className = 'btn ';
             if($actividad->AC_ESTADO=='Finalizado'){
-                $act->className = 'btn disabled';
+                $act->className = 'btn disabled '.$actividad->AC_ID;
             }else{
-                $act->className = 'btn hola';                
+                $act->className = 'btn '.$actividad->AC_ID;                
             }
             $act->end = $actividad->AC_FECHA_TERMINO;
             if ($asignados!=NULL) {

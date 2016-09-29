@@ -115,11 +115,11 @@ class ReportesAvancesController extends Controller
                         //}
                     }
                     $transaction->commit();
-                    Yii::app()->user->setFlash('success', "El reporte de avances se ingreso correctamente");
+                    \Yii::app()->getSession()->setFlash('success', "El reporte de avances se ingreso correctamente");
                     return $this->actionIndex($id);
                 } catch (Exception $e) {
                     $transaction->rollBack();
-                    Yii::app()->user->setFlash('error', "No se logró guardar el reporte ingresado");
+                    \Yii::app()->getSession()->setFlash('error', "No se logró guardar el reporte ingresado");
                     $this->refresh();
                 }
             

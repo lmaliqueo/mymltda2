@@ -40,6 +40,11 @@ $(function() {
      .find('.modalContent')
      .load($(this).attr('value'));
    });
+   $('.modalForm').click(function() {
+     $('#modal').modal('show')
+     .find('.modalContent')
+     .load($(this).attr('value'));
+   });
    $('#transaccionModal').click(function() {
      $('#modalTran').modal('show')
      .find('.modalContent')

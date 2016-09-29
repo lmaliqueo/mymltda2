@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="row">
     <div class="col-md-3">
-        <?= Html::button('Ingresar Material', ['value'=>Url::to('index.php?r=materiales/create'),'class'=> 'btn btn-success btn-flat btn-block margin-bottom','id'=>'modalButton']) ?>
+        <?= Html::button('Ingresar Material', ['value'=>Url::to(['create']),'class'=> 'btn btn-success btn-flat btn-block margin-bottom','id'=>'modalButton']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Operaciones</h3>

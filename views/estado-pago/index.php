@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\bootstrap\Modal;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\EstadoPagoSearch */
@@ -23,13 +25,24 @@ $this->params['breadcrumbs'][] = 'Estado de pago';
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
 
+<?php 
+    Modal::begin([
+            'header'=>'<h4>Ingresar Herramienta</h4>',
+            'id'=>'modal',
+            'size'=>'modal-lg',
+        ]);
+    echo "<div class='modalContent'></div>";
+    Modal::end();
+ ?>
 
 
 
 <br>
 <div class="row">
     <div class="col-md-3">
+            <?= Html::button('Generar Nuevo Estado de Pago', ['value'=>Url::to(['estado-pago/generar-estado-pago', 'id'=>$ordentrabajo->OT_ID]),'class'=> 'btn btn-success btn-block margin-bottom btn-flat','id'=>'modalButton']) ?>
             <?= Html::a('Generar Estado de Pago', ['estado-pago/create', 'id'=>$ordentrabajo->OT_ID], ['class' => 'btn btn-primary btn-block margin-bottom btn-flat']) ?>
+            <?= Html::a('Generar Estado de Pago', ['estado-pago/generar-estado-pago', 'id'=>$ordentrabajo->OT_ID], ['class' => 'btn btn-success btn-block margin-bottom btn-flat']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Orden de Trabajo</h3>

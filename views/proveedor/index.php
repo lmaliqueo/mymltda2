@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 //'PROV_ID',
                 'PROV_NOMBRE',
-                'PROV_CIUDAD',
+                'cOM.COM_NOMBRE',
                 'PROV_DIRECCION',
                 //'PROV_RAZONSOCIAL',
                 // 'PROV_CODIGOPOSTAL',

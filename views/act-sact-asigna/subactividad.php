@@ -2,7 +2,7 @@
 use yii\helpers\Html;
  ?>
 
-    <div class="box box-warning">
+    <div class="box box-primary">
         <div class="box-header with-border"><h4 class="box-title"><?= $subact->SACT_NOMBRE ?></h4>
         </div>
         <div class="box-body">
@@ -10,12 +10,12 @@ use yii\helpers\Html;
 
             <div class="row">
                 <div class="col-md-4">
-                    <table class="table">
-                        <tr class="bg-orange">
+                    <table class="table table-bordered">
+                        <tr class="bg-light-blue">
                             <th>Cant.</th>
                                 <th>Materiales</th>
                         </tr>
-                        <tbody class="table table-bordered">
+                        <tbody>
                             <?php foreach ($materiales as $mat){ ?>
                                 <tr>
                                     <td><?= $mat->CONS_CANTIDAD ?></td>
@@ -26,12 +26,12 @@ use yii\helpers\Html;
                     </table>
                 </div>
                 <div class="col-md-4">
-                    <table class="table">
-                        <tr class="bg-orange">
+                    <table class="table table-bordered">
+                        <tr class="bg-light-blue">
                             <th>Cant.</th>
                             <th>Herramientas</th>
                         </tr>
-                        <tbody class="table table-bordered">
+                        <tbody >
                             <?php foreach ($herramientas as $he){ ?>
                                 <tr>
                                     <td><?= $he->OC_CANTIDAD ?></td>
@@ -42,12 +42,12 @@ use yii\helpers\Html;
                     </table>
                 </div>
                 <div class="col-md-4">
-                    <table class="table">
-                        <tr class="bg-orange">
+                    <table class="table table-bordered">
+                        <tr class="bg-light-blue">
                                 <th>Cant.</th>
                                 <th>Obreros</th>
                         </tr>
-                        <tbody class="table table-bordered">
+                        <tbody>
                             <?php foreach ($obreros as $ob){ ?>
                                 <tr>
                                     <td><?= $ob->RE_CANTIDAD ?></td>

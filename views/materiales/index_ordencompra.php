@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = 'Adquisición Materiales';
 <br>
 <div class="row">
     <div class="col-md-3">
-        <?= Html::a('Ingresar Orden de Compra', 'index.php?r=materiales/ingresar-orden-compra',['class'=> 'btn btn-primary btn-flat btn-block margin-bottom']) ?>
+        <?= Html::a('Ingresar Orden de Compra', ['ingresar-orden-compra'],['class'=> 'btn btn-primary btn-flat btn-block margin-bottom']) ?>
         <div class="box box-solid">
             <div class="box-header with-border">
                 <h3 class="box-title">Operaciones</h3>

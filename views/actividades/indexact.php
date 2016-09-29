@@ -89,28 +89,28 @@ $this->params['breadcrumbs'][] = 'Actividades';
 $script = <<< JS
     $('#calendario').click(function(){
         var id= $ordentrabajo->OT_ID;
-        $.get('index.php?r=actividades/calendario',{ id : id }, function(data){
+        $.get('../actividades/calendario',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
     });
     $('#index').click(function(){
         var id= $ordentrabajo->OT_ID;
-        $.get('index.php?r=actividades/index',{ id : id }, function(data){
+        $.get('../actividades/index',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
     });
     $('#recursos').click(function(){
         var id= $ordentrabajo->OT_ID;
-        $.get('index.php?r=orden-trabajo/transaccion',{ id : id }, function(data){
+        $.get('orden-trabajo/transaccion',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })
     });
     $('#inf_general').click(function(){
         var id= $ordentrabajo->OT_ID;
-        $.get('index.php?r=orden-trabajo/info-general',{ id : id }, function(data){
+        $.get('orden-trabajo/info-general',{ id : id }, function(data){
             $('#contenido').empty();
             $('#contenido').append(data);
         })

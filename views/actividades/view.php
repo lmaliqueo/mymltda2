@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <h3 class="box-title">
                 Subactividades
                 <span class="pull-right">
-                    <?= Html::a('<i class="fa fa-edit"></i> Asignar Sub-actividades', ['act-sact-asigna/create', 'id' => $model->AC_ID], ['class' => 'btn btn-flat bg-light-blue', 'style'=>'border-with:1px; border-color:#3C8DBC;']) ?>
+                    <?= Html::a('<i class="fa fa-edit"></i> Asignar Sub-actividades', ['act-sact-asigna/ver-items', 'id' => $model->AC_ID], ['class' => 'btn btn-flat bg-light-blue', 'style'=>'border-with:1px; border-color:#3C8DBC;']) ?>
                 </span>
             </h3>
         </div>

@@ -140,7 +140,7 @@ $script = <<< JS
 
     $(document).on('click','.modalUpdate',function(){
         var id = $(this).attr('idact');
-        $.get('index.php?r=actividades/update',{'id':id},function(data){
+        $.get('../actividades/update',{'id':id},function(data){
              $('#modalUp').modal('show')
              .find('.modalContentUpdate')
              .html(data);
@@ -151,7 +151,7 @@ $script = <<< JS
 
     $(document).on('click','.modalView',function(){
         var id = $(this).attr('idact');
-        $.get('index.php?r=actividades/view',{'id':id},function(data){
+        $.get('../actividades/view',{'id':id},function(data){
              $('#modalUp').modal('show')
              .find('.modalContentUpdate')
              .html(data);

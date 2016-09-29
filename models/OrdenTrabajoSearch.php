@@ -19,7 +19,7 @@ class OrdenTrabajoSearch extends OrdenTrabajo
     {
         return [
             [['OT_ID', 'OT_COSTO_TOTAL'], 'integer'],
-            [['PRO_ID', 'OT_NOMBRE', 'OT_TIPO', 'OT_FECHA_INICIO', 'OT_FECHA_TERMINO', 'OT_ESTADO', 'OT_INFORME'], 'safe'],
+            [['PRO_ID', 'OT_NOMBRE', 'OT_FECHA_INICIO', 'OT_FECHA_TERMINO', 'OT_ESTADO'], 'safe'],
         ];
     }
 
@@ -66,9 +66,7 @@ class OrdenTrabajoSearch extends OrdenTrabajo
 
         $query->andFilterWhere(['like', 'proyecto.PRO_NOMBRE', $this->PRO_ID])
             ->andFilterWhere(['like', 'OT_NOMBRE', $this->OT_NOMBRE])
-            ->andFilterWhere(['like', 'OT_TIPO', $this->OT_TIPO])
-            ->andFilterWhere(['like', 'OT_ESTADO', $this->OT_ESTADO])
-            ->andFilterWhere(['like', 'OT_INFORME', $this->OT_INFORME]);
+            ->andFilterWhere(['like', 'OT_ESTADO', $this->OT_ESTADO]);
 
         return $dataProvider;
     }

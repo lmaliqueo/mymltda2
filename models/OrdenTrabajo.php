@@ -48,8 +48,7 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
             [['PRO_ID', 'OT_COSTO_TOTAL'], 'integer'],
             [['OT_FECHA_INICIO', 'OT_FECHA_TERMINO'], 'safe'],
             [['OT_NOMBRE'], 'string', 'max' => 50],
-            [['OT_TIPO', 'OT_ESTADO'], 'string', 'max' => 20],
-            [['OT_INFORME'], 'string', 'max' => 100],
+            [['OT_ESTADO'], 'string', 'max' => 20],
             [['PRO_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Proyecto::className(), 'targetAttribute' => ['PRO_ID' => 'PRO_ID']],
         ];
     }
@@ -63,12 +62,10 @@ class OrdenTrabajo extends \yii\db\ActiveRecord
             'OT_ID' => 'ID',
             'PRO_ID' => 'Proyecto',
             'OT_NOMBRE' => 'Nombre',
-            'OT_TIPO' => 'Ot  Tipo',
             'OT_FECHA_INICIO' => 'Fecha Inicio',
             'OT_FECHA_TERMINO' => 'Fecha Término',
             'OT_ESTADO' => 'Estado',
             'OT_COSTO_TOTAL' => 'Costo Total',
-            'OT_INFORME' => 'Informe',
         ];
     }
 

@@ -12,16 +12,6 @@ use yii\bootstrap\Modal;
 /* @var $model app\models\ActSactAsigna */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<?php 
-    Modal::begin([
-            'header'=>'<h4>Sub-Actividad</h4>',
-            'id'=>'modal',
-            'size'=>'modal-lg',
-        ]);
-    echo "<div class='modalContent'></div>";
-    Modal::end();
- ?>
-
 
         <h1>Asignar Sub-actividades</h1>
 <div class="act-sact-asigna-form">
@@ -29,83 +19,58 @@ use yii\bootstrap\Modal;
     <?php $form = ActiveForm::begin(); ?>
 
 
-                        <div class="form-group">
-                            <?= Html::submitButton($model->isNewRecord ? 'Asignar Sub-actividad' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success btn-flat' : 'btn btn-primary']) ?>
-                            <?php //Html::a('<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Listo', ['actividades/calendario', 'id' => $model->aC->OT_ID], ['class' => 'btn btn-primary']) ?>
-                        </div>
 
-<div class="row">
-    <div class="col-md-6">
+
+
+
+
+
+
+
+<br>
+
+
+
         <div class="box box-solid">
+            <div class="box-header with-border">
+                <h4 class="box-title">
+                    Buscar Sub-Actividad
+                </h4>
+                <div class="box-tools">
+                    <?= Html::submitButton($model->isNewRecord ? 'Asignar Sub-actividad' : 'Guardar', ['class' => $model->isNewRecord ? 'btn bg-green btn-flat' : 'btn btn-primary']) ?>
+                    
+                </div>
+            </div>
+
             <div class="box-body">
                 <div class="row">
                     <div class="col-sm-3">
-                        <?= $form->field($model, 'AS_CANTIDAD')->textInput(['type'=>'number']) ?>
+                        <?= $form->field($model, 'AS_CANTIDAD')->textInput(['type'=>'number', 'placeholder' => 'Cantidad', 'min'=>1])?>
                     </div>
-                    <div class="col-sm-9">
+                    <div class="col-sm-6">
                         <?= $form->field($model, 'SACT_ID')->widget(Select2::classname(), [
                             'data' => ArrayHelper::map($subactividades,'SACT_ID','SACT_NOMBRE'),
                             'language' => 'es',
-                            'options' => ['placeholder' => 'Selecionar subactividad', 'id'=>'sactID'],
+                            'options' => ['placeholder' => 'Selecionar subactividad', 'class'=>'sactID'],
                             'pluginOptions' => [
                                 'allowClear' => true
                             ],
                         ]);
                         ?>
                     </div>
+                    <div class="colsm-3">
+                        <div class="form-group">
+                        </div>
+                    </div>           
                 </div>
+                <?php //Html::a('<span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span> Listo', ['actividades/calendario', 'id' => $model->aC->OT_ID], ['class' => 'btn btn-primary']) ?>
             </div>
             <div class="box-footer">
                 <div id="subactividad">
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-6">
-
-        <div class="box box-primary">
-            <div class="box-header with-border"><h4 class="box-title">Subactividades Asignados</h4>
-                <div class="box-tools"><h3 class="text-blue no-margin">$ <?= $actividad->AC_COSTO_TOTAL ?></h3></div>
-            </div>
-            <div class="box-body no-padding">
-                <table class="table">
-                    <tr class="bg-light-blue">
-                        <th>Cantidad</th>
-                        <th>Subactividad</th>
-                        <th>Costo por Subactividad</th>
-                        <th></th>
-                        <th></th>
-                   </tr>
-                <tbody class="table table-bordered">
-                    <?php foreach ($asignados as $key): ?>
-                        <tr>
-                            <td><?= $key->AS_CANTIDAD ?></td>
-                            <td><?= $key->sACT->SACT_NOMBRE ?></td>
-                            <td>$ <?= $key->AS_COSTOTOTAL ?></td>
-                            <td>
-                                <div class="form-group no-margin">
-                                    <?= Html::button('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['value'=>Url::to(['act-sact-asigna/asignar-recursos','id'=>$key->AS_ID]), 'class'=> 'btn btn-xs btn-warning modalButton','id'=>'modalButton', 'title'=>'Asignar Recursos']) ?>
-                                    <?= Html::button('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['value'=>Url::to(['act-sact-asigna/asignar-herramientas','id'=>$key->AS_ID]), 'class'=> 'btn btn-xs btn-success modalHe','id'=>'modalHe', 'title'=>'Asignar Herramienta']) ?>
-                                </div>
-                            </td>
-                            <td>                                    <?= Html::a('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>', ['delete', 'id' => $key->AS_ID], [
-                                        'class' => 'btn btn-xs btn-danger',
-                                        'data' => [
-                                            'confirm' => '¿Esta seguro de borrar este vinculo?',
-                                            'method' => 'post',
-                                        ],
-                                    ]) ?>
-                            </td>
-                        </tr>
-                    <?php endforeach ?>
-
-                </tbody>
-               </table>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -115,7 +80,7 @@ use yii\bootstrap\Modal;
     <?php ActiveForm::end(); ?>
 <?php 
 $script = <<< JS
-    $('#sactID').change(function(){
+    $('.sactID').change(function(){
         var subactividadID = $(this).val();
 
         if(subactividadID!=''){

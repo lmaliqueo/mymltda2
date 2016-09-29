@@ -85,9 +85,9 @@ class ActSactAsignaController extends Controller
         
             $model->save();
             
-            return $this->redirect(['create', 'id' => $id]);
+            return $this->redirect(['ver-items', 'id' => $id]);
         } else {
-            return $this->render('create', [
+            return $this->renderAjax('create', [
                 'model' => $model,
                 'asignados' => $asignados,
                  'actividad' => $actividad,
@@ -277,6 +277,135 @@ class ActSactAsignaController extends Controller
         ]);
     }
 
+
+    public function actionAsignarHerramientasAlpha($id)
+    {
+        $model= ActSactAsigna::findOne($id);
+        $tipos_herramientas=SactHeOcupan::find()->where(['SACT_ID'=>$model->SACT_ID])->all();
+        $asignados= HerramientaAsignado::find()->where(['AS_ID'=>$id])->all();
+        $array_asignados= HerramientaAsignado::find()->select('HE_ID')->where(['AS_ID'=>$model->AS_ID])->asArray()->all();
+
+        $arreglo_he = [[new HerramientaAsignado]];
+
+        if (isset($_POST['HerramientaAsignado'][0][0])) {
+            foreach ($_POST['HerramientaAsignado'] as $count_th => $herramientas) {
+                foreach ($herramientas as $count => $herramienta) {
+                    $data['HerramientaAsignado'] = $room;
+                    $array_he = new HerramientaAsignado;
+                    $array_he->load($data);
+                    $arreglo_he[$count_th][$count] = $array_he;
+                    $valid = $array_he->validate();
+                }
+            }
+            if ($valid) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    foreach ($tipos_herramientas as $count_tipo => $tipo) {
+                        if (isset($arreglo_he[$count_tipo]) && is_array($arreglo_he[$count_tipo])) {
+                            foreach ($arreglo_he[$count_tipo] as $count_he => $herramienta) {
+                                $herramienta->AS_ID = $id;
+                                if (!($flag = $herramienta->save(false))) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
+        }
+        return $this->renderAjax('asignar_herramientas2', [
+            'herramientas' => $tipos_herramientas,
+            'asignados' => $asignados,
+            'array_asignados' => $array_asignados,
+            'model' => $model,
+            'arreglo_he' => (empty($arreglo_he)) ? [[new HerramientaAsignado]] : $arreglo_he,
+        ]);
+    }
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+    /*public function actionCreate()
+    {
+        $modelPerson = new Person;
+        $modelsHouse = [new House];
+        $modelsRoom = [[new Room]];
+
+        if ($modelPerson->load(Yii::$app->request->post())) {
+
+            $modelsHouse = Model::createMultiple(House::classname());
+            Model::loadMultiple($modelsHouse, Yii::$app->request->post());
+
+            // validate person and houses models
+            $valid = $modelPerson->validate();
+            $valid = Model::validateMultiple($modelsHouse) && $valid;
+
+            if (isset($_POST['Room'][0][0])) {
+                foreach ($_POST['Room'] as $indexHouse => $rooms) {
+                    foreach ($rooms as $indexRoom => $room) {
+                        $data['Room'] = $room;
+                        $modelRoom = new Room;
+                        $modelRoom->load($data);
+                        $modelsRoom[$indexHouse][$indexRoom] = $modelRoom;
+                        $valid = $modelRoom->validate();
+                    }
+                }
+            }
+
+            if ($valid) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $modelPerson->save(false)) {
+                        foreach ($modelsHouse as $indexHouse => $modelHouse) {
+
+                            if ($flag === false) {
+                                break;
+                            }
+
+                            $modelHouse->person_id = $modelPerson->id;
+
+                            if (!($flag = $modelHouse->save(false))) {
+                                break;
+                            }
+
+                            if (isset($modelsRoom[$indexHouse]) && is_array($modelsRoom[$indexHouse])) {
+                                foreach ($modelsRoom[$indexHouse] as $indexRoom => $modelRoom) {
+                                    $modelRoom->house_id = $modelHouse->id;
+                                    if (!($flag = $modelRoom->save(false))) {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $modelPerson->id]);
+                    } else {
+                        $transaction->rollBack();
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
+        }
+
+        return $this->render('create', [
+            'modelPerson' => $modelPerson,
+            'modelsHouse' => (empty($modelsHouse)) ? [new House] : $modelsHouse,
+            'modelsRoom' => (empty($modelsRoom)) ? [[new Room]] : $modelsRoom,
+        ]);
+    }*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     public function actionListaHerramienta($id){
         if ($id!=NULL) {
             $herramienta= Herramientas::findOne($id);
@@ -287,6 +416,17 @@ class ActSactAsignaController extends Controller
         }else{
             echo "<option>-</option>";
         }
+    }
+
+    public function actionVerItems($id)
+    {
+        $actividad = Actividades::findOne($id);
+        $items = ActSactAsigna::find()->where(['AC_ID'=>$id])->all();
+
+        return $this->render('ver_items', [
+            'actividad' => $actividad,
+            'items' => $items,
+        ]);
     }
 
 

@@ -18,7 +18,7 @@ class SubactividadesSearch extends Subactividades
     public function rules()
     {
         return [
-            [['SACT_ID', 'SACT_COSTO'], 'integer'],
+            [['SACT_ID'], 'integer'],
             [['SACT_NOMBRE', 'SACT_DESCRIPCION'], 'safe'],
         ];
     }
@@ -57,7 +57,6 @@ class SubactividadesSearch extends Subactividades
 
         $query->andFilterWhere([
             'SACT_ID' => $this->SACT_ID,
-            'SACT_COSTO' => $this->SACT_COSTO,
         ]);
 
         $query->andFilterWhere(['like', 'SACT_NOMBRE', $this->SACT_NOMBRE])

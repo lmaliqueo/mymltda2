@@ -18,8 +18,8 @@ class ProveedorSearch extends Proveedor
     public function rules()
     {
         return [
-            [['PROV_ID', 'PROV_CONTACTO'], 'integer'],
-            [['PROV_NOMBRE', 'PROV_CIUDAD', 'PROV_DIRECCION', 'PROV_RAZONSOCIAL', 'PROV_EMAIL'], 'safe'],
+            [['PROV_ID'], 'integer'],
+            [['PROV_NOMBRE', 'COM_ID','PROV_DIRECCION', 'PROV_CONTACTO','PROV_RAZONSOCIAL', 'PROV_EMAIL'], 'safe'],
         ];
     }
 
@@ -54,17 +54,18 @@ class ProveedorSearch extends Proveedor
             // $query->where('0=1');
             return $dataProvider;
         }
+        $query->joinWith('cOM');
 
         $query->andFilterWhere([
             'PROV_ID' => $this->PROV_ID,
-            'PROV_CONTACTO' => $this->PROV_CONTACTO,
         ]);
 
         $query->andFilterWhere(['like', 'PROV_NOMBRE', $this->PROV_NOMBRE])
-            ->andFilterWhere(['like', 'PROV_CIUDAD', $this->PROV_CIUDAD])
             ->andFilterWhere(['like', 'PROV_DIRECCION', $this->PROV_DIRECCION])
             ->andFilterWhere(['like', 'PROV_RAZONSOCIAL', $this->PROV_RAZONSOCIAL])
+            ->andFilterWhere(['like', 'PROV_CONTACTO', $this->PROV_CONTACTO])
             ->andFilterWhere(['like', 'PROV_EMAIL', $this->PROV_EMAIL]);
+        $query->andFilterWhere(['like', 'comuna.COM_NOMBRE', $this->COM_ID]);
 
         return $dataProvider;
     }

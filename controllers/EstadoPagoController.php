@@ -5,8 +5,10 @@ namespace app\controllers;
 use Yii;
 use app\models\EstadoPago;
 use app\models\EstadoPagoSearch;
+use app\models\ReportesAvances;
 use app\models\OrdenTrabajo;
 use app\models\Actividades;
+use app\models\AsignaAcumula;
 use app\models\Proyecto;
 use app\models\ActSactAsigna;
 use app\models\AsignaTiene;
@@ -168,6 +170,167 @@ class EstadoPagoController extends Controller
         }
     }
 
+
+    public function actionGenerarEstadoPago($id)
+    {
+        $model= new EstadoPago();
+        $ordentrabajo= OrdenTrabajo::findOne($id);
+
+        $actividades= Actividades::find()->where(['OT_ID'=>$id])->andWhere(['not in','AC_ESTADO','Finalizado'])->all();
+        $acid= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$id])->andWhere(['not in','AC_ESTADO','Finalizado'])->asArray()->all();
+        $asignados= ActSactAsigna::find()->where(['AC_ID'=>$acid])->orderBy(['AS_ID'=>SORT_ASC,])->all();
+
+        $arrayasig= ActSactAsigna::find()->select('AS_ID')->where(['AC_ID'=>$acid])->asArray()->all();
+        $anterior_asignados_tienen= AsignaTiene::find()->where(['AS_ID'=>$arrayasig])->orderBy(['AS_ID'=>SORT_ASC,])->all();
+
+/*######################################## ESTADO-PAGO ########################################*/
+
+        $epexiste= AsignaTiene::find()->where(['AS_ID'=>$arrayasig])->orderBy(['EP_ID'=>SORT_DESC,])->one();
+
+
+
+
+        if (!empty($epexiste)) {
+            $model->EP_NUMEROEP=$epexiste->eP->EP_NUMEROEP + 1;
+            $tieneanterior= AsignaTiene::find()->where(['AS_ID'=>$arrayasig, 'EP_ID'=>$epexiste->EP_ID])->all();
+            $array_avances = ReportesAvances::find()->select('RA_ID')->where('RA_FECHA <= :x AND RA_FECHA > :y', [':x'=>$model->EP_FECHA, ':y'=>$epexiste->eP->EP_FECHA])->andWhere(['OT_ID'=>$id])->asArray()->all();
+        }else{
+            $model->EP_NUMEROEP=1;
+            $array_avances = ReportesAvances::find()->select('RA_ID')->where(['OT_ID'=>$id])->asArray()->all();
+        }
+        $model->EP_FECHA= date('Y-m-d');
+        $model->EP_TOTALEP = 0;
+/*######################################## ESTADO-PAGO ########################################*/
+
+
+        if($array_avances != NULL){
+            $avances = AsignaAcumula::find()->where(['RA_ID'=>$array_avances])->orderBy(['AS_ID'=>SORT_ASC,])->all();
+        }else{
+            \Yii::$app->getSession()->setFlash('error', "No se registran avances para generar un nuevo estado de pago");
+            return $this->actionIndex($id);
+        }
+
+        $arreglo= [new AsignaTiene];
+        foreach ($asignados as $asignado) {
+            $cantidad_avances = new AsignaTiene();
+            $cantidad_avances->AT_CANTIDAD = 0;
+            $cantidad_avances->AS_ID = $asignado->AS_ID;
+            foreach ($avances as $count => $avance) {
+                if ($asignado->AS_ID == $avance->AS_ID) {
+                    $cantidad_avances->AT_CANTIDAD = $avance->AA_CANTIDAD + $cantidad_avances->AT_CANTIDAD;
+                }
+            }
+            if ($cantidad_avances->AT_CANTIDAD != 0) {
+                $cantidad_avances->AT_COSTO_EP = ($asignado->AS_COSTOTOTAL/$asignado->AS_CANTIDAD)*$cantidad_avances->AT_CANTIDAD;
+                $model->EP_TOTALEP = $cantidad_avances->AT_COSTO_EP + $model->EP_TOTALEP;
+                $arreglo[] = $cantidad_avances;
+            }
+        }
+
+
+        if ($model->load(Yii::$app->request->post()) ) {
+            $model->save();
+            foreach ($arreglo as $tiene_ep) {
+                $tiene_ep->EP_ID = $model->EP_ID;
+                $tiene_ep->save();
+            }/*
+            try {
+                $model->save();
+                foreach ($arreglo as $tiene_ep) {
+                    $tiene_ep->EP_ID = $model->EP_ID;
+                    $tiene_ep->save();
+                }
+                $transaction->commit();
+                \Yii::app()->getSession()->setFlash('success', "Se a generado un nuevo estado de pago");
+                return $this->actionIndex($id);
+            } catch (Exception $e) {
+                $transaction->rollBack();
+                \Yii::app()->getSession()->setFlash('error', "No se pudo generar el estado de pago");
+                $this->refresh();
+            }*/
+                \Yii::app()->getSession()->setFlash('success', "Se a generado un nuevo estado de pago");
+                return $this->actionIndex($id);
+
+        } else {
+            return $this->render('nuevo_ep', [
+                'model' => $model,
+                'arreglo' => $arreglo,
+                'asignados' => $asignados,
+                'actividades' => $actividades,
+                'ordentrabajo' => $ordentrabajo,
+            ]);
+        }
+
+
+    }
+
+    public function actionConfirmarNuevoEp($id)
+    {
+        $model= new EstadoPago();
+        $ordentrabajo= OrdenTrabajo::findOne($id);
+
+        $actividades= Actividades::find()->where(['OT_ID'=>$id])->andWhere(['not in','AC_ESTADO','Finalizado'])->all();
+        $acid= Actividades::find()->select('AC_ID')->where(['OT_ID'=>$id])->andWhere(['not in','AC_ESTADO','Finalizado'])->asArray()->all();
+        $asignados= ActSactAsigna::find()->where(['AC_ID'=>$acid])->orderBy(['AS_ID'=>SORT_ASC,])->all();
+
+        $arrayasig= ActSactAsigna::find()->select('AS_ID')->where(['AC_ID'=>$acid])->asArray()->all();
+        $anterior_asignados_tienen= AsignaTiene::find()->where(['AS_ID'=>$arrayasig])->orderBy(['AS_ID'=>SORT_ASC,])->all();
+
+/*######################################## ESTADO-PAGO ########################################*/
+
+        $epexiste= AsignaTiene::find()->where(['AS_ID'=>$arrayasig])->orderBy(['EP_ID'=>SORT_DESC,])->one();
+
+
+
+
+        if (!empty($epexiste)) {
+            $model->EP_NUMEROEP=$epexiste->eP->EP_NUMEROEP + 1;
+            $tieneanterior= AsignaTiene::find()->where(['AS_ID'=>$arrayasig, 'EP_ID'=>$epexiste->EP_ID])->all();
+            $array_avances = ReportesAvances::find()->select('RA_ID')->where('RA_FECHA <= :x AND RA_FECHA > :y', [':x'=>$model->EP_FECHA, ':y'=>$epexiste->eP->EP_FECHA])->andWhere(['OT_ID'=>$id])->asArray()->all();
+        }else{
+            $model->EP_NUMEROEP=1;
+            $array_avances = ReportesAvances::find()->select('RA_ID')->where(['OT_ID'=>$id])->asArray()->all();
+        }
+        $model->EP_FECHA= date('Y-m-d');
+        $model->EP_TOTALEP = 0;
+/*######################################## ESTADO-PAGO ########################################*/
+
+            $avances = AsignaAcumula::find()->where(['RA_ID'=>$array_avances])->orderBy(['AS_ID'=>SORT_ASC,])->all();
+
+        $arreglo= [new AsignaTiene];
+        foreach ($asignados as $asignado) {
+            $cantidad_avances = new AsignaTiene();
+            $cantidad_avances->AT_CANTIDAD = 0;
+            $cantidad_avances->AS_ID = $asignado->AS_ID;
+            foreach ($avances as $count => $avance) {
+                if ($asignado->AS_ID == $avance->AS_ID) {
+                    $cantidad_avances->AT_CANTIDAD = $avance->AA_CANTIDAD + $cantidad_avances->AT_CANTIDAD;
+                }
+            }
+            if ($cantidad_avances->AT_CANTIDAD != 0) {
+                $cantidad_avances->AT_COSTO_EP = ($asignado->AS_COSTOTOTAL/$asignado->AS_CANTIDAD)*$cantidad_avances->AT_CANTIDAD;
+                $model->EP_TOTALEP = $cantidad_avances->AT_COSTO_EP + $model->EP_TOTALEP;
+                $arreglo[] = $cantidad_avances;
+            }
+        }
+
+                $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+            $model->save();
+            foreach ($arreglo as $tiene_ep) {
+                $tiene_ep->EP_ID = $model->EP_ID;
+                $tiene_ep->save();
+            }
+            $transaction->commit();
+            \Yii::$app->getSession()->setFlash('success', "Se a generado un nuevo estado de pago");
+            return $this->actionIndex($id);
+        } catch (Exception $e) {
+            $transaction->rollBack();
+            \Yii::$app->getSession()->setFlash('error', "No se pudo generar el estado de pago");
+            $this->refresh();
+        }
+    }
     /**
      * Updates an existing EstadoPago model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -215,7 +378,7 @@ class EstadoPagoController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
-
+/*
     public function actionGenerarEp($id)
     {
         $epactual= EstadoPago::findOne($id);
@@ -279,7 +442,7 @@ class EstadoPagoController extends Controller
 
     }
 
-
+*/
     protected function verificarActividad($id)
     {
         $idact= ActSactAsigna::findOne($id);

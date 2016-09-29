@@ -125,4 +125,9 @@ class Herramientas extends \yii\db\ActiveRecord
     {
         return $this->hasMany(SpreHeSolicita::className(), ['HE_ID' => 'HE_ID']);
     }
+
+    public function getSelectHe()
+    {
+        return $this->HE_ID." ".$this->HE_DESCRIPCION;
+    }
 }

@@ -1,9 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-use app\models\BoMatAlmacena;
-use kartik\select2\Select2;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
 use wbraganca\dynamicform\DynamicFormWidget;

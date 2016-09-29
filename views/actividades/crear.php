@@ -123,7 +123,7 @@ $script = <<< JS
             text += act[i];
         }
 
-        $.get('index.php?r=actividades/view-modal',{'act':text , 'ot':orden},function(data){
+        $.get('view-modal',{'act':text , 'ot':orden},function(data){
              $('#modalview').modal('show')
              .find('#modalContent')
              .html(data);
@@ -134,7 +134,7 @@ $script = <<< JS
 
     $(document).on('click','#modalAct',function(){
         var ot=$(this).val();
-        $.get('index.php?r=actividades/create',{'id':ot},function(data){
+        $.get('create',{'id':ot},function(data){
              $('#modalview').modal('show')
              .find('#modalContent')
              .html(data);

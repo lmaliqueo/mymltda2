@@ -19,8 +19,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'PROV_NOMBRE') ?>
 
-    <?= $form->field($model, 'PROV_CIUDAD') ?>
-
     <?= $form->field($model, 'PROV_CALLE') ?>
 
     <?= $form->field($model, 'PROV_RAZONSOCIAL') ?>

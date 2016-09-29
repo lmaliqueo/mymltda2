@@ -141,7 +141,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'PE_TELEFONO',
 
             ['class' => 'yii\grid\ActionColumn',
-                'template'=>'{contrato} {trabajos}',
+                'template'=>'{contrato} {trabajos} {asignar}',
                 'buttons' => [
                     'contrato' => function ($url,$model) {
                         $contrato = ContratoObrero::find()->where(['PE_RUT'=>$model->PE_RUT])->one();
@@ -155,6 +155,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         $contrato = ContratoObrero::find()->where(['PE_RUT'=>$model->PE_RUT])->one();
                         if($contrato!=NULL){
                             return Html::button('<i class="fa fa-calendar"></i> Ver Actividades', ['value'=>Url::to(['ver-proyecto', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-default btn-flat btn-sm modalViewTn text-blue',]);
+                        }
+                    },
+                    'asignar' => function ($url,$model) {
+                        $contrato = ContratoObrero::find()->where(['PE_RUT'=>$model->PE_RUT])->one();
+                        if($contrato!=NULL && $contrato->COO_ESTADO == 'Activo'){
+                            return Html::button('<i class="fa fa-pencil"></i> Asignar Actividades', ['value'=>Url::to(['ver-proyecto', 'rut'=>$model->PE_RUT]),'class'=> 'btn btn-default btn-flat btn-sm modalViewTn text-blue',]);
                         }
                     },
                 ],

@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use app\models\HerramientaAsignado;
+use app\models\MaterialAsignado;
 
 /**
  * This is the model class for table "act_sact_asigna".
@@ -112,5 +114,24 @@ class ActSactAsigna extends \yii\db\ActiveRecord
     public function getMaterialAsignados() 
     { 
         return $this->hasMany(MaterialAsignado::className(), ['AS_ID' => 'AS_ID']); 
-    } 
+    }
+
+    public function isNullMat($id)
+    {
+        $estado = MaterialAsignado::find()->where(['AS_ID'=>$id])->one();
+        if($estado!=NULL){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function isNullHe($id)
+    {
+        $estado = HerramientaAsignado::find()->where(['AS_ID'=>$id])->one();
+        if($estado!=NULL){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

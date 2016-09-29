@@ -33,7 +33,6 @@ class Subactividades extends \yii\db\ActiveRecord
     {
         return [
             [['SACT_DESCRIPCION'], 'string'],
-            [['SACT_COSTO'], 'integer'],
             [['SACT_NOMBRE'], 'string', 'max' => 50]
         ];
     }
@@ -47,7 +46,6 @@ class Subactividades extends \yii\db\ActiveRecord
             'SACT_ID' => 'ID',
             'SACT_NOMBRE' => 'Nombre',
             'SACT_DESCRIPCION' => 'Descripción',
-            'SACT_COSTO' => 'Costo',
         ];
     }
 

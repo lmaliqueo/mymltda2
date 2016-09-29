@@ -9,27 +9,21 @@ use yii\widgets\DetailView;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <br>
-<div class="estado-pago-form">
-    <?php $form = ActiveForm::begin(); ?>
+<div class="estado-pago-new">
 
 
-<?php /*
-    <?= $form->field($model, 'EP_NUMEROEP')->textInput(['type'=>'number']) ?>
-
-    <?= $form->field($model, 'EP_FECHA')->textInput() ?>
-
-    <?= $form->field($model, 'EP_PERIODO')->textInput() ?>
-
-    <?= $form->field($model, 'EP_TOTALEP')->textInput() ?>
-
-    <?= $form->field($model, 'EP_FACTURA')->textInput(['maxlength' => true]) ?>
-     */ ?>
 <div class="box box-solid">
     <div class="box-header with-border">
         <h3 class="no-margin">
             Nuevo Estado de Pago
             <span class="pull-right">
-                <?= Html::submitButton($model->isNewRecord ? 'Generar Estado de Pago' : 'Guardar', ['class' => $model->isNewRecord ? 'btn btn-success btn-flat' : 'btn btn-primary btn-flat']) ?>
+                <?= Html::a('Generar Estado de Pago', ['confirmar-nuevo-ep', 'id' => $ordentrabajo->OT_ID], [
+                    'class' => 'btn btn-defaul bg-green btn-flat',
+                    'data' => [
+                        'confirm' => '¿Esta seguro de generar un nuevo estado de pago?',
+                        'method' => 'post',
+                    ],
+                ]) ?>
             </span>
         </h3>
     </div>
@@ -69,6 +63,14 @@ use yii\widgets\DetailView;
                 <h4 class="box-title">
                     Estado de Pago
                 </h4>
+                <div class="text-blue pull-right" style="margin-right: 50px;">
+                    <h3 class="no-margin">
+                        Total Estado de Pago: 
+                        <strong>
+                            $ <?= $model->EP_TOTALEP ?>
+                        </strong>
+                    </h3>
+                </div>
             </div>
             <div class="box-body">
                 <table class="table table-condensed table-bordered">
@@ -93,32 +95,23 @@ use yii\widgets\DetailView;
 
 
                         <?php 
-                        foreach ($asignados as $asignado){ ?>
+                        foreach ($asignados as $key){ ?>
                         <tr>
-                            <?php if ($act->AC_ID==$asignado->AC_ID) { ?>
-                            <td><ul><li><?= $asignado->sACT->SACT_NOMBRE ?></li></ul></td>
-                            <td><?= $asignado->AS_CANTIDAD ?></td>
-                            <td class="costo_sub" data="<?php echo ($asignado->AS_COSTOTOTAL/$asignado->AS_CANTIDAD); ?>">$<?= ($asignado->AS_COSTOTOTAL/$asignado->AS_CANTIDAD) ?></td>
-                            <td>$ <?= $asignado->AS_COSTOTOTAL ?></td>
-                            <?php /*
-                            <?php foreach ($arreglo as $count => $row){ ?>
-                                <?php if($asignado->AS_ID == $row->AS_ID){ ?>
-                                    <td id="cantidad_actual">
-                                        <?= $form->field($row, '['.$count.']AT_CANTIDAD')->textInput(['type' => 'number', 'class' => 'cantidad_ep', 'data' => $asignado->sACT->SACT_COSTO, 'can_anterior' => $asignado->AS_CANTIDADACTUAL])->label(false) ?>
+                            <?php if ($act->AC_ID==$key->AC_ID) { ?>
+                            <td><ul><li><?= $key->sACT->SACT_NOMBRE ?></li></ul></td>
+                            <td><?= $key->AS_CANTIDAD ?></td>
+                            <td class="costo_sub" data="<?php echo ($key->AS_COSTOTOTAL/$key->AS_CANTIDAD); ?>">$<?= ($key->AS_COSTOTOTAL/$key->AS_CANTIDAD) ?></td>
+                            <td>$ <?= $key->AS_COSTOTOTAL ?></td>
+                            <td><?= $key->AS_CANTIDADACTUAL ?></td>
+                            <td>$ <?= $key->AS_COSTOACTUAL ?></td>
+                            <td><?= $key->AS_CANTIDADACTUAL ?></td>
+                            <td>$ <?= $key->AS_COSTOACTUAL ?></td>
+                            <?php foreach ($arreglo as $row){ ?>
+                                <?php if($key->AS_ID == $row->AS_ID){ ?>
+                                    <td id="cantidad_actual" class="warning text-center" >
+                                        <strong><?= $row->AT_CANTIDAD ?></strong>
                                     </td>
-                                    <td id="costo_actual" data='<?php echo $row->AS_ID; ?><?php echo $asignado->AS_ID; ?>'><?= $row->AT_COSTO_EP ?></td>
-                                <?php } ?>
-                            <?php } ?>*/ ?>
-                            <td><?= $asignado->AS_CANTIDADACTUAL ?></td>
-                            <td>$ <?= $asignado->AS_COSTOACTUAL ?></td>
-                            <td><?= $asignado->AS_CANTIDADACTUAL ?></td>
-                            <td>$ <?= $asignado->AS_COSTOACTUAL ?></td>
-                            <?php foreach ($arreglo as $count => $row){ ?>
-                                <?php if($asignado->AS_ID == $row->AS_ID){ ?>
-                                    <td id="cantidad_actual"class="warning" >
-                                        <?= $form->field($row, '['.$count.']AT_CANTIDAD')->textInput(['type' => 'number', 'class' => 'form-control cantidad_ep', 'min'=>0, 'max'=>($asignado->AS_CANTIDAD - $asignado->AS_CANTIDADACTUAL),'data' => $asignado->AS_COSTOTOTAL, 'can_anterior' => $asignado->AS_CANTIDAD])->label(false) ?>
-                                    </td>
-                                    <td class="warning" id="costo_actual" data='<?php echo $row->AS_ID; ?><?php echo $asignado->AS_ID; ?>'>$ <?= $row->AT_COSTO_EP ?></td>
+                                    <td class="warning" id="costo_actual">$ <?= $row->AT_COSTO_EP ?></td>
                                 <?php } ?>
                             <?php } ?>
                             <?php } ?>
@@ -134,7 +127,6 @@ use yii\widgets\DetailView;
 </div>
 
 
-    <?php ActiveForm::end(); ?>
 
 </div>
 

@@ -15,6 +15,8 @@ use Yii;
  * @property string $PROV_EMAIL
  * @property integer $PROV_CONTACTO
  *
+ * @property integer $COM_ID
+ * @property string $PROV_RAZONSOCIAL
  * @property Herramientas[] $herramientas
  * @property OrdenCompra[] $ordenCompras
  */
@@ -34,10 +36,12 @@ class Proveedor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['PROV_CONTACTO'], 'integer'],
-            [['PROV_NOMBRE', 'PROV_RAZONSOCIAL', 'PROV_EMAIL'], 'string', 'max' => 50],
-            [['PROV_CIUDAD'], 'string', 'max' => 30],
-            [['PROV_DIRECCION'], 'string', 'max' => 100],
+           [['COM_ID'], 'required'],
+           [['COM_ID'], 'integer'],
+           [['PROV_NOMBRE', 'PROV_RAZONSOCIAL', 'PROV_EMAIL'], 'string', 'max' => 50],
+           [['PROV_DIRECCION'], 'string', 'max' => 100],
+           [['PROV_CONTACTO'], 'string', 'max' => 20], 
+           [['COM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => Comuna::className(), 'targetAttribute' => ['COM_ID' => 'COM_ID']], 
         ];
     }
 
@@ -49,7 +53,6 @@ class Proveedor extends \yii\db\ActiveRecord
         return [
             'PROV_ID' => 'ID',
             'PROV_NOMBRE' => 'Nombre',
-            'PROV_CIUDAD' => 'Ciudad',
             'PROV_DIRECCION' => 'Direccion',
             'PROV_RAZONSOCIAL' => 'Razonsocial',
             'PROV_EMAIL' => 'Email',
@@ -71,5 +74,10 @@ class Proveedor extends \yii\db\ActiveRecord
     public function getOrdenCompras()
     {
         return $this->hasMany(OrdenCompra::className(), ['PROV_ID' => 'PROV_ID']);
+    }
+
+    public function getCOM()
+    {
+        return $this->hasOne(Comuna::className(), ['COM_ID' => 'COM_ID']);
     }
 }

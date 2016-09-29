@@ -10,9 +10,19 @@ $config = [
 
     'components' => [
         'request' => [
-            'enableCookieValidation' => true,
-            'enableCsrfValidation' => true,
+            //'enableCookieValidation' => true,
+            //'enableCsrfValidation' => true,
             'cookieValidationKey' => '1221',
+            //'baseUrl' => '',
+        ],
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            /*'rules' => [
+                '' => 'site/index',
+                '<action>'=>'site/<action>',
+            ],*/
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
